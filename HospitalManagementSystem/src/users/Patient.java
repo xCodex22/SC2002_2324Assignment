@@ -4,19 +4,19 @@ import java.time.LocalDate;
 
 public class Patient extends User{
     // Attributes
-    private int patientID;
+    private String patientID;
     private String name;
     private LocalDate dateOfBirth;
-    private boolean gender;
+    private String gender;
     private int contactNum;
     private String contactEmail;
     private String bloodType;
     private String medicalRecord;
 
     // Constructor
-    public Patient(int hospitalID, String password, int patientID, String name,
+    public Patient(int hospitalID, String password, String patientID, String name,
     LocalDate dateOfBirth,
-    boolean gender,
+    String gender,
     int contactNum,
     String contactEmail,
     String bloodType,
@@ -50,7 +50,7 @@ public class Patient extends User{
     // 3. Set Appointment
 
     // Setter/ Getter Methods
-    public int getPatientID() {
+    public String getPatientID() {
         return patientID;
     }
 
@@ -62,7 +62,7 @@ public class Patient extends User{
         return dateOfBirth;
     }
 
-    public boolean getGender() {
+    public String getGender() {
         return gender;
     }
 
