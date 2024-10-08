@@ -1,4 +1,4 @@
-package HospitalManagementSystem.src.Records;
+package HospitalManagementSystem.src.records;
 
 public class MedicalRecord {
     

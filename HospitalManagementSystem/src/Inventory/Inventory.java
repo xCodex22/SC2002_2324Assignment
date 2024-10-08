@@ -1,4 +1,4 @@
-package HospitalManagementSystem.src.Inventory;
+package HospitalManagementSystem.src.inventory;
 
 public class Inventory {
     
