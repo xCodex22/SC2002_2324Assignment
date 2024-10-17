@@ -14,7 +14,7 @@ public class AccountSystem {
 			boolean found = false;
 			String name, password, role;
 			name = password = role = null;
-			File accounts = new File("./data/Accounts.csv");
+			File accounts = new File("../data/Accounts.csv");
 			Scanner read = new Scanner(accounts);
 			read.nextLine();
 			while(read.hasNextLine()) {

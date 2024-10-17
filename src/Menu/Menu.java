@@ -12,8 +12,7 @@ public class Menu{
 
 	public void start() {
 		int choice = 3;
-		System.out.print("\033[H\033[2J");
-		System.out.flush();
+		clearScreen();	
 		Scanner sc = new Scanner(System.in);
 		do {
 			System.out.println("====[ Hospital Management System ]====");
@@ -45,38 +44,39 @@ public class Menu{
 		} while(choice != 3);
 	}
 	
+	public void select_menu(String role) {
+		switch (role) {
+			case "PATIENT":
+				patient_menu();
+				break;
+			case "DOCTOR":
+				doctor_menu();
+				break;
+			case "PHARMACIST":
+				pharma_menu();
+				break;
+			case "ADMIN":
+				admin_menu();
+					break;
+			default:
+				throw new Error("[-] in select_menu(): unknown role");
+		}
+	}
+
 	public void login_menu() {
-			Console cnsl = null;
-			try {	
-				String uname, passwd;
-				cnsl = System.console();	
-				uname = cnsl.readLine("Enter your username: ");
-				passwd = new String(cnsl.readPassword("Enter your password: "));
-				if (acc.login(uname, passwd)) {
-					String role = acc.getRole();
-					switch (role) {
-						case "PATIENT":
-							patient_menu();
-							break;
-						case "DOCTOR":
-							doctor_menu();
-							break;
-						case "PHARMACIST":
-							pharma_menu();
-							break;
-						case "ADMIN":
-							admin_menu();
-							break;
-						default:
-							break;
-					}
-				}
-			} catch(Exception e) { e.printStackTrace(); }
+		Console cnsl = null;
+		try {	
+			String uname, passwd;
+			cnsl = System.console();	
+			uname = cnsl.readLine("Enter your username: ");
+			passwd = new String(cnsl.readPassword("Enter your password: "));
+			if (acc.login(uname, passwd)) 	
+				select_menu(acc.getRole());	
+		} catch(Exception e) { e.printStackTrace(); }
 	}
 
 	public void patient_menu(){
-		System.out.print("\033[H\033[2J");
-		System.out.flush();
+		clearScreen();	
 		Scanner sc = new Scanner(System.in);
 		System.out.println("=====[ Patient Menu ]=====");
 		System.out.println("1. View Medical Record");	
@@ -123,13 +123,11 @@ public class Menu{
 					break;
 			}
 		} while(choice != 9);
-		System.out.print("\033[H\033[2J");
-		System.out.flush();
+		clearScreen();	
 	}
 
 	public void doctor_menu(){
-		System.out.print("\033[H\033[2J");
-		System.out.flush();
+		clearScreen();	
 		Scanner sc = new Scanner(System.in);
 		System.out.println("=====[ Doctor Menu ]=====");	
 		System.out.println("1. View Patient Medical Records");
@@ -176,13 +174,11 @@ public class Menu{
 					break;
 			}
 		} while(choice != 9);
-		System.out.print("\033[H\033[2J");
-		System.out.flush();
+		clearScreen();	
 	}
 
 	public void pharma_menu(){
-		System.out.print("\033[H\033[2J");
-		System.out.flush();
+		clearScreen();	
 		Scanner sc = new Scanner(System.in);
 		System.out.println("====[ Pharmacist Menu]===");
 		System.out.println("1. View Appointment Outcome Record");
@@ -220,13 +216,11 @@ public class Menu{
 					break;
 			}
 		} while(choice != 6);
-		System.out.print("\033[H\033[2J");
-		System.out.flush();
+		clearScreen();	
 	}
 
 	public void admin_menu(){ 
-		System.out.print("\033[H\033[2J");
-		System.out.flush();
+		clearScreen();	
 		Scanner sc = new Scanner(System.in);
 		System.out.println("====[ Administrator Menu ]=====");
 		System.out.println("1. View and Manage Hospital Staff");
@@ -264,13 +258,11 @@ public class Menu{
 					break;
 			}
 		} while(choice != 6);
-		System.out.print("\033[H\033[2J");
-		System.out.flush();
+		clearScreen();	
 	}
 
 	public void password_menu() {
-		System.out.print("\033[H\033[2J");
-		System.out.flush();
+		clearScreen();			
 		String oldpass, newpass1, newpass2;
 		Scanner sc = new Scanner(System.in);
 		System.out.println("===[ Change Your Password ]===");	
@@ -305,6 +297,13 @@ public class Menu{
 					break;
 			}
 		} while(choice != 2);
+		clearScreen();	
+		select_menu(acc.getRole());
+	}
+
+	public void clearScreen() {
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
 	}
 
 	private AccountSystem acc;
