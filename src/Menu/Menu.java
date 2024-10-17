@@ -14,8 +14,13 @@ public class Menu{
 		int choice = 3;
 		clearScreen();	
 		Scanner sc = new Scanner(System.in);
+
 		do {
-			System.out.println("====[ Hospital Management System ]====");
+			try { 
+				Scanner banner = new Scanner(new File("main_banner.txt")); 
+				while (banner.hasNextLine()) { System.out.println(banner.nextLine()); }
+			} catch (FileNotFoundException e) { e.printStackTrace(); }
+
 			System.out.println("1. Log in");
 			System.out.println("2. Register");
 			System.out.println("3. Exit");
@@ -38,7 +43,7 @@ public class Menu{
 				case 3:
 					break;
 				default:
-					System.out.println("Invalid option!");
+					System.out.println("Invalid Option");
 					break;
 			}
 		} while(choice != 3);
@@ -77,18 +82,20 @@ public class Menu{
 
 	public void patient_menu(){
 		clearScreen();	
+		
+		String menu = "=====[ Patient Menu ]=====\n" +
+                     "1. View Medical Record\n" +
+                     "2. Update Personal Information\n" +
+                     "3. View Available Appointment Slots\n" +
+                     "4. Schedule an Appointment\n" +
+                     "5. Reschedule an Appointment\n" +
+                     "6. Cancel an Appointment\n" +
+                     "7. View Scheduled Appointments\n" +
+                     "8. Change password\n" +
+                     "9. Logout";
 		Scanner sc = new Scanner(System.in);
-		System.out.println("=====[ Patient Menu ]=====");
-		System.out.println("1. View Medical Record");	
-		System.out.println("2. Update Personal Information");
-		System.out.println("3. View Available Appointment Slots");
-		System.out.println("4. Schedule an Appointment");
-		System.out.println("5. Reschedule an Appointment");
-		System.out.println("6. Cancel an Appointment");
-		System.out.println("7. View Scheduled Appointments");
-		System.out.println("8. Change password");
-		System.out.println("9. Logout");
-
+		System.out.println(menu);
+		
 		int choice = 9;
 		do {
 			System.out.print("Enter option (1-9): ");
@@ -114,12 +121,14 @@ public class Menu{
 				case 7:
 					break;
 				case 8:
+					password_menu();
+					System.out.println(menu);		
 					break;
 				case 9:
 					System.out.println("Logging out..");
 					break;
 				default:
-					System.out.println("Invalid Choice!");
+					System.out.println("Invalid Option");
 					break;
 			}
 		} while(choice != 9);
@@ -167,10 +176,9 @@ public class Menu{
 				case 8:
 					break;
 				case 9:
-					System.out.println("Logging out..");
 					break;
 				default:
-					System.out.println("Invalid Choice!");
+					System.out.println("[-] Invalid Choice");
 					break;
 			}
 		} while(choice != 9);
@@ -185,7 +193,7 @@ public class Menu{
 		System.out.println("2. Update Prescription Status");
 		System.out.println("3. View Medication Inventory");
 		System.out.println("4. Submit Replenishment Request");
-		System.out.println("5. Change Passowrd");
+		System.out.println("5. Change Password");
 		System.out.println("6. Logout");
 
 		int choice = 6;
@@ -209,10 +217,9 @@ public class Menu{
 				case 5:
 					break;
 				case 6:
-					System.out.println("Logging out..");
 					break;
 				default:
-					System.out.println("Invalid Choice!");
+					System.out.println("[-] Invalid Choice");
 					break;
 			}
 		} while(choice != 6);
@@ -251,10 +258,9 @@ public class Menu{
 				case 5:
 					break;
 				case 6:
-					System.out.println("Logging out..");
 					break;
 				default:
-					System.out.println("Invalid Choice!");
+					System.out.println("[-] Invalid Option");
 					break;
 			}
 		} while(choice != 6);
@@ -266,7 +272,7 @@ public class Menu{
 		String oldpass, newpass1, newpass2;
 		Scanner sc = new Scanner(System.in);
 		System.out.println("===[ Change Your Password ]===");	
-		System.out.println("1. Change Passowrd");
+		System.out.println("1. Change Password");
 		System.out.println("2. Exit");
 		int choice = 2;
 		do {
@@ -284,8 +290,8 @@ public class Menu{
 						oldpass = new String(cnsl.readPassword("Enter your old password: "));
 						newpass1 = new String(cnsl.readPassword("Enter your new password: "));
 						newpass2 = new String(cnsl.readPassword("Confirm your new password: "));
-						//if (acc.changePassword(oldpass, newpass1, newpass2)) 
-						System.out.println("Password has been changed successfully");	
+						if (acc.changePassword(oldpass, newpass1, newpass2)) 
+							System.out.println("[+] Password has been changed successfully");	
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -293,12 +299,11 @@ public class Menu{
 				case 2:
 					break;
 				default:
-					System.out.println("Invalid Option!");
+					System.out.println("[-] Invalid Option");
 					break;
 			}
 		} while(choice != 2);
 		clearScreen();	
-		select_menu(acc.getRole());
 	}
 
 	public void clearScreen() {

@@ -28,12 +28,12 @@ public class AccountSystem {
 					return true;
 				}
 				else {
-					System.out.println("Wrong password");
+					System.out.println("[-] Wrong password");
 					return false;
 				}
 			}
 			else {
-				System.out.println("User not found");
+				System.out.println("[-] User not found");
 				return false;
 			}
 		} catch(FileNotFoundException e) {
@@ -42,8 +42,16 @@ public class AccountSystem {
 		}	
 	} 
 
-	public void changePassowrd() {
-		
+	public boolean changePassword(String oldpass, String newpass1, String newpass2) {
+		if (!passwd.equals(oldpass)) {
+			System.out.println("[-] Wrong Password");
+			return false;
+		}
+		if (!newpass1.equals(newpass2)) {
+			System.out.println("[-] Newly Created Passowrds Do Not Match");
+			return false;
+		}
+		return true;
 	}
 
 	public String getRole() { return role; }
