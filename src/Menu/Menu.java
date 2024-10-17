@@ -17,7 +17,7 @@ public class Menu{
 
 		do {
 			try { 
-				Scanner banner = new Scanner(new File("main_banner.txt")); 
+				Scanner banner = new Scanner(new File("Menu/main_banner.txt")); 
 				while (banner.hasNextLine()) { System.out.println(banner.nextLine()); }
 			} catch (FileNotFoundException e) { e.printStackTrace(); }
 
