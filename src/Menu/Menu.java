@@ -83,7 +83,7 @@ public class Menu{
 	public void patient_menu(){
 		clearScreen();	
 		
-		String menu = "=====[ Patient Menu ]=====\n" +
+		final String menu = "=====[ Patient Menu ]=====\n" +
                      "1. View Medical Record\n" +
                      "2. Update Personal Information\n" +
                      "3. View Available Appointment Slots\n" +
@@ -125,10 +125,9 @@ public class Menu{
 					System.out.println(menu);		
 					break;
 				case 9:
-					System.out.println("Logging out..");
 					break;
 				default:
-					System.out.println("Invalid Option");
+					System.out.println("[-] Invalid Option");
 					break;
 			}
 		} while(choice != 9);
@@ -137,18 +136,18 @@ public class Menu{
 
 	public void doctor_menu(){
 		clearScreen();	
+		final String menu = "=====[ Doctor Menu ]=====\n" +
+							"1. View Patient Medical Records\n" +
+							"2. Update Patient Medical Records\n" +
+							"3. View Personal Schedule\n" + 
+							"4. Set Availability for Appointments\n" +
+							"5. Accept or Decline Appointment Requests\n" +
+							"6. View Upcoming Appointments\n" +
+							"7. Record Appointment Outcome\n" +
+							"8. Change Password\n" + 
+							"9. Logout\n";
+		System.out.println(menu);	
 		Scanner sc = new Scanner(System.in);
-		System.out.println("=====[ Doctor Menu ]=====");	
-		System.out.println("1. View Patient Medical Records");
-		System.out.println("2. Update Patient Medical Records");
-		System.out.println("3. View Personal Schedule");
-		System.out.println("4. Set Availability for Appointments");
-		System.out.println("5. Accept or Decline Appointment Requests");
-		System.out.println("6. View Upcoming Appointments");
-		System.out.println("7. Record Appointment Outcome");
-		System.out.println("8. Change Password");
-		System.out.println("9. Logout");
-
 		int choice = 9;
 		do {
 			System.out.print("Enter option (1-9): ");
@@ -174,6 +173,8 @@ public class Menu{
 				case 7:
 					break;
 				case 8:
+					password_menu();
+					System.out.println(menu);
 					break;
 				case 9:
 					break;
@@ -187,15 +188,16 @@ public class Menu{
 
 	public void pharma_menu(){
 		clearScreen();	
-		Scanner sc = new Scanner(System.in);
-		System.out.println("====[ Pharmacist Menu]===");
-		System.out.println("1. View Appointment Outcome Record");
-		System.out.println("2. Update Prescription Status");
-		System.out.println("3. View Medication Inventory");
-		System.out.println("4. Submit Replenishment Request");
-		System.out.println("5. Change Password");
-		System.out.println("6. Logout");
+		final String menu = "====[ Pharmacist Menu]===\n" +
+							"1. View Appointment Outcome Record\n" +
+							"2. Update Prescription Status\n" +
+							"3. View Medication Inventory\n" +
+							"4. Submit Replenishment Request\n" +
+							"5. Change Password\n" +
+							"6. Logout";
 
+		System.out.println(menu);
+		Scanner sc = new Scanner(System.in);
 		int choice = 6;
 		do {
 			System.out.print("Enter option (1-6): ");
@@ -215,6 +217,8 @@ public class Menu{
 				case 4:
 					break;
 				case 5:
+					password_menu();
+					System.out.println(menu);
 					break;
 				case 6:
 					break;
@@ -228,15 +232,15 @@ public class Menu{
 
 	public void admin_menu(){ 
 		clearScreen();	
+		final String menu = "====[ Administrator Menu ]=====\n" + 
+							"1. View and Manage Hospital Staff\n" +
+							"2. View Appointmnet details\n" +
+							"3. View and Manage Medication Inventory\n" +
+							"4. Approve Replenishment Requests\n" +
+							"5. Change Password\n" +
+							"6. Logout";
+		System.out.println(menu);
 		Scanner sc = new Scanner(System.in);
-		System.out.println("====[ Administrator Menu ]=====");
-		System.out.println("1. View and Manage Hospital Staff");
-		System.out.println("2. View Appointmnet details");
-		System.out.println("3. View and Manage Medication Inventory");
-		System.out.println("4. Approve Replenishment Requests");
-		System.out.println("5. Change Password");
-		System.out.println("6. Logout");
-
 		int choice = 6;
 		do {
 			System.out.print("Enter option (1-6): ");
@@ -256,6 +260,8 @@ public class Menu{
 				case 4:
 					break;
 				case 5:
+					password_menu();
+					System.out.println(menu);
 					break;
 				case 6:
 					break;
@@ -270,10 +276,11 @@ public class Menu{
 	public void password_menu() {
 		clearScreen();			
 		String oldpass, newpass1, newpass2;
+		final String menu = "===[ Change Your Password ]===\n" +
+							"1. Change Password\n" + 
+							"2. Exit";
+		System.out.println(menu);
 		Scanner sc = new Scanner(System.in);
-		System.out.println("===[ Change Your Password ]===");	
-		System.out.println("1. Change Password");
-		System.out.println("2. Exit");
 		int choice = 2;
 		do {
 			System.out.print("Enter option (1-2): ");	
