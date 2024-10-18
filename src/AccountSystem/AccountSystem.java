@@ -83,6 +83,31 @@ public class AccountSystem {
 		return true;
 	}
 
+	public boolean register() {
+		// requires dependency of personal information		
+
+		// ====[ TODO ]===
+		// requires the patient to fill in personal information first 
+		// --> it should not matter that the exact name blood type etc occurs multiple times
+		// --> uniqueness of patients is by the hospitalID
+		// **** we will just increase the ID number by 1 each time a new user is created ****
+		// read and return the last line of the account for the last hospitalID
+		// password is defaulted to "password"
+		// leave a message to tell user about this default and to change password 
+
+		long hospitalID = 1000;
+
+		final String message = 	"[+] Account Created Successfully\n\n" +
+								"[!!] Please Save the Following Information\n" +
+								"[1] Your unique Hospital ID: " + hospitalID + "\n" +
+								"[2] Your default password is: password\n" +
+								"[3] Please change your password after logging in\n\n" +
+								"You may exit this page and log in now.";
+
+		System.out.println(message);
+		return true;
+	}
+
 	public String getRole() { return role; }
 		
 	private String uname;

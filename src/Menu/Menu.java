@@ -39,11 +39,12 @@ public class Menu{
 					login_menu();	
 					break;
 				case 2:
+					register_menu();
 					break;
 				case 3:
 					break;
 				default:
-					System.out.println("Invalid Option");
+					System.out.println("[-] Invalid Option");
 					break;
 			}
 		} while(choice != 3);
@@ -73,11 +74,41 @@ public class Menu{
 		try {	
 			String uname, passwd;
 			cnsl = System.console();	
-			uname = cnsl.readLine("Enter your username: ");
+			uname = cnsl.readLine("Enter your ID number: ");
 			passwd = new String(cnsl.readPassword("Enter your password: "));
 			if (acc.login(uname, passwd)) 	
 				select_menu(acc.getRole());	
 		} catch(Exception e) { e.printStackTrace(); }
+	}
+
+	public void register_menu() {
+		clearScreen();
+		final String menu = "=======[ Registration Menu ]=========\n" +
+							"[!!] This registration is only for patients. For staff, please contact your admin directly.\n" +
+							"1. Register\n" +
+							"2. Exit"; 
+		System.out.println(menu);
+		Scanner sc = new Scanner(System.in);
+		int choice = 3;
+		do {
+			try {
+				System.out.print("Enter option (1-2): ");
+				choice = sc.nextInt();
+			} catch(InputMismatchException e) {
+				choice = 3;
+			}
+			switch(choice) {
+				case 1:
+					acc.register();
+					break;
+				case 2:
+					clearScreen();
+					break;
+				default:
+					System.out.println("[-] Invalid Option");
+					break;
+			}
+		} while(choice != 2);
 	}
 
 	public void patient_menu(){
