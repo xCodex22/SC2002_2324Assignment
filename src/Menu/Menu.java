@@ -1,6 +1,7 @@
 package Menu;
 
 import AccountSystem.AccountSystem;
+import AccountSystem.LoginStatus;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -10,44 +11,46 @@ import java.util.InputMismatchException;
 public class Menu{
 	public Menu() { acc = new AccountSystem(); }
 
-	public void start() {
+  public void start() {
 		int choice = 3;
 		clearScreen();	
 		Scanner sc = new Scanner(System.in);
 
-		do {
-			try { 
-				Scanner banner = new Scanner(new File("Menu/main_banner.txt")); 
-				while (banner.hasNextLine()) { System.out.println(banner.nextLine()); }
-			} catch (FileNotFoundException e) { e.printStackTrace(); }
+    do {
+      try { 
+        Scanner banner = new Scanner(new File("Menu/main_banner.txt")); 
+        while (banner.hasNextLine()) { System.out.println(banner.nextLine()); }
+      } catch (FileNotFoundException e) { e.printStackTrace(); }
 
-			System.out.println("1. Log in");
-			System.out.println("2. Register");
-			System.out.println("3. Exit");
+      System.out.println("1. Log in");
+      System.out.println("2. Register");
+      System.out.println("3. Exit");
+      System.out.print("Enter option (1-3): ");	
 
-			System.out.print("Enter option (1-3): ");	
+      try {
+        choice = sc.nextInt();
+      } catch(InputMismatchException e) { 
+        choice = 4; 
+        sc.nextLine();
+      }
 
-			try {
-				choice = sc.nextInt();
-			} catch(InputMismatchException e) { 
-				choice = 4; 
-				sc.nextLine();
-			}
-
-			switch (choice) {
-				case 1:
-					login_menu();	
-					break;
-				case 2:
-					register_menu();
-					break;
-				case 3:
-					break;
-				default:
-					System.out.println("[-] Invalid Option");
-					break;
-			}
-		} while(choice != 3);
+      switch (choice) {
+        case 1:
+          login_menu();	
+          break;
+        case 2:
+          register_menu();
+          break;
+        case 3:
+          break;
+        default:
+          clearScreen();
+          System.out.println("=================================================================");
+          System.out.println("                    [-] Invalid Option. Try Again.               ");
+          System.out.println("=================================================================");
+          break;
+      }
+    } while(choice != 3);
 	}
 	
 	public void select_menu(String role) {
@@ -63,7 +66,7 @@ public class Menu{
 				break;
 			case "ADMIN":
 				admin_menu();
-					break;
+				break;
 			default:
 				throw new Error("[-] in select_menu(): unknown role");
 		}
@@ -76,8 +79,26 @@ public class Menu{
 			cnsl = System.console();	
 			uname = cnsl.readLine("Enter your ID number: ");
 			passwd = new String(cnsl.readPassword("Enter your password: "));
-			if (acc.login(uname, passwd)) 	
-				select_menu(acc.getRole());	
+      
+      switch(acc.login(uname, passwd)) {
+        case LoginStatus.SUCCESS:
+          select_menu(acc.getRole());
+          break;
+        case LoginStatus.WRONG_PASSWORD:
+          clearScreen();
+          System.out.println("=================================================================");
+          System.out.println("                   [!!] Wrong Password. Try Again.               ");
+          System.out.println("=================================================================");
+          break;
+        case LoginStatus.USER_NOT_FOUND:
+          clearScreen();
+          System.out.println("==================================================================");
+          System.out.println("                   [!!] User Not Found. Try Again.                ");
+          System.out.println("==================================================================");
+          break;
+        case LoginStatus.ERROR:
+          throw new Exception("[-] Unexpected error has Occurred");
+      }
 		} catch(Exception e) { e.printStackTrace(); }
 	}
 
@@ -113,7 +134,6 @@ public class Menu{
 
 	public void patient_menu(){
 		clearScreen();	
-		
 		final String menu = "=====[ Patient Menu ]=====\n" +
                      "1. View Medical Record\n" +
                      "2. Update Personal Information\n" +

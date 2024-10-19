@@ -9,7 +9,7 @@ import java.io.Console;
 import java.util.*;
 			
 public class AccountSystem { 
-	public boolean login(String uname, String passwd) {
+	public LoginStatus login(String uname, String passwd) {
 		try {
 			this.uname = uname;
 			this.passwd = passwd;	
@@ -29,20 +29,14 @@ public class AccountSystem {
 			if (found) {
 				if (this.passwd.equals(password)) {
 					this.role = role;	
-					return true;
+          return LoginStatus.SUCCESS;
 				}
-				else {
-					System.out.println("[-] Wrong password");
-					return false;
-				}
+				else return LoginStatus.WRONG_PASSWORD;
 			}
-			else {
-				System.out.println("[-] User not found");
-				return false;
-			}
+			else return LoginStatus.USER_NOT_FOUND;
 		} catch(FileNotFoundException e) {
 			e.printStackTrace();
-			return false;
+			return LoginStatus.ERROR;
 		}	
 	} 
 
