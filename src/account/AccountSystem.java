@@ -1,6 +1,7 @@
 package account; 
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.*;
@@ -77,39 +78,42 @@ public class AccountSystem {
 		return true;
 	}
 
-	public boolean register() {
-		// requires dependency of personal information		
-    // param take in personal info
-
-		// ====[ TODO ]===
-		// requires the patient to fill in personal information first 
-    // personal info is gonna be a struct with all the required member fields
-		// --> it should not matter that the exact name blood type etc occurs multiple times
-		// --> uniqueness of patients is by the hospitalID
-		// **** we will just increase the ID number by 1 each time a new user is created ****
-		// read and return the last line of the account for the last hospitalID
-		// password is defaulted to "password"
-		// leave a message to tell user about this default and to change password 
-
+	public boolean register(String[] info, String role) {
     try {
       File accounts = new File("../data/AccountDB/accounts.csv");
       Scanner read = new Scanner(accounts);
-      read.nextLine();
       String[] lastLine = null;
       while(read.hasNextLine()) {
         lastLine = read.nextLine().split(",");
       } 
       read.close(); 
+
       int hospitalID = Integer.parseInt(lastLine[0]) + 1;
-      uname = String.valueOf(hospitalID);
+      info[0] = String.valueOf(hospitalID);
+      uname = info[0];
+      String newEntry = String.join(",", info);
+      
+      switch(role) {
+        case "PATIENT":
+          FileWriter writer = new FileWriter("../data/BasicInfoDB/patient.csv", true);
+          writer.write(newEntry+"\n");
+          writer.close();
+          writer = new FileWriter("../data/AccountDB/accounts.csv", true);
+          newEntry = info[0] + ",password,PATIENT\n";
+          writer.write(newEntry);
+          writer.close();
+          break;
+        default:
+          System.out.println("[-] Illegal Registration");
+          return false;
+      }
 		  return true;
 
-    } catch(FileNotFoundException e) {
+    } catch(Exception e) {
       e.printStackTrace();
       return false;
     }
-
-}
+  }
 
 	public String getRole() { return role; }
   public String getUname() { return uname; }

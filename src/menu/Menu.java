@@ -121,7 +121,34 @@ public class Menu{
 			}
 			switch(choice) {
 				case 1:
-					if(acc.register()) {
+          String[] info = new String[7];
+          info[0] = null;
+          System.out.println("\n[!] Set Up Your Account"); 
+          sc.nextLine();
+          boolean invalid = false;
+          do {
+            try {
+              System.out.print("Enter your first name: ");
+              info[1] = sc.nextLine(); 
+              System.out.print("Enter your last name: "); 
+              info[2] = sc.nextLine();
+              System.out.print("Enter your gender: "); 
+              info[3] = sc.nextLine();
+              System.out.print("Enter your date of birth: "); 
+              info[4] = sc.nextLine(); 
+              System.out.print("Enter your phone number: ");
+              info[5] = sc.nextLine();
+              System.out.print("Enter your email address: ");
+              info[6] = sc.nextLine(); 
+            } catch(InputMismatchException e) {
+              invalid = true;
+              System.out.println("\n[!!] Illegal Characters Detected. Try Again");
+              sc.nextLine();
+            }
+            invalid = false;
+          } while(invalid);
+
+					if(acc.register(info, "PATIENT")) {
             final String message = 	"\n[+] Account Created Successfully\n\n" +
 								                    "[!] Please Save the Following Information\n" +
 								                    "[1] Your unique Hospital ID: " + acc.getUname() + "\n" +
