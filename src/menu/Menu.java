@@ -121,7 +121,18 @@ public class Menu{
 			}
 			switch(choice) {
 				case 1:
-					acc.register();
+					if(acc.register()) {
+            final String message = 	"\n[+] Account Created Successfully\n\n" +
+								                    "[!] Please Save the Following Information\n" +
+								                    "[1] Your unique Hospital ID: " + acc.getUname() + "\n" +
+								                    "[2] Your default password is: password\n" +
+								                    "[3] Please change your password after logging in\n\n" +
+								                    "You may exit this page and log in now.";
+		        System.out.println(message);
+          }
+        else {
+          System.out.println("\n[-] Failed to Create Account. Try again.");
+        }
 					break;
 				case 2:
 					clearScreen();

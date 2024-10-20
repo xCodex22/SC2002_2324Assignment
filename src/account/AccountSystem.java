@@ -91,20 +91,28 @@ public class AccountSystem {
 		// password is defaulted to "password"
 		// leave a message to tell user about this default and to change password 
 
-		long hospitalID = 1000;
+    try {
+      File accounts = new File("../data/AccountDB/accounts.csv");
+      Scanner read = new Scanner(accounts);
+      read.nextLine();
+      String[] lastLine = null;
+      while(read.hasNextLine()) {
+        lastLine = read.nextLine().split(",");
+      } 
+      read.close(); 
+      int hospitalID = Integer.parseInt(lastLine[0]) + 1;
+      uname = String.valueOf(hospitalID);
+		  return true;
 
-		final String message = 	"[+] Account Created Successfully\n\n" +
-								            "[!!] Please Save the Following Information\n" +
-								            "[1] Your unique Hospital ID: " + hospitalID + "\n" +
-								            "[2] Your default password is: password\n" +
-								            "[3] Please change your password after logging in\n\n" +
-								            "You may exit this page and log in now.";
+    } catch(FileNotFoundException e) {
+      e.printStackTrace();
+      return false;
+    }
 
-		System.out.println(message);
-		return true;
-	}
+}
 
 	public String getRole() { return role; }
+  public String getUname() { return uname; }
 		
 	private String uname;
 	private String passwd;
