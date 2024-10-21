@@ -256,7 +256,8 @@ public class Menu {
         case 1:
         break;
         case 2:
-        break;
+          updatePersonalInfo_menu();
+          break;
         case 3:
         break;
         case 4:
@@ -431,16 +432,18 @@ public class Menu {
         }
         break;
         case 2:
-        break;
+          break;
         default:
-        System.out.println("[-] Invalid Option");
-        break;
+          System.out.println("[-] Invalid Option");
+          break;
       }
     } while(choice != 2);
     clearScreen();	
   }
 
-  public void viewBasicInfo_menu() {
+  public void updatePersonalInfo_menu() {
+    clearScreen();
+    user.getBasicInfo().displayInfo();
   }
 
   public void clearScreen() {

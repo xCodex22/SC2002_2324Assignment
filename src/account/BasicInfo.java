@@ -1,5 +1,6 @@
 package account;
 
+import menu.Sanitise;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -37,9 +38,19 @@ public class BasicInfo {
       } catch(FileNotFoundException e) {
         e.printStackTrace();
     }
-  };
-  
-  public String[] getSummary() { return summary; }
+  }
+
+  public void displayInfo() {
+    System.out.println("===========[ Your Personal Information ]============");
+    System.out.println("[1] ID Number: " + summary[0]);
+    System.out.println("[2] First Name: " + summary[1]);
+    System.out.println("[3] Last Name: " + summary[2]);
+    System.out.println("[4] Gender: " + summary[3]);
+    System.out.println("[5] Date of Birth: " + summary[4]);
+    System.out.println("[6] Phone Number: " + summary[5]);
+    System.out.println("[7] Email Address: " + summary[6]);
+  }
+
   public String getID() { return hospitalID; }
   public String getGender() { return gender; }
   public String getRole() { return role; }
