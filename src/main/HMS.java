@@ -7,7 +7,7 @@ import HospitalManagementSystem.src.users.Administrator;
 import HospitalManagementSystem.src.users.User; */
 
 import account.AccountSystem;
-import menu.Menu;
+import menu.*;
 
 import java.util.List;
 import java.util.Map;

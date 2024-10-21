@@ -1,3 +1,4 @@
 hospitalID,firstName,lastName,gender,dateOfBirth,phoneNumber,emailAddress
-12345,Alex,Jones,Male,1109199,812345678,donaldTrump@gmail.com
-12349,thisisa,test,MALE,12122012,88123456,test@gmail.com
+12345,Alex,Jones,MALE,11-09-1999,81234567,donaldTrump@gmail.com
+12349,John,Doe,MALE,09-06-1942,91234567,johndoe@gmail.com
+12350,Tim Wong,Sum,MALE,06-09-2000,88881234,sugma1924@yahoo.com
