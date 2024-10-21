@@ -1,7 +1,7 @@
 package menu;
 
-import account.AccountSystem;
-import account.LoginStatus;
+import account.*;
+import users.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -220,16 +220,31 @@ public class Menu {
 
   public void patient_menu(){
     clearScreen();	
+    user = new Patient(acc.getUname());
+    String gender = user.getBasicInfo().getGender(); 
+    String pronoun = null;
+    switch(gender) {
+      case "MALE":
+        pronoun = "Mr. ";
+        break;
+      case "FEMALE":
+        pronoun = "Miss. ";
+        break;
+      case "OTHERS":
+        pronoun = " ";
+        break;
+    }
     final String menu = "=====[ Patient Menu ]=====\n" +
-    "1. View Medical Record\n" +
-    "2. Update Personal Information\n" +
-    "3. View Available Appointment Slots\n" +
-    "4. Schedule an Appointment\n" +
-    "5. Reschedule an Appointment\n" +
-    "6. Cancel an Appointment\n" +
-    "7. View Scheduled Appointments\n" +
-    "8. Change password\n" +
-    "9. Logout";
+                       "|| Welcome Back, " + pronoun + user.getBasicInfo().getLastName() + " ||\n\n" +
+                       "1. View Medical Record\n" +
+                       "2. Update Personal Information\n" +
+                       "3. View Available Appointment Slots\n" +
+                       "4. Schedule an Appointment\n" +
+                       "5. Reschedule an Appointment\n" +
+                       "6. Cancel an Appointment\n" +
+                       "7. View Scheduled Appointments\n" +
+                       "8. Change password\n" +
+                       "9. Logout";
     Scanner sc = new Scanner(System.in);
     System.out.println(menu);
 
@@ -425,10 +440,13 @@ public class Menu {
     clearScreen();	
   }
 
+  public void viewBasicInfo_menu() {
+  }
+
   public void clearScreen() {
     System.out.print("\033[H\033[2J");
     System.out.flush();
   }
-
   private AccountSystem acc;
+  private User user;
 }

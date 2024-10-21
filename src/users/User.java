@@ -1,31 +1,20 @@
-package HospitalManagementSystem.src.users;
+package users;
+
+import account.BasicInfo;
 
 public class User {
-    // Attributes
-    private int hospitalID;
-    private String password;
-
-    // Constructor
-    public User(int hospitalID) {
-        this.hospitalID = hospitalID;
-        this.password = "password";
+  public User(String hospitalID, String role) {
+    try {
+      basicInfo = new BasicInfo(hospitalID, role);
+    } catch(Exception e) {
+      basicInfo = null;
+      e.printStackTrace();
     }
+  }
 
-    // Methods
-    public void login() {
-        
-    }
+  public BasicInfo getBasicInfo() {
+    return basicInfo;
+  }
 
-    public void changePassword(String newPassword) {
-        this.password = newPassword;
-    }
-
-    // Getter/ Setter Methods
-    public int getHospitalID() {
-        return hospitalID;
-    }
-
-    public String getPassword() {
-        return password;
-    }
+  private BasicInfo basicInfo;
 }

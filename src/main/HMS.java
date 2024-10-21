@@ -8,6 +8,8 @@ import HospitalManagementSystem.src.users.User; */
 
 import account.AccountSystem;
 import menu.*;
+import users.User;
+import users.Patient;
 
 import java.util.List;
 import java.util.Map;
