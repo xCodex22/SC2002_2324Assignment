@@ -135,39 +135,10 @@ public class Menu {
           }
         } while(true);
 
+        info[3] = Sanitise.readGender();
 
-        int option = 4;
-        do {
-          System.out.println("\nSelect your gender: "); 
-          System.out.println("1. Male");
-          System.out.println("2. Female");
-          System.out.println("3. Others");
-          System.out.print("Choose option (1-3): ");
-          option = Sanitise.readInt(1, 3, 4);
-          switch(option) {
-            case 1:
-            info[3] = "MALE";
-            break;
-            case 2:
-            info[3] = "FEMALE";
-            break;
-            case 3:
-            info[3] = "OTHERS";
-            break;
-            case 4:
-            System.out.println("[-] Invalid option. Try again");
-            break;
-          }
-        } while(option==4);
-
-        final String dobExample = "[!] Example \n" + 
-        "[1] Birthday is on 9th June 1942 \n" + 
-        "[2] Enter \"09-06-1942\"\n";
-        System.out.println("\nEnter your date of birth in DD-MM-YYYY format."); 
-        System.out.println(dobExample);
         do {
           try {
-            System.out.print("Enter your date of birth: ");
             info[4] = Sanitise.readDOB();
             break;
           } catch(Exception e){
@@ -225,10 +196,10 @@ public class Menu {
     String pronoun = null;
     switch(gender) {
       case "MALE":
-        pronoun = "Mr. ";
+        pronoun = "Mr ";
         break;
       case "FEMALE":
-        pronoun = "Miss. ";
+        pronoun = "Miss ";
         break;
       case "OTHERS":
         pronoun = " ";
@@ -259,25 +230,25 @@ public class Menu {
           updatePersonalInfo_menu();
           break;
         case 3:
-        break;
+          break;
         case 4:
-        break;
+          break;
         case 5:
-        break;
+          break;
         case 6:
-        break;
+          break;
         case 7:
-        break;
+          break;
         case 8:
-        password_menu();
-        System.out.println(menu);		
-        break;
+          password_menu();
+          break;
         case 9:
-        break;
+          break;
         default:
-        System.out.println("[-] Invalid Option");
-        break;
+          System.out.println("[-] Invalid Option");
+          break;
       }
+      System.out.println(menu);
     } while(choice != 9);
     clearScreen();	
   }
@@ -332,12 +303,12 @@ public class Menu {
   public void pharma_menu(){
     clearScreen();	
     final String menu = "====[ Pharmacist Menu]===\n" +
-    "1. View Appointment Outcome Record\n" +
-    "2. Update Prescription Status\n" +
-    "3. View Medication Inventory\n" +
-    "4. Submit Replenishment Request\n" +
-    "5. Change Password\n" +
-    "6. Logout";
+                       "1. View Appointment Outcome Record\n" +
+                       "2. Update Prescription Status\n" +
+                       "3. View Medication Inventory\n" +
+                       "4. Submit Replenishment Request\n" +
+                       "5. Change Password\n" +
+                       "6. Logout";
 
     System.out.println(menu);
     Scanner sc = new Scanner(System.in);
@@ -444,6 +415,153 @@ public class Menu {
   public void updatePersonalInfo_menu() {
     clearScreen();
     user.getBasicInfo().displayInfo();
+    User backup = user.copy();
+    boolean changed = false;
+    int choice = 8;
+    System.out.println("\n========= Select the field to edit by their numbering ==============");
+    do {
+      System.out.println("\n[!] Enter (1-6) to edit the corresponding details");
+      System.out.println("[!] Enter \"7\" to save changes");
+      System.out.println("[!] Enter \"8\" to display help");
+      System.out.println("[!] Enter \"9\" to exit this page");
+      System.out.print("Enter option (1-9): ");
+      choice = Sanitise.readInt(1, 9, 10);
+      switch(choice) {
+        case 1:
+          do {
+            try {
+              System.out.print("[!] Change your first name: ");
+              String newFirstName = Sanitise.readName(); 
+              user.getBasicInfo().setFirstName(newFirstName);
+              System.out.println("[+] Changed first name to: " + user.getBasicInfo().getFirstName());
+              changed = true;
+            } catch(Exception e) {
+              System.out.println(e.getMessage());
+            }
+            break;
+          } while(true);
+          break;
+
+        case 2:
+          do {
+          try {
+              System.out.print("[!] Change your last name: ");
+              String newLastName = Sanitise.readName(); 
+              user.getBasicInfo().setLastName(newLastName);
+              System.out.println("[+] Changed last name to: " + user.getBasicInfo().getLastName());
+              changed = true;
+            } catch(Exception e) {
+              System.out.println(e.getMessage());
+            }
+            break;
+          } while(true);
+          break;
+
+        case 3:
+          String newGender = "OTHERS";
+          System.out.println("[!] Change your gender: ");
+          newGender = Sanitise.readGender();
+          user.getBasicInfo().setGender(newGender);
+          System.out.println("[+] Changed gender to: " + user.getBasicInfo().getGender());
+          changed = true;
+          break;
+
+        case 4:
+          String newDOB = null;
+          do {
+            try {
+              System.out.println("[!] Change your date of birth: ");
+              newDOB = Sanitise.readDOB();
+              user.getBasicInfo().setDOB(newDOB);
+              System.out.println("[+] Changed date of birth to: " + user.getBasicInfo().getDOB());
+              changed = true;
+            } catch(Exception e) {
+              System.out.println(e.getMessage());  
+            } 
+            break;
+          } while(true);
+          break;
+        case 5:
+          String newPhoneNumber = null;
+          do {
+            try {
+              System.out.print("[!] Change your phone number: ");
+              newPhoneNumber = Sanitise.readPhoneNumber();
+              user.getBasicInfo().setPhoneNumber(newPhoneNumber);
+              System.out.print("[+] Changed phone number to: " + user.getBasicInfo().getPhoneNumber());
+              changed = true;
+            } catch (Exception e) {
+              System.out.println(e.getMessage());
+            }
+            break;
+          } while (true);
+          break;
+        case 6:
+          String newEmail = null;
+          do {
+            try {
+              System.out.print("[!] Change your email address: ");
+              newEmail = Sanitise.readEmailAddress();
+              user.getBasicInfo().setEmailAddress(newEmail);
+              System.out.println("[+] Changed email address to: " + user.getBasicInfo().getEmailAddress());
+              changed = true;
+            } catch (Exception e) {
+              System.out.println(e.getMessage());
+            }
+            break;
+          } while (true);
+          break;
+        
+        case 7:
+          clearScreen();
+          System.out.println("\n========= Please confirm the updated info ==============");
+          user.getBasicInfo().displayInfo(); 
+          changed = false;
+          break;
+        
+        case 8:
+          System.out.println("\n=========[ Usage Menu ]==============");
+          System.out.println("[1] Select \"1\" to edit first name.");
+          System.out.println("[2] Select \"2\" to edit last name.");
+          System.out.println("[3] Select \"3\" to edit gender .");
+          System.out.println("[4] Select \"4\" to edit date of birth.");
+          System.out.println("[5] Select \"5\" to edit phone number.");
+          System.out.println("[6] Select \"6\" to edit email address."); 
+          break;
+
+        case 9:
+          if (changed) {
+            clearScreen();
+            System.out.println("\n=========[ !! WARNING: You have Unsaved Changes ]==============");
+            user.getBasicInfo().displayInfo(); 
+            int confirm = 3;
+            boolean done = false;
+            do {
+              System.out.println("\n1. Confirm Changes");
+              System.out.println("2. Cancel Changes");
+              System.out.print("Enter option (1-2): ");
+              confirm = Sanitise.readInt(1, 2, 3);
+              switch(confirm) {
+                case 1:
+                  done = true;
+                  break;
+                case 2:
+                  user = backup;
+                  done = true;
+                  break;
+                default:
+                  System.out.println("[-] Invalid option. Try again");
+                  break;
+              }
+            } while(!done);
+          } 
+          clearScreen();
+          break;
+        default:
+          System.out.println("[-] Invalid option. Try again.");
+          break;
+      }
+    } while(choice != 9);
   }
 
   public void clearScreen() {

@@ -57,7 +57,14 @@ public class Sanitise {
    */
   static String readDOB() throws Exception {
     String dob = null;
+
+   final String dobExample = "[!] Example \n" + 
+        "[1] Birthday is on 9th June 1942 \n" + 
+        "[2] Enter \"09-06-1942\"\n";
+    System.out.println("\nEnter your date of birth in DD-MM-YYYY format: "); 
+    System.out.print(dobExample); 
     try {
+      System.out.print("Enter here: ");
       Scanner sc = new Scanner(System.in);
       dob = sc.nextLine().trim().replaceAll("\\s+","");
       if (!VALID_DOB.matcher(dob).matches()) 
@@ -98,6 +105,34 @@ public class Sanitise {
       throw new Exception("[-] Illegal Characters. Try Again.");
     }
     return res.toLowerCase();
+  }
+
+  /**
+   * Sanitise user input for gender by choosing discrete options
+   * @return the sanitised gender field
+   */
+  static String readGender() {
+    int option = 4;
+        do {
+          System.out.println("\nSelect your gender: "); 
+          System.out.println("1. Male");
+          System.out.println("2. Female");
+          System.out.println("3. Others");
+          System.out.print("Choose option (1-3): ");
+          option = readInt(1, 3, 4);
+          switch(option) {
+            case 1:
+              return "MALE";
+            case 2:
+              return "FEMALE";
+            case 3:
+              return "OTHERS";
+            default :
+              System.out.println("[-] Invalid option. Try again");
+              break;
+          }
+        } while(option==4);
+      return "OTHERS";
   }
   
   public static final Pattern VALID_NAME = Pattern.compile("^[A-Za-z\s]+$");
