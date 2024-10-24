@@ -1,10 +1,15 @@
 package account;
 
-import menu.Sanitise;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+/*
+ * Class for managing basic personal information of users
+ */
 public class BasicInfo {
   public BasicInfo(){}
   public BasicInfo(String hospitalID, String role) throws Exception {
@@ -42,6 +47,10 @@ public class BasicInfo {
     }
   }
 
+  /*
+   * Make a copy of the current user by duplicating the member fields
+   * @return a copy of the BasicInfo
+   */
   public BasicInfo copy() {
     BasicInfo copy = new BasicInfo();
     copy.setID(hospitalID);
@@ -64,6 +73,39 @@ public class BasicInfo {
     System.out.println("[4] Date of Birth: " + summary[4]);
     System.out.println("[5] Phone Number: " + summary[5]);
     System.out.println("[6] Email Address: " + summary[6]);
+  }
+
+
+  public boolean update() {
+    String newInfo = String.join(",", summary);
+    String dir = "../data/BasicInfoDB/";
+    String loc = null;
+    String tmp_loc = null;
+    try {
+      List<String> content = null;
+      switch(role) {
+        case "PATIENT":
+          loc = "patient.csv";
+          tmp_loc = "patient.csv~"; 
+          content = new ArrayList<>(Files.readAllLines(Paths.get(dir+loc), StandardCharsets.UTF_8));
+          break;
+        default:
+          break;
+        }
+      for (int i = 0; i < content.size(); i++) {
+        if(content.get(i).substring(0,hospitalID.length()).equals(hospitalID)) {
+          content.set(i, newInfo);
+          break;
+        }
+      }
+      Files.write(Paths.get(dir+tmp_loc), content, StandardCharsets.UTF_8);
+      Files.copy(Paths.get(dir+tmp_loc), Paths.get(dir+loc), StandardCopyOption.REPLACE_EXISTING);
+      Files.delete(Paths.get(dir+tmp_loc));
+    } catch(IOException e) {
+      e.printStackTrace();
+      return false;
+    }
+    return true;
   }
 
   public void setFirstName(String firstName) { this.firstName = firstName; summary[1] = firstName;}

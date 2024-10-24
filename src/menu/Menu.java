@@ -417,7 +417,8 @@ public class Menu {
     user.getBasicInfo().displayInfo();
     User backup = user.copy();
     boolean changed = false;
-    int choice = 8;
+    int choice = 8; int confirm = 3; int in = 2;
+
     System.out.println("\n========= Select the field to edit by their numbering ==============");
     do {
       System.out.println("\n[!] Enter (1-6) to edit the corresponding details");
@@ -514,9 +515,16 @@ public class Menu {
         
         case 7:
           clearScreen();
-          System.out.println("\n========= Please confirm the updated info ==============");
+          System.out.println("\n========= Your Information has been Updated ==============");
           user.getBasicInfo().displayInfo(); 
+          do {
+            System.out.print("Enter \"1\" to quit: "); 
+            in = Sanitise.readInt(1, 1, 2);
+          } while(in != 1);
+          choice = 9;
           changed = false;
+          user.getBasicInfo().update();
+          clearScreen();
           break;
         
         case 8:
@@ -534,19 +542,29 @@ public class Menu {
             clearScreen();
             System.out.println("\n=========[ !! WARNING: You have Unsaved Changes ]==============");
             user.getBasicInfo().displayInfo(); 
-            int confirm = 3;
             boolean done = false;
             do {
-              System.out.println("\n1. Confirm Changes");
-              System.out.println("2. Cancel Changes");
+              System.out.println("\n1. Confirm");
+              System.out.println("2. Cancel");
               System.out.print("Enter option (1-2): ");
               confirm = Sanitise.readInt(1, 2, 3);
               switch(confirm) {
                 case 1:
+                  user.getBasicInfo().update();
+                  System.out.println("\n[+] Changes Updated.");
+                  do {
+                    System.out.print("Enter \"1\" to quit: "); 
+                    in = Sanitise.readInt(1, 1, 2);
+                  } while(in != 1);
                   done = true;
                   break;
                 case 2:
                   user = backup;
+                  System.out.println("\n[-] Changes Reverted.");
+                  do {
+                    System.out.print("Enter \"1\" to quit: "); 
+                    in = Sanitise.readInt(1, 1, 2);
+                  } while(in != 1);
                   done = true;
                   break;
                 default:
