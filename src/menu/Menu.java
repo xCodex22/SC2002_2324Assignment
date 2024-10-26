@@ -7,6 +7,9 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.io.Console;
 import java.util.InputMismatchException;
+import java.nio.file.*;
+import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 
 public class Menu {
   public Menu() { acc = new AccountSystem(); }
@@ -15,13 +18,14 @@ public class Menu {
     int choice = 3;
     clearScreen();	
     Scanner sc = new Scanner(System.in);
-
+    String bannerArt = null;
+    try {
+      bannerArt = Files.readString(Paths.get("menu/main_banner.txt"), StandardCharsets.UTF_8);
+    } catch(IOException e) {
+      e.printStackTrace();
+    }
     do {
-      try { 
-        Scanner banner = new Scanner(new File("menu/main_banner.txt")); 
-        while (banner.hasNextLine()) { System.out.println(banner.nextLine()); }
-      } catch (FileNotFoundException e) { e.printStackTrace(); }
-
+      System.out.println(bannerArt);
       System.out.println("1. Log in");
       System.out.println("2. Register");
       System.out.println("3. Exit");
@@ -580,6 +584,10 @@ public class Menu {
           break;
       }
     } while(choice != 9);
+  }
+
+  public void staffManagement_mneu() {
+    System.out.println("");
   }
 
   public void clearScreen() {
