@@ -173,7 +173,7 @@ public class Menu {
         if(acc.register(info, "PATIENT")) {
           final String message = 	"\n[+] Account Created Successfully\n\n" +
           "[!] Please Save the Following Information\n" +
-          "[1] Your unique Hospital ID: " + acc.getUname() + "\n" +
+          "[1] Your unique Hospital ID: " + acc.getID() + "\n" +
           "[2] Your default password is: password\n" +
           "[3] Please change your password after logging in\n\n" +
           "You may exit this page and log in now.";
@@ -195,7 +195,7 @@ public class Menu {
 
   public void patient_menu(){
     clearScreen();	
-    user = new Patient(acc.getUname());
+    user = new Patient(acc.getID());
     String gender = user.getBasicInfo().getGender(); 
     String pronoun = null;
     switch(gender) {
@@ -259,7 +259,10 @@ public class Menu {
 
   public void doctor_menu(){
     clearScreen();	
+    user = new Doctor(acc.getID());
+    String surname = user.getBasicInfo().getLastName();
     final String menu = "=====[ Doctor Menu ]=====\n" +
+    "||  Welcome back, Dr. " + surname + " ||\n\n" +
     "1. View Patient Medical Records\n" +
     "2. Update Patient Medical Records\n" +
     "3. View Personal Schedule\n" + 
@@ -352,15 +355,16 @@ public class Menu {
     "4. Approve Replenishment Requests\n" +
     "5. Change Password\n" +
     "6. Logout";
-    System.out.println(menu);
     Scanner sc = new Scanner(System.in);
     int choice = 7;
     do {
+      System.out.println(menu);
       System.out.print("Enter option (1-6): ");
       choice = Sanitise.readInt(1, 6, 7);	
       switch (choice) {
         case 1:
-        break;
+          staffManagement_menu();
+          break;
         case 2:
         break;
         case 3:
@@ -586,8 +590,32 @@ public class Menu {
     } while(choice != 9);
   }
 
-  public void staffManagement_mneu() {
-    System.out.println("");
+  public void staffManagement_menu() {
+    clearScreen();
+    System.out.println("================[ Staff Management Menu ]==================");
+    System.out.println("[1] View Current Staff");
+    System.out.println("[2] Edit Staff Information");
+    System.out.println("[3] Add or Remove Staff"); 
+    System.out.println("[4] Exit this page");
+    int choice = 5;
+    do {
+      System.out.print("Enter option (1-4): ");
+      choice = Sanitise.readInt(1, 4, 5); 
+      switch(choice) {
+        case 1:
+          break;
+        case 2:
+          break;
+        case 3:
+          break;
+        case 4:
+          break;
+        default:
+          System.out.println("[-] Invalid Option. Try Again.");
+          break;
+      }
+    } while(choice != 4);
+    clearScreen();
   }
 
   public void clearScreen() {

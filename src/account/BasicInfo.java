@@ -23,6 +23,9 @@ public class BasicInfo {
           case "PATIENT":
             file = new File("../data/BasicInfoDB/patient.csv");
             break;
+          case "DOCTOR":
+            file = new File("../data/BasicInfoDB/doctor.csv");
+            break;
           default:
             break;
         }

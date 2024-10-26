@@ -10,9 +10,9 @@ import java.io.Console;
 import java.util.*;
 			
 public class AccountSystem { 
-	public LoginStatus login(String uname, String passwd) {
+	public LoginStatus login(String hospitalID, String passwd) {
 		try {
-			this.uname = uname;
+			this.hospitalID = hospitalID;
 			this.passwd = passwd;	
 			
 			boolean found = false;
@@ -24,7 +24,7 @@ public class AccountSystem {
 			while(read.hasNextLine()) {
 				String[] line = read.nextLine().split(",");
 				name = line[0]; password = line[1]; role = line[2];
-				if (this.uname.equals(name)) { found = true; break; }	
+				if (this.hospitalID.equals(name)) { found = true; break; }	
 			}
 			read.close();
 			if (found) {
@@ -56,8 +56,8 @@ public class AccountSystem {
 				return false;
 			}
 			
-			String oldInfo = uname + "," + passwd + "," + role; 
-			String newInfo = uname + "," + newPass1 + "," + role;
+			String oldInfo = hospitalID + "," + passwd + "," + role; 
+			String newInfo = hospitalID + "," + newPass1 + "," + role;
 
 			try {
 				List<String> content = new ArrayList<>(Files.readAllLines(Paths.get("../data/AccountDB/accounts.csv"), StandardCharsets.UTF_8));
@@ -88,9 +88,9 @@ public class AccountSystem {
       } 
       read.close(); 
 
-      int hospitalID = Integer.parseInt(lastLine[0]) + 1;
-      info[0] = String.valueOf(hospitalID);
-      uname = info[0];
+      int new_ID = Integer.parseInt(lastLine[0]) + 1;
+      info[0] = String.valueOf(new_ID);
+      this.hospitalID = info[0];
       String newEntry = String.join(",", info);
       
       switch(role) {
@@ -116,9 +116,9 @@ public class AccountSystem {
   }
 
   public String getRole() { return role; }
-  public String getUname() { return uname; }
+  public String getID() { return hospitalID; }
 		
-	private String uname;
+	private String hospitalID;
 	private String passwd;
 	private String role;
 }
