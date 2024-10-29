@@ -92,21 +92,37 @@ public class AccountSystem {
       info[0] = String.valueOf(new_ID);
       this.hospitalID = info[0];
       String newEntry = String.join(",", info);
+      String fileName = null;
+      String dirName = "../data/BasicInfoDB/";
+      String accEntry = "password,";
+      FileWriter writer = null;
       
       switch(role) {
         case "PATIENT":
-          FileWriter writer = new FileWriter("../data/BasicInfoDB/patient.csv", true);
-          writer.write(newEntry+"\n");
-          writer.close();
-          writer = new FileWriter("../data/AccountDB/accounts.csv", true);
-          newEntry = info[0] + ",password,PATIENT\n";
-          writer.write(newEntry);
-          writer.close();
+          fileName = "patient.csv";
+          accEntry += "PATIENT\n";
           break;
+        case "DOCTOR":
+          fileName = "doctor.csv";
+          accEntry += "DOCTOR\n";
+          break;
+        case "PHARMACIST":
+          fileName = "pharmacist.csv";
+          accEntry += "PHARMACIST\n";
+         break; 
         default:
           System.out.println("[-] Illegal Registration");
           return false;
       }
+
+      writer = new FileWriter(dirName+fileName, true);
+      writer.write(newEntry+"\n");
+      writer.close();
+      writer = new FileWriter("../data/AccountDB/accounts.csv", true);
+      newEntry = info[0] + accEntry;
+      writer.write(newEntry);
+      writer.close();
+
 		  return true;
 
     } catch(Exception e) {

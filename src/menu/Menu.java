@@ -592,13 +592,14 @@ public class Menu {
 
   public void staffManagement_menu() {
     clearScreen();
-    System.out.println("================[ Staff Management Menu ]==================");
-    System.out.println("[1] View Current Staff");
-    System.out.println("[2] Edit Staff Information");
-    System.out.println("[3] Add or Remove Staff"); 
-    System.out.println("[4] Exit this page");
     int choice = 5;
+    int idToBeDel = 0;
     do {
+      System.out.println("================[ Staff Management Menu ]==================");
+      System.out.println("[1] View Current Staff");
+      System.out.println("[2] Edit Staff Information");
+      System.out.println("[3] Add or Remove Staff"); 
+      System.out.println("[4] Exit this page");
       System.out.print("Enter option (1-4): ");
       choice = Sanitise.readInt(1, 4, 5); 
       switch(choice) {
@@ -607,6 +608,14 @@ public class Menu {
         case 2:
           break;
         case 3:
+          Sytem.out.print("Enter the hospital ID of the staff to be deleted: "); 
+          // santise the hospitalID
+          // need to check if user exist in the first place
+          // if exist
+          System.out.println("===========================[ Warning!! ]============================");
+          System.out.println("You are about to delete the following personnel from the data base: ");
+          // use user.getBasicInfo().display();
+          //
           break;
         case 4:
           break;

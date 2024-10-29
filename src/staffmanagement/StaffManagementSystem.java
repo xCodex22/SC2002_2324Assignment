@@ -29,4 +29,19 @@ public class StaffManagementSystem {
     }
   }
 
+  public void removeStaff(int hospitalID, string role) throws Exception {
+    // 1. remove basic info
+    // 2. remove account 
+    switch(role) {
+      case "DOCTOR":
+        break;
+      case "PHARMACIST":
+        break;
+      default:
+        throw new Exception("[-] in removeStaff(): Unknown Role"); 
+        return;
+    }
+  }
+
+
 }

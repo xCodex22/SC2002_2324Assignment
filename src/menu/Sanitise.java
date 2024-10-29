@@ -15,6 +15,9 @@ public class Sanitise {
    * @param sanitised the sanitised value when input int fell out of range
    * @return the resultant sanitised value
    */
+
+  private Sanitise(){};
+
   static int readInt(int start, int end, int sanitised) {
     int res = sanitised;
     Scanner sc = new Scanner(System.in);
@@ -134,9 +137,19 @@ public class Sanitise {
         } while(option==4);
       return "OTHERS";
   }
+
+  /**
+   * Sanitise user input for hospital ID entry by making sure it is numerals and don't overflow int
+   * @return the sanitised hospital ID number
+   */
+  static int readID() {
+    Scanner sc = new Scanner(System.in);
+    return 1;
+  }
   
   public static final Pattern VALID_NAME = Pattern.compile("^[A-Za-z\s]+$");
   public static final Pattern VALID_DOB = Pattern.compile("^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-(\\d{4})$");
   public static final Pattern VALID_PHONE_NUMBER = Pattern.compile("^(8|9)\\d{7}$");
   public static final Pattern VALID_EMAIL_ADDRESS = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+  public static final Pattern VALID_HOSPITAL_ID = Pattern.compile("^[0-9]$");
 }
