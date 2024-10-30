@@ -26,6 +26,9 @@ public class BasicInfo {
           case "DOCTOR":
             file = new File("../data/BasicInfoDB/doctor.csv");
             break;
+          case "PHARMACIST":
+            file = new File("../data/BasicInfoDB/pharmacist.csv");
+            break;
           default:
             break;
         }
@@ -68,7 +71,7 @@ public class BasicInfo {
   }
 
   public void displayInfo() {
-    System.out.println("===========[ Your Personal Information ]============");
+    System.out.println("===========[ Personal Information ]============");
     System.out.println("[-] ID Number: " + summary[0]);
     System.out.println("[1] First Name: " + summary[1]);
     System.out.println("[2] Last Name: " + summary[2]);

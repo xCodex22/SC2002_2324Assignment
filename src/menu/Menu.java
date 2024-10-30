@@ -1,5 +1,4 @@
 package menu;
-
 import account.*;
 import users.*;
 import java.io.File;
@@ -598,17 +597,22 @@ public class Menu {
       System.out.println("================[ Staff Management Menu ]==================");
       System.out.println("[1] View Current Staff");
       System.out.println("[2] Edit Staff Information");
-      System.out.println("[3] Add or Remove Staff"); 
-      System.out.println("[4] Exit this page");
-      System.out.print("Enter option (1-4): ");
-      choice = Sanitise.readInt(1, 4, 5); 
+      System.out.println("[3] Add Staff"); 
+      System.out.println("[4] Remove Staff");
+      System.out.println("[5] Exit this page");
+      System.out.print("Enter option (1-5): ");
+      choice = Sanitise.readInt(1, 5, 6); 
       switch(choice) {
         case 1:
           break;
         case 2:
+          // this will be the same as 
           break;
         case 3:
-          Sytem.out.print("Enter the hospital ID of the staff to be deleted: "); 
+          // this will just be the same as account register but we will switch the role to the respective Doctor / Pharmacist
+          break;
+        case 4:
+          System.out.print("Enter the hospital ID of the staff to be deleted: "); 
           // santise the hospitalID
           // need to check if user exist in the first place
           // if exist
@@ -617,13 +621,13 @@ public class Menu {
           // use user.getBasicInfo().display();
           //
           break;
-        case 4:
+        case 5:
           break;
         default:
           System.out.println("[-] Invalid Option. Try Again.");
           break;
       }
-    } while(choice != 4);
+    } while(choice != 5);
     clearScreen();
   }
 
