@@ -19,7 +19,7 @@ public class Sanitise {
    * @return the resultant sanitised value
    */
 
-  static int readInt(int start, int end, int sanitised) {
+  public static int readInt(int start, int end, int sanitised) {
     int res = sanitised;
     Scanner sc = new Scanner(System.in);
     try {
@@ -35,7 +35,7 @@ public class Sanitise {
    * Sanitise name fields of user input to Camel Case, strips space and throws error if invalid
    * @return the sanitised name
    */
-  static String readName() throws Exception {
+  public static String readName() throws Exception {
     try {
       Scanner sc = new Scanner(System.in);
       String res = sc.nextLine().trim();
@@ -59,7 +59,7 @@ public class Sanitise {
    * Sanitise date of birth to check if it satisfies the form of DD-MM-YYYY; does not check leap year nor age
    * @return the santisied date of birth
    */
-  static String readDOB() throws Exception {
+  public static String readDOB() throws Exception {
     String dob = null;
 
    final String dobExample = "[!] Example \n" + 
@@ -83,7 +83,7 @@ public class Sanitise {
    * Sanitise user input phone number and validate using regex; assume domestic phone number
    * @return the sanitised phone number
    */
-  static String readPhoneNumber() throws Exception {
+  public static String readPhoneNumber() throws Exception {
     String res = null;
     try {
       Scanner sc = new Scanner(System.in);
@@ -99,7 +99,7 @@ public class Sanitise {
    * Santise user input email address by validating format; does not check if email is real
    * @return the santised email address
    */
-  static String readEmailAddress() throws Exception {
+  public static String readEmailAddress() throws Exception {
     String res = null;
     try {
       Scanner sc = new Scanner(System.in);
@@ -115,10 +115,10 @@ public class Sanitise {
    * Sanitise user input for gender by choosing discrete options
    * @return the sanitised gender field
    */
-  static String readGender() {
+  public static String readGender() {
     int option = 4;
         do {
-          System.out.println("\nSelect your gender: "); 
+          System.out.println("\nEnter gender option: ");
           System.out.println("1. Male");
           System.out.println("2. Female");
           System.out.println("3. Others");
@@ -143,7 +143,7 @@ public class Sanitise {
    * Sanitise user input for hospital ID entry by making sure it is numerals; doesn't check for existence 
    * @return the sanitised hospital ID number
    */
-  static String readID() throws Exception {
+  public static String readID() throws Exception {
     String res = null;
     Scanner sc = new Scanner(System.in);
     res = sc.nextLine().trim().replaceAll("\\s+","");
