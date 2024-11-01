@@ -39,9 +39,8 @@ public class BasicInfo {
         }
         read.close();
         if (!found)
-          throw new Exception("[-] in BasicInfo(): Unexpected Error");
+          throw new Exception("[-] in BasicInfo(): No such hospital ID exists");
         summary = line;
-        hospitalID = line[0];
         firstName = line[1];
         lastName = line[2];
         gender = line[3];
@@ -73,6 +72,7 @@ public class BasicInfo {
   public void displayInfo() {
     System.out.println("===========[ Personal Information ]============");
     System.out.println("[-] ID Number: " + summary[0]);
+    System.out.println("[-] Account Type: " + this.role);
     System.out.println("[1] First Name: " + summary[1]);
     System.out.println("[2] Last Name: " + summary[2]);
     System.out.println("[3] Gender: " + summary[3]);
@@ -80,7 +80,6 @@ public class BasicInfo {
     System.out.println("[5] Phone Number: " + summary[5]);
     System.out.println("[6] Email Address: " + summary[6]);
   }
-
 
   public boolean update() {
     String newInfo = String.join(",", summary);
@@ -92,12 +91,22 @@ public class BasicInfo {
       switch(role) {
         case "PATIENT":
           loc = "patient.csv";
-          tmp_loc = "patient.csv~"; 
-          content = new ArrayList<>(Files.readAllLines(Paths.get(dir+loc), StandardCharsets.UTF_8));
+          tmp_loc = "patient~.csv"; 
+          break;
+        case "DOCTOR":
+          loc = "doctor.csv";
+          tmp_loc = "doctor~.csv";
+          break;
+        case "PHARMACIST":
+          loc = "pharmacist.csv";
+          tmp_loc = "pharmacist~.csv";
           break;
         default:
           break;
         }
+    
+      content = new ArrayList<>(Files.readAllLines(Paths.get(dir+loc), StandardCharsets.UTF_8));
+
       for (int i = 0; i < content.size(); i++) {
         if(content.get(i).substring(0,hospitalID.length()).equals(hospitalID)) {
           content.set(i, newInfo);
@@ -113,6 +122,48 @@ public class BasicInfo {
     }
     return true;
   }
+
+  public boolean delete() {
+    String dir = "../data/BasicInfoDB/";
+    String loc = null;
+    String tmp_loc = null;
+    try {
+      List<String> content = null;
+      switch(role) {
+        case "PATIENT":
+          loc = "patient.csv";
+          tmp_loc = "patient~.csv"; 
+          break;
+        case "DOCTOR":
+          loc = "doctor.csv";
+          tmp_loc = "doctor~.csv"; 
+          break;
+        case "PHARMACIST":
+          loc = "pharmacist.csv";
+          tmp_loc = "pharmacist~.csv"; 
+          break;
+        default:
+          break;
+        }
+
+      content = new ArrayList<>(Files.readAllLines(Paths.get(dir+loc), StandardCharsets.UTF_8));
+      List<String> newContent = new ArrayList<>();
+
+      for (int i = 0; i < content.size(); i++) {
+        if(content.get(i).substring(0,hospitalID.length()).equals(hospitalID)) continue;
+        newContent.add(content.get(i));
+      }
+
+      Files.write(Paths.get(dir+tmp_loc), newContent, StandardCharsets.UTF_8);
+      Files.copy(Paths.get(dir+tmp_loc), Paths.get(dir+loc), StandardCopyOption.REPLACE_EXISTING);
+      Files.delete(Paths.get(dir+tmp_loc));
+    } catch(IOException e) {
+      e.printStackTrace();
+      return false;
+    }
+    return true;
+  }
+
 
   public void setFirstName(String firstName) { this.firstName = firstName; summary[1] = firstName;}
   public void setLastName(String lastName) { this.lastName = lastName; summary[2] = lastName; }

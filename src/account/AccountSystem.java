@@ -136,12 +136,12 @@ public class AccountSystem {
 				List<String> content = new ArrayList<>(Files.readAllLines(Paths.get("../data/AccountDB/accounts.csv"), StandardCharsets.UTF_8));
         List<String> newContent = new ArrayList<>();
 				for (int i = 0; i < content.size(); i++) {
-					if(content.get(i).substring(0,hospitalID.length()).equals(id)) {
+					if(content.get(i).substring(0,id.length()).equals(id)) {
 						continue;
 					}  
           newContent.add(content.get(i));
 				}
-				Files.write(Paths.get("../data/AccountDB/accounts~.csv"), content, StandardCharsets.UTF_8);
+				Files.write(Paths.get("../data/AccountDB/accounts~.csv"), newContent, StandardCharsets.UTF_8);
 				Files.copy(Paths.get("../data/AccountDB/accounts~.csv"), Paths.get("../data/AccountDB/accounts.csv"), StandardCopyOption.REPLACE_EXISTING);
 				Files.delete(Paths.get("../data/AccountDB/accounts~.csv"));
 			} catch(IOException e) {

@@ -1,6 +1,7 @@
 package menu;
 import account.*;
 import users.*;
+import staffmanagement.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -592,7 +593,8 @@ public class Menu {
   public void staffManagement_menu() {
     clearScreen();
     int choice = 5;
-    int idToBeDel = 0;
+    int idEntered = 0;
+    StaffManagementSystem sms = new StaffManagementSystem();
     do {
       System.out.println("================[ Staff Management Menu ]==================");
       System.out.println("[1] View Current Staff");
@@ -604,6 +606,7 @@ public class Menu {
       choice = Sanitise.readInt(1, 5, 6); 
       switch(choice) {
         case 1:
+          sms.display(FilterOption.ALL);
           break;
         case 2:
           // this will be the same as 
@@ -612,14 +615,41 @@ public class Menu {
           // this will just be the same as account register but we will switch the role to the respective Doctor / Pharmacist
           break;
         case 4:
-          System.out.print("Enter the hospital ID of the staff to be deleted: "); 
-          // santise the hospitalID
-          // need to check if user exist in the first place
-          // if exist
-          System.out.println("===========================[ Warning!! ]============================");
-          System.out.println("You are about to delete the following personnel from the data base: ");
-          // use user.getBasicInfo().display();
-          //
+          System.out.print("Enter the hospital ID of the staff to be removed: "); 
+          do {
+            try {
+              idEntered = Integer.valueOf(Sanitise.readID());
+              break;
+            } catch(Exception e){}
+          } while(true);
+          
+          User tmp = sms.findStaff(idEntered);  
+          if (tmp == null) System.out.println("\n[-] Unable to remove staff. Staff not found");
+          else { 
+            clearScreen();
+            System.out.println("\n============================[ Warning!! ]=============================");
+            System.out.println("[!] You are about to remove the following personnel from the data base: \n");
+            tmp.getBasicInfo().displayInfo();
+            System.out.println("\n[!] Do you wish to proceed?");
+            System.out.println("[1] Yes");
+            System.out.println("[2] No");
+            System.out.print("Enter option (1-2): ");
+            int option = Sanitise.readInt(1, 2, 3);
+            switch(option) {
+              case 1:
+                if(sms.removeStaff(String.valueOf(idEntered)))
+                  System.out.println("[+] Staff has been removed from data base");
+                else
+                  System.out.println("[-] Failed to remove staff. Unknown error has occurred");
+                break;
+              case 2:
+                System.out.println("[!] Procedure terminated by user");
+                break;
+              default:
+                System.out.println("[-] Invalid option. Aborted");
+                break;
+            }
+          }
           break;
         case 5:
           break;

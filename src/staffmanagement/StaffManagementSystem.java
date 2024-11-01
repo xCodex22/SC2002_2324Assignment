@@ -4,6 +4,9 @@ import users.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import account.AccountSystem;
+import account.BasicInfo;
+import menu.Sanitise;
 
 public class StaffManagementSystem {
   public StaffManagementSystem() {
@@ -35,26 +38,32 @@ public class StaffManagementSystem {
     pharmacistArray = p;
   }
 
-  /* public void display(FilterOption option) {
-    switch(option.getValue()) {
+  public void display(FilterOption option) {
+    switch(option) {
+      case FilterOption.ALL:
+        System.out.println("==================[ List of Doctors ]======================\n");
+        for (User i : doctorArray) { i.getBasicInfo().displayInfo(); }
+        System.out.println("\n================[ List of Pharmacists ]====================\n");
+        for (User i : pharmacistArray) { i.getBasicInfo().displayInfo(); }
+        break;
+      case FilterOption.GENDER:
+        String gender = Sanitise.readGender();
+          for (User i : doctorArray) {
+            if (i.getBasicInfo().getGender() == gender)
+              i.getBasicInfo().displayInfo();
+          }
+          for (User i : pharmacistArray) {
+            if (i.getBasicInfo().getGender() == gender)
+              i.getBasicInfo().displayInfo();
+          }
+        break;
+      case FilterOption.ROLE:
+        break;
+      default:
+        System.out.println("[-] In staffmanagement.display(): unknown FilterOption");
+        break;
     }
-  } */
-
-  public void display() {
-    System.out.println("==================[ List of Doctors ]======================\n");
-    for (User i : doctorArray) { i.getBasicInfo().displayInfo(); }
-    System.out.println("\n================[ List of Pharmacists ]====================\n");
-    for (User i : pharmacistArray) { i.getBasicInfo().displayInfo(); }
   }
-
-  /* public void filter(FilterOption option) {
-    // filtering by age does not require dynamically changing data
-    // rather, just calculate offset using the statically stored date of birth
-   *
-      - Manage hospital staff (doctors and pharmacists) by adding, updating, or 
-      removing staff members. 
-      - Display a list of staff filtered by role, gender, age, etc.
-  }*/
 
   public User findStaff(int hospitalID) {
         User res = null;
@@ -77,21 +86,47 @@ public class StaffManagementSystem {
     return null;
   }
 
-  public void removeStaff(int hospitalID, String role) throws Exception {
-    // 1. remove basic info
-    // 2. remove account 
-    // 3. also required to remove schedule etc
-    switch(role) {
-      case "DOCTOR":
+  public boolean removeStaff(String hospitalID) {
+    String role = null;
+    for (User i : doctorArray) {
+      if (i.getBasicInfo().getID().equals(hospitalID)) {
+        doctorArray.remove(i); 
+        role = "DOCTOR";
         break;
-      case "PHARMACIST":
-        break;
-      default:
-        throw new Exception("[-] in removeStaff(): Unknown Role"); 
+      }
     }
+
+    for (User i : pharmacistArray) {
+      if (i.getBasicInfo().getID().equals(hospitalID)) {
+        pharmacistArray.remove(i); 
+        role = "PHARMACIST";
+        break;
+      }
+    }
+
+    AccountSystem acc = new AccountSystem();
+    if(!acc.deleteAccount(hospitalID)) {
+      System.out.println("acc.deleteAccount() failed");
+      return false;
+    }
+
+    System.out.println("Role detected is: " + role);
+    
+    try {
+      BasicInfo basicInfo = new BasicInfo(hospitalID, role); 
+      if (!basicInfo.delete()) {
+        System.out.println("basicInfo.delete() failed");
+        return false;
+      }
+    } catch(Exception e) { 
+      e.printStackTrace();
+      System.out.println("failed to create basicInfo object");
+      return false;
+    }
+    return true;
   }
 
-  public void addStaff(int hospitalID, String role) throws Exception {}
+  public void addStaff(String role)  {}
 
   private List<User> doctorArray;
   private List<User> pharmacistArray;

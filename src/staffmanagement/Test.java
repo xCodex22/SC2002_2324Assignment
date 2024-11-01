@@ -13,5 +13,7 @@ public class Test {
 
     if (sms.findStaff(12347) == null) System.out.println("\nNot found");
     else sms.findStaff(12347).getBasicInfo().displayInfo();
+
+    sms.removeStaff(12347);
   }
 }
