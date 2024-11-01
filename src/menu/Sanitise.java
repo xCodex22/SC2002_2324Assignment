@@ -8,6 +8,9 @@ import java.util.regex.Pattern;
  * A class providing class methods for santising user input during menu interaction.
  */
 public class Sanitise {
+
+  private Sanitise(){};
+
   /**
    * Sanitise int values from user input.
    * @param start the starting value of the range of int allowed
@@ -15,8 +18,6 @@ public class Sanitise {
    * @param sanitised the sanitised value when input int fell out of range
    * @return the resultant sanitised value
    */
-
-  private Sanitise(){};
 
   static int readInt(int start, int end, int sanitised) {
     int res = sanitised;
@@ -139,14 +140,19 @@ public class Sanitise {
   }
 
   /**
-   * Sanitise user input for hospital ID entry by making sure it is numerals and don't overflow int
+   * Sanitise user input for hospital ID entry by making sure it is numerals; doesn't check for existence 
    * @return the sanitised hospital ID number
    */
-  static int readID() {
+  static String readID() throws Exception {
+    String res = null;
     Scanner sc = new Scanner(System.in);
-    return 1;
+    res = sc.nextLine().trim().replaceAll("\\s+","");
+    if (!VALID_ID.matcher(res).matches()) 
+        throw new Exception("[-] Invalid ID Number. Remove Non-Numerals and Try Again.");
+    return res;
   }
-  
+ 
+  public static final Pattern VALID_ID = Pattern.compile("^[0-9]+");
   public static final Pattern VALID_NAME = Pattern.compile("^[A-Za-z\s]+$");
   public static final Pattern VALID_DOB = Pattern.compile("^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-(\\d{4})$");
   public static final Pattern VALID_PHONE_NUMBER = Pattern.compile("^(8|9)\\d{7}$");
