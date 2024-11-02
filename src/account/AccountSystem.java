@@ -83,11 +83,9 @@ public class AccountSystem {
       File accounts = new File("../data/AccountDB/accounts.csv");
       Scanner read = new Scanner(accounts);
       String[] lastLine = null;
-      while(read.hasNextLine()) {
+      while(read.hasNextLine()) 
         lastLine = read.nextLine().split(",");
-      } 
       read.close(); 
-
       int new_ID = Integer.parseInt(lastLine[0]) + 1;
       info[0] = String.valueOf(new_ID);
       this.hospitalID = info[0];
@@ -119,12 +117,10 @@ public class AccountSystem {
       writer.write(newEntry+"\n");
       writer.close();
       writer = new FileWriter("../data/AccountDB/accounts.csv", true);
-      newEntry = info[0] + accEntry;
+      newEntry = info[0] + "," + accEntry;
       writer.write(newEntry);
       writer.close();
-
 		  return true;
-
     } catch(Exception e) {
       e.printStackTrace();
       return false;
