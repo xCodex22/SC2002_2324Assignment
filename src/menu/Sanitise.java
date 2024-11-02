@@ -140,6 +140,30 @@ public class Sanitise {
   }
 
   /**
+   * Sanitise user input for role by choosing discrete options
+   * @return the sanitised role field
+   */
+  public static String readRole() {
+    int option = 4;
+        do {
+          System.out.println("\nEnter role option: ");
+          System.out.println("1. Doctor");
+          System.out.println("2. Pharmacist");
+          System.out.print("Choose option (1-2): ");
+          option = readInt(1, 2, 3);
+          switch(option) {
+            case 1:
+              return "DOCTOR";
+            case 2:
+              return "PHARMACIST";
+            default :
+              System.out.println("[-] Invalid option. Try again");
+          }
+        } while(true);
+  }
+
+
+  /**
    * Sanitise user input for hospital ID entry by making sure it is numerals; doesn't check for existence 
    * @return the sanitised hospital ID number
    */
@@ -151,7 +175,21 @@ public class Sanitise {
         throw new Exception("[-] Invalid ID Number. Remove Non-Numerals and Try Again.");
     return res;
   }
- 
+
+  /**
+   * Sanitise user input for age, such that it is between 0-120 years old 
+   * @return the sanitised age number
+   */
+  public static String readAge() throws Exception {
+    String res = null;
+    Scanner sc = new Scanner(System.in);
+    res = sc.nextLine().trim().replaceAll("\\s+","");
+    if (!VALID_AGE.matcher(res).matches()) 
+        throw new Exception("[-] Invalid Age. Try Again.");
+    return res;
+  }
+  
+  public static final Pattern VALID_AGE = Pattern.compile("^(1[01]?\\d|[1-9]?\\d)$"); 
   public static final Pattern VALID_ID = Pattern.compile("^[0-9]+");
   public static final Pattern VALID_NAME = Pattern.compile("^[A-Za-z\s]+$");
   public static final Pattern VALID_DOB = Pattern.compile("^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-(\\d{4})$");

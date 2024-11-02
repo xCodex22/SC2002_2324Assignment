@@ -48,16 +48,51 @@ public class StaffManagementSystem {
         break;
       case FilterOption.GENDER:
         String gender = Sanitise.readGender();
+        System.out.println("\n==================[ Filter: Gender  ]======================\n");
+        System.out.println("==================[ List of Doctors ]======================\n");
           for (User i : doctorArray) {
-            if (i.getBasicInfo().getGender() == gender)
+            if (i.getBasicInfo().getGender().equals(gender))
               i.getBasicInfo().displayInfo();
           }
+        System.out.println("==================[ List of Pharmacists ]======================\n");
           for (User i : pharmacistArray) {
-            if (i.getBasicInfo().getGender() == gender)
+            if (i.getBasicInfo().getGender().equals(gender))
               i.getBasicInfo().displayInfo();
           }
         break;
       case FilterOption.ROLE:
+        String role = Sanitise.readRole();
+        if (role == "DOCTOR") {
+          System.out.println("==================[ List of Doctors ]======================\n");
+          for (User i : doctorArray) { i.getBasicInfo().displayInfo(); }
+        }
+        else {
+          System.out.println("\n================[ List of Pharmacists ]====================\n");
+          for (User i : pharmacistArray) { i.getBasicInfo().displayInfo(); }
+        }
+        break;
+      case FilterOption.AGE:
+        System.out.print("\n[!] Enter the age to be filtered: ");
+        String age = null;
+        try {
+          age = Sanitise.readAge();
+        } catch(Exception e) {
+          e.getMessage();
+        }
+        break;
+      case FilterOption.ID:
+        System.out.print("\n[!] Enter the ID number to be filtered: ");
+        String id = null;
+        try {
+          id = Sanitise.readID(); 
+          User ans = findStaff(Integer.valueOf(id));
+          if (ans == null)
+            System.out.println("[-] Staff is not found in the data base.");
+          else
+            ans.getBasicInfo().displayInfo();
+        } catch(Exception e) {
+          e.getMessage();
+        }
         break;
       default:
         System.out.println("[-] In staffmanagement.display(): unknown FilterOption");
@@ -95,7 +130,6 @@ public class StaffManagementSystem {
         break;
       }
     }
-
     for (User i : pharmacistArray) {
       if (i.getBasicInfo().getID().equals(hospitalID)) {
         pharmacistArray.remove(i); 
@@ -103,21 +137,14 @@ public class StaffManagementSystem {
         break;
       }
     }
-
     AccountSystem acc = new AccountSystem();
-    if(!acc.deleteAccount(hospitalID)) {
-      System.out.println("acc.deleteAccount() failed");
+    if(!acc.deleteAccount(hospitalID)) 
       return false;
-    }
-
     System.out.println("Role detected is: " + role);
-    
     try {
       BasicInfo basicInfo = new BasicInfo(hospitalID, role); 
-      if (!basicInfo.delete()) {
-        System.out.println("basicInfo.delete() failed");
+      if (!basicInfo.delete()) 
         return false;
-      }
     } catch(Exception e) { 
       e.printStackTrace();
       System.out.println("failed to create basicInfo object");

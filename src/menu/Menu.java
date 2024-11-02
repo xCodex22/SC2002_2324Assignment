@@ -596,20 +596,57 @@ public class Menu {
     int idEntered = 0;
     StaffManagementSystem sms = new StaffManagementSystem();
     do {
-      System.out.println("================[ Staff Management Menu ]==================");
-      System.out.println("[1] View Current Staff");
-      System.out.println("[2] Edit Staff Information");
-      System.out.println("[3] Add Staff"); 
-      System.out.println("[4] Remove Staff");
-      System.out.println("[5] Exit this page");
-      System.out.print("Enter option (1-5): ");
+      final String menu = 
+      "================[ Staff Management Menu ]==================\n" +
+      "[1] View Current Staff\n" +
+      "[2] Edit Staff Information\n" +
+      "[3] Add Staff\n" +
+      "[4] Remove Staff\n" +
+      "[5] Exit this page\n" +
+      "\nEnter option (1-5): ";
+      System.out.print(menu);
       choice = Sanitise.readInt(1, 5, 6); 
       switch(choice) {
         case 1:
-          sms.display(FilterOption.ALL);
+          clearScreen();
+          int option1 = 6;
+          System.out.println("================[ Filter Options ]==================");
+          System.out.println("[1] Filter by ID Number");
+          System.out.println("[2] Filter by Role");
+          System.out.println("[3] Filter by Gender");
+          System.out.println("[4] Filter by Age");
+          System.out.println("[5] Display All Staff");
+          System.out.println("[6] Exit");
+          System.out.print("\nEnter filter option (1-6): ");
+          option1 = Sanitise.readInt(1,6,7);
+          clearScreen();
+          switch(option1) {
+            case 1:
+              sms.display(FilterOption.ID);
+              break;
+            case 2:
+              sms.display(FilterOption.ROLE);
+              break;
+            case 3:
+              sms.display(FilterOption.GENDER);
+              break;
+            case 4:
+              sms.display(FilterOption.AGE);
+              break;
+            case 5:
+              sms.display(FilterOption.ALL);
+              break;
+            case 6:
+              break;
+            default:
+              System.out.println("[-] Invalid option. Try agiain");
+              break;
+          }
+          confirm();
+          clearScreen();
           break;
         case 2:
-          // this will be the same as 
+          // this will be the same as edit info
           break;
         case 3:
           // this will just be the same as account register but we will switch the role to the respective Doctor / Pharmacist
@@ -665,6 +702,17 @@ public class Menu {
     System.out.print("\033[H\033[2J");
     System.out.flush();
   }
+
+  public void confirm() {
+    System.out.print("Enter \"1\" to continue: ");
+    int ans = 2;
+    do {
+      ans = Sanitise.readInt(1, 1, 2);
+      if (ans == 1) break;
+      else System.out.print("Enter \"1\" to continue: ");
+    } while(true);
+  }
+
   private AccountSystem acc;
   private User user;
 }

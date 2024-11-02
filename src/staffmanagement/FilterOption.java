@@ -1,5 +1,5 @@
 package staffmanagement;
 
 public enum FilterOption {
-  ALL, ROLE, GENDER, AGE,
+  ALL, ROLE, GENDER, AGE, ID,
 }
