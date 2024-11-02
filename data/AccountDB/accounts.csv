@@ -9,3 +9,6 @@ hospitalID,password,Role
 12353,password,PATIENT
 12354,password,PATIENT
 12355,password,PATIENT
+12356,password,DOCTOR
+12357,password,DOCTOR
+12358,password,PHARMACIST

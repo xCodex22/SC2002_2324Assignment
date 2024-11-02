@@ -38,7 +38,7 @@ public class Menu {
         login_menu();	
         break;
         case 2:
-        register_menu();
+        register_menu("PATIENT");
         break;
         case 3:
         break;
@@ -101,10 +101,9 @@ public class Menu {
     } catch(Exception e) { e.printStackTrace(); }
   }
 
-  public void register_menu() {
+  public void register_menu(String inputRole) {
     clearScreen();
     final String menu = "=======[ Registration Menu ]=========\n" +
-    "[!!] This registration is only for patients. For staff, please contact your admin directly.\n" +
     "1. Register\n" +
     "2. Exit"; 
     System.out.println(menu);
@@ -170,7 +169,7 @@ public class Menu {
           }
         } while(true);
 
-        if(acc.register(info, "PATIENT")) {
+        if(acc.register(info, inputRole)) {
           final String message = 	"\n[+] Account Created Successfully\n\n" +
           "[!] Please Save the Following Information\n" +
           "[1] Your unique Hospital ID: " + acc.getID() + "\n" +
@@ -231,7 +230,7 @@ public class Menu {
         case 1:
         break;
         case 2:
-          updatePersonalInfo_menu();
+          updatePersonalInfo_menu(user);
           break;
         case 3:
           break;
@@ -357,13 +356,14 @@ public class Menu {
     "6. Logout";
     Scanner sc = new Scanner(System.in);
     int choice = 7;
+    System.out.println(menu);
     do {
-      System.out.println(menu);
       System.out.print("Enter option (1-6): ");
       choice = Sanitise.readInt(1, 6, 7);	
       switch (choice) {
         case 1:
           staffManagement_menu();
+          System.out.println(menu);
           break;
         case 2:
         break;
@@ -372,13 +372,13 @@ public class Menu {
         case 4:
         break;
         case 5:
-        password_menu();
-        System.out.println(menu);
+          password_menu();
+          System.out.println(menu);
         break;
         case 6:
         break;
         default:
-        System.out.println("[-] Invalid Option");
+          System.out.println("[-] Invalid Option");
         break;
       }
     } while(choice != 6);
@@ -420,10 +420,10 @@ public class Menu {
     clearScreen();	
   }
 
-  public void updatePersonalInfo_menu() {
+  public void updatePersonalInfo_menu(User inputUser) {
     clearScreen();
-    user.getBasicInfo().displayInfo();
-    User backup = user.copy();
+    inputUser.getBasicInfo().displayInfo();
+    User backup = inputUser.copy();
     boolean changed = false;
     int choice = 8; int confirm = 3; int in = 2;
 
@@ -441,8 +441,8 @@ public class Menu {
             try {
               System.out.print("[!] Change your first name: ");
               String newFirstName = Sanitise.readName(); 
-              user.getBasicInfo().setFirstName(newFirstName);
-              System.out.println("[+] Changed first name to: " + user.getBasicInfo().getFirstName());
+              inputUser.getBasicInfo().setFirstName(newFirstName);
+              System.out.println("[+] Changed first name to: " + inputUser.getBasicInfo().getFirstName());
               changed = true;
             } catch(Exception e) {
               System.out.println(e.getMessage());
@@ -456,8 +456,8 @@ public class Menu {
           try {
               System.out.print("[!] Change your last name: ");
               String newLastName = Sanitise.readName(); 
-              user.getBasicInfo().setLastName(newLastName);
-              System.out.println("[+] Changed last name to: " + user.getBasicInfo().getLastName());
+              inputUser.getBasicInfo().setLastName(newLastName);
+              System.out.println("[+] Changed last name to: " + inputUser.getBasicInfo().getLastName());
               changed = true;
             } catch(Exception e) {
               System.out.println(e.getMessage());
@@ -470,8 +470,8 @@ public class Menu {
           String newGender = "OTHERS";
           System.out.println("[!] Change your gender: ");
           newGender = Sanitise.readGender();
-          user.getBasicInfo().setGender(newGender);
-          System.out.println("[+] Changed gender to: " + user.getBasicInfo().getGender());
+          inputUser.getBasicInfo().setGender(newGender);
+          System.out.println("[+] Changed gender to: " + inputUser.getBasicInfo().getGender());
           changed = true;
           break;
 
@@ -481,8 +481,8 @@ public class Menu {
             try {
               System.out.println("[!] Change your date of birth: ");
               newDOB = Sanitise.readDOB();
-              user.getBasicInfo().setDOB(newDOB);
-              System.out.println("[+] Changed date of birth to: " + user.getBasicInfo().getDOB());
+              inputUser.getBasicInfo().setDOB(newDOB);
+              System.out.println("[+] Changed date of birth to: " + inputUser.getBasicInfo().getDOB());
               changed = true;
             } catch(Exception e) {
               System.out.println(e.getMessage());  
@@ -496,8 +496,8 @@ public class Menu {
             try {
               System.out.print("[!] Change your phone number: ");
               newPhoneNumber = Sanitise.readPhoneNumber();
-              user.getBasicInfo().setPhoneNumber(newPhoneNumber);
-              System.out.print("[+] Changed phone number to: " + user.getBasicInfo().getPhoneNumber());
+              inputUser.getBasicInfo().setPhoneNumber(newPhoneNumber);
+              System.out.print("[+] Changed phone number to: " + inputUser.getBasicInfo().getPhoneNumber());
               changed = true;
             } catch (Exception e) {
               System.out.println(e.getMessage());
@@ -511,8 +511,8 @@ public class Menu {
             try {
               System.out.print("[!] Change your email address: ");
               newEmail = Sanitise.readEmailAddress();
-              user.getBasicInfo().setEmailAddress(newEmail);
-              System.out.println("[+] Changed email address to: " + user.getBasicInfo().getEmailAddress());
+              inputUser.getBasicInfo().setEmailAddress(newEmail);
+              System.out.println("[+] Changed email address to: " + inputUser.getBasicInfo().getEmailAddress());
               changed = true;
             } catch (Exception e) {
               System.out.println(e.getMessage());
@@ -524,14 +524,14 @@ public class Menu {
         case 7:
           clearScreen();
           System.out.println("\n========= Your Information has been Updated ==============");
-          user.getBasicInfo().displayInfo(); 
+          inputUser.getBasicInfo().displayInfo(); 
           do {
             System.out.print("Enter \"1\" to quit: "); 
             in = Sanitise.readInt(1, 1, 2);
           } while(in != 1);
           choice = 9;
           changed = false;
-          user.getBasicInfo().update();
+          inputUser.getBasicInfo().update();
           clearScreen();
           break;
         
@@ -549,7 +549,7 @@ public class Menu {
           if (changed) {
             clearScreen();
             System.out.println("\n=========[ !! WARNING: You have Unsaved Changes ]==============");
-            user.getBasicInfo().displayInfo(); 
+            inputUser.getBasicInfo().displayInfo(); 
             boolean done = false;
             do {
               System.out.println("\n1. Confirm");
@@ -558,7 +558,7 @@ public class Menu {
               confirm = Sanitise.readInt(1, 2, 3);
               switch(confirm) {
                 case 1:
-                  user.getBasicInfo().update();
+                  inputUser.getBasicInfo().update();
                   System.out.println("\n[+] Changes Updated.");
                   do {
                     System.out.print("Enter \"1\" to quit: "); 
@@ -567,7 +567,7 @@ public class Menu {
                   done = true;
                   break;
                 case 2:
-                  user = backup;
+                  inputUser = backup;
                   System.out.println("\n[-] Changes Reverted.");
                   do {
                     System.out.print("Enter \"1\" to quit: "); 
@@ -595,69 +595,135 @@ public class Menu {
     int choice = 5;
     int idEntered = 0;
     StaffManagementSystem sms = new StaffManagementSystem();
-    do {
-      final String menu = 
+    final String menu = 
       "================[ Staff Management Menu ]==================\n" +
       "[1] View Current Staff\n" +
       "[2] Edit Staff Information\n" +
       "[3] Add Staff\n" +
       "[4] Remove Staff\n" +
-      "[5] Exit this page\n" +
-      "\nEnter option (1-5): ";
-      System.out.print(menu);
+      "[5] Exit this page\n"; 
+    System.out.println(menu);
+    do {
+      System.out.print("Enter option (1-5): ");  
       choice = Sanitise.readInt(1, 5, 6); 
       switch(choice) {
         case 1:
           clearScreen();
-          int option1 = 6;
-          System.out.println("================[ Filter Options ]==================");
-          System.out.println("[1] Filter by ID Number");
-          System.out.println("[2] Filter by Role");
-          System.out.println("[3] Filter by Gender");
-          System.out.println("[4] Filter by Age");
-          System.out.println("[5] Display All Staff");
-          System.out.println("[6] Exit");
+        int option1 = 6;
+        final String prompt1 = 
+        "================[ Filter Options ]==================\n" +
+        "[1] Filter by ID Number\n" +
+        "[2] Filter by Role\n" +
+        "[3] Filter by Gender\n" +
+        "[4] Filter by Age\n" +
+        "[5] Display All Staff\n" +
+        "[6] Exit";
+        System.out.println(prompt1);
+          do{
           System.out.print("\nEnter filter option (1-6): ");
           option1 = Sanitise.readInt(1,6,7);
-          clearScreen();
           switch(option1) {
             case 1:
+              clearScreen();
               sms.display(FilterOption.ID);
+              confirm();
+              clearScreen();
+              System.out.println(prompt1); 
               break;
             case 2:
+              clearScreen();
               sms.display(FilterOption.ROLE);
+              confirm();
+              clearScreen();
+              System.out.println(prompt1);
               break;
             case 3:
+              clearScreen();
               sms.display(FilterOption.GENDER);
+              confirm();
+              clearScreen();
+              System.out.println(prompt1);
               break;
             case 4:
+              clearScreen();
               sms.display(FilterOption.AGE);
+              confirm();
+              clearScreen();
+              System.out.println(prompt1);
               break;
             case 5:
+              clearScreen();
               sms.display(FilterOption.ALL);
+              confirm();
+              clearScreen();
+              System.out.println(prompt1);
               break;
             case 6:
               break;
             default:
               System.out.println("[-] Invalid option. Try agiain");
               break;
-          }
-          confirm();
+            }
+          } while (option1 != 6);
           clearScreen();
+          System.out.print(menu);
           break;
         case 2:
-          // this will be the same as edit info
+          final String prompt2 = "============================[ Edit Staff Information ]=============================\n" +
+          "[!] You will be editing staff members' personal information \n" +
+          "[!] Follow the steps by entering the staff's information (NOT your information)\n";
+
+          String id= null;  
+          User inputUser;
+          System.out.println(prompt2);
+          System.out.print("Enter staff's ID number: "); 
+          try {
+            id = Sanitise.readID();
+            inputUser = sms.findStaff(Integer.valueOf(id));
+            if (inputUser == null) {
+              System.out.println("[-] Failed to edit staff information. Staff does not exist.");
+              confirm();
+            }
+            else {
+              updatePersonalInfo_menu(inputUser); 
+            }
+          } catch (Exception e) {
+            e.getMessage();
+            System.out.println("[-] Failed to edit staff information. ID number contains illegal characters. Only numerals allowed");
+            confirm();
+          }
+          clearScreen();
+          System.out.print(menu);
           break;
         case 3:
-          // this will just be the same as account register but we will switch the role to the respective Doctor / Pharmacist
+          final String prompt3 = "============================[ Staff Registration ]=============================\n" +
+          "[!] You will be adding staff members to the database\n" +
+          "[!] Follow the steps by entering the staff's information (NOT your information)\n" +
+          "[1] Register a doctor\n" +
+          "[2] Register a pharmacist\n";
+          int choice3 = 3;
+          String inputRole = null;
+          System.out.println(prompt3);
+          do {
+            System.out.print("Enter option (1-2): ");
+            choice3 = Sanitise.readInt(1,2,3);
+            if (choice3 == 1) { inputRole = "DOCTOR"; break; }
+            else if (choice3 == 2) { inputRole = "PHARMACIST"; break; }
+            else System.out.println("[-] Invalid option. Try again");
+          } while (true);
+          register_menu(inputRole);
+          clearScreen();
+          System.out.print(menu);
           break;
         case 4:
-          System.out.print("Enter the hospital ID of the staff to be removed: "); 
           do {
             try {
+              System.out.print("Enter the hospital ID of the staff to be removed: "); 
               idEntered = Integer.valueOf(Sanitise.readID());
               break;
-            } catch(Exception e){}
+            } catch(Exception e){ 
+              System.out.println("[-] ID contains illegal characters. Only numerals allowed.");
+            }
           } while(true);
           
           User tmp = sms.findStaff(idEntered);  
@@ -687,6 +753,9 @@ public class Menu {
                 break;
             }
           }
+          confirm(); 
+          clearScreen();
+          System.out.print(menu);
           break;
         case 5:
           break;
@@ -704,12 +773,12 @@ public class Menu {
   }
 
   public void confirm() {
-    System.out.print("Enter \"1\" to continue: ");
+    System.out.print("\n[!] Enter \"1\" to continue: ");
     int ans = 2;
     do {
       ans = Sanitise.readInt(1, 1, 2);
       if (ans == 1) break;
-      else System.out.print("Enter \"1\" to continue: ");
+      else System.out.print("[!] Enter \"1\" to continue: ");
     } while(true);
   }
 

@@ -1,5 +1,6 @@
 package staffmanagement;
 
+import java.time.Year;
 import users.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,7 +42,7 @@ public class StaffManagementSystem {
   public void display(FilterOption option) {
     switch(option) {
       case FilterOption.ALL:
-        System.out.println("==================[ List of Doctors ]======================\n");
+        System.out.println("\n==================[ List of Doctors ]======================\n");
         for (User i : doctorArray) { i.getBasicInfo().displayInfo(); }
         System.out.println("\n================[ List of Pharmacists ]====================\n");
         for (User i : pharmacistArray) { i.getBasicInfo().displayInfo(); }
@@ -49,12 +50,12 @@ public class StaffManagementSystem {
       case FilterOption.GENDER:
         String gender = Sanitise.readGender();
         System.out.println("\n==================[ Filter: Gender  ]======================\n");
-        System.out.println("==================[ List of Doctors ]======================\n");
+        System.out.println("\n==================[ List of Doctors ]======================\n");
           for (User i : doctorArray) {
             if (i.getBasicInfo().getGender().equals(gender))
               i.getBasicInfo().displayInfo();
           }
-        System.out.println("==================[ List of Pharmacists ]======================\n");
+        System.out.println("\n==================[ List of Pharmacists ]======================\n");
           for (User i : pharmacistArray) {
             if (i.getBasicInfo().getGender().equals(gender))
               i.getBasicInfo().displayInfo();
@@ -63,7 +64,7 @@ public class StaffManagementSystem {
       case FilterOption.ROLE:
         String role = Sanitise.readRole();
         if (role == "DOCTOR") {
-          System.out.println("==================[ List of Doctors ]======================\n");
+          System.out.println("\n==================[ List of Doctors ]======================\n");
           for (User i : doctorArray) { i.getBasicInfo().displayInfo(); }
         }
         else {
@@ -74,8 +75,19 @@ public class StaffManagementSystem {
       case FilterOption.AGE:
         System.out.print("\n[!] Enter the age to be filtered: ");
         String age = null;
+        int year = Year.now().getValue();
         try {
           age = Sanitise.readAge();
+          System.out.println("\n==================[ List of Doctors ]======================\n");
+          for (User i : doctorArray) { 
+            if(year - Integer.valueOf(i.getBasicInfo().getDOB().substring(6, 10)) == Integer.valueOf(age))
+              i.getBasicInfo().displayInfo();
+          }
+          System.out.println("\n==================[ List of Pharmacists ]======================\n");
+          for (User i : pharmacistArray) { 
+            if(year - Integer.valueOf(i.getBasicInfo().getDOB().substring(6, 10)) == Integer.valueOf(age))
+              i.getBasicInfo().displayInfo();
+          }
         } catch(Exception e) {
           e.getMessage();
         }
@@ -140,20 +152,16 @@ public class StaffManagementSystem {
     AccountSystem acc = new AccountSystem();
     if(!acc.deleteAccount(hospitalID)) 
       return false;
-    System.out.println("Role detected is: " + role);
     try {
       BasicInfo basicInfo = new BasicInfo(hospitalID, role); 
       if (!basicInfo.delete()) 
         return false;
     } catch(Exception e) { 
       e.printStackTrace();
-      System.out.println("failed to create basicInfo object");
       return false;
     }
     return true;
   }
-
-  public void addStaff(String role)  {}
 
   private List<User> doctorArray;
   private List<User> pharmacistArray;
