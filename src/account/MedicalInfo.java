@@ -21,11 +21,14 @@ public class MedicalInfo {
         line = read.nextLine().split(",");
         record.add(line);
       }
-      this.bloodType = line[1];
+      if (line == null)
+        this.bloodType = "undiagnosed";
+      else 
+        this.bloodType = line[1];
       this.ID = hospitalID;
       medicalRecords = record;
     } catch (FileNotFoundException e) {
-      e.printStackTrace();
+     throw new Exception("[-] User does not exist"); 
     }
   }
 
@@ -47,7 +50,7 @@ public class MedicalInfo {
   public String getBloodType() { return bloodType; }
   public List<String[]> getMedicalRecords() { return medicalRecords; }
 
-  private String bloodType;
+  private String bloodType = null;
   private String ID;
   private List<String[]> medicalRecords;
 }

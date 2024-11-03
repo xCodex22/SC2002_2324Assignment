@@ -228,7 +228,14 @@ public class Menu {
       choice = Sanitise.readInt(1, 9, 10);
       switch (choice) {
         case 1:
-        break;
+          clearScreen();
+          if (user instanceof Patient) {
+            Patient patient = (Patient) user;
+            patient.getMedicalInfo().displayInfo();
+          }
+          confirm();
+          clearScreen();
+          break;
         case 2:
           updatePersonalInfo_menu(user);
           break;
