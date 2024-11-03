@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import users.*;
 
 public class MedicalInfo {
   public MedicalInfo(String hospitalID) throws Exception {
@@ -32,18 +33,34 @@ public class MedicalInfo {
     }
   }
 
-  public void displayInfo() {
+  public void displayInfo(User user) {
     System.out.println("===========[ Medical Information ]============");
     System.out.println("[-] Blood Type: " + this.bloodType);
     System.out.println("=============[ Medical Records ]==============");
-    for (String[] i : medicalRecords) {
-      System.out.println("[-] Service date: " + i[2]);
-      System.out.println("[-] Doctor assigned: Dr. " + i[5]);
-      System.out.println("[-] Service administered: " + i[3]);
-      System.out.println("[-] Diagnosis result: " + i[6]);
-      System.out.println("[-] Medication administered: " + i[7] + " " + i[8]);
-      System.out.println("[-] Treatment plan administered: " + i[9]);
-      System.out.println("----------------------------------------------");
+    if (user instanceof Patient) {
+      for (String[] i : medicalRecords) {
+        System.out.println("[-] Service date: " + i[2]);
+        System.out.println("[-] Doctor assigned: Dr. " + i[5]);
+        System.out.println("[-] Service administered: " + i[3]);
+        System.out.println("[-] Diagnosis result: " + i[6]);
+        System.out.println("[-] Medication administered: " + i[7] + " " + i[8]);
+        System.out.println("[-] Treatment plan administered: " + i[9]);
+        System.out.println("----------------------------------------------");
+      }
+    } else if (user instanceof Doctor) {
+       for (String[] i : medicalRecords) {
+          System.out.println("[-] Service date: " + i[2]);
+          System.out.println("[-] Service administered: " + i[3]);
+          System.out.println("[-] Doctor assigned: Dr. " + i[5]);
+          System.out.println("[-] Doctor ID: " + i[4]); 
+          System.out.println("[-] Diagnosis result: " + i[6]);
+          System.out.println("[-] Medication administered: " + i[7] + " " + i[8]);
+          System.out.println("[-] Treatment plan administered: " + i[9]);
+          System.out.println("[-] Memo: " + i[10]);
+          System.out.println("----------------------------------------------");
+      }
+    } else {
+      System.out.println("[-] Access Denied");
     }
   }
 

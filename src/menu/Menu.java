@@ -231,7 +231,8 @@ public class Menu {
           clearScreen();
           if (user instanceof Patient) {
             Patient patient = (Patient) user;
-            patient.getMedicalInfo().displayInfo();
+            patient.getBasicInfo().displayInfo();
+            patient.getMedicalInfo().displayInfo(user);
           }
           confirm();
           clearScreen();
@@ -286,7 +287,7 @@ public class Menu {
       choice = Sanitise.readInt(1, 9, 10);
       switch (choice) {
         case 1:
-        break;
+          break;
         case 2:
         break;
         case 3:
