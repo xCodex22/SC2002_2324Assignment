@@ -78,6 +78,23 @@ public class ScheduleInfo{
     return count;
   }
 
+  private String getStatusOfDay(String month, String date, String year) {
+    String[] slots = scheduleArray[Integer.valueOf(month)][Integer.valueOf(date)];
+    boolean hasPending = false;
+    boolean hasAvailable = false;
+
+    for (String i : slots) {
+      if (i.equals("!"))
+        hasPending = true;
+      else if (i.equals("O"))
+        hasAvailable = true;
+    }
+
+    if (hasPending) return "!!";
+    if (hasAvailable) return "OO";
+    return "XX"; 
+  }
+
   public void printSchedule(String month) {
     // should look something like the following
     // ====[ Name of the month ]====
@@ -137,6 +154,7 @@ public class ScheduleInfo{
     String banner = "======[ " + msg + " ]======";
     System.out.println(banner);
     System.out.println("Su Mo Tu We Th Fr Sa");
+    System.out.println("---------------------");
     int j = getFirstDayOfMonth(month, "2024");  
     int tmp = j;
 
@@ -148,22 +166,50 @@ public class ScheduleInfo{
       tmp--;
     }
 
+    tmp = j;
+
+    StringBuilder status = new StringBuilder();
     while (i <= numberOfDays) {
+      String day;
       if ((i+j-1)%7 == 0) {
-        System.out.println("\n---------------------");
+        if (status != null) {
+          System.out.println();
+          while(tmp > 0) {
+            System.out.print("   ");
+            tmp--;
+          }
+          System.out.println(status);
+          status = new StringBuilder();
+          System.out.println("---------------------");
+        }
+        else
+          System.out.println("\n---------------------");
       }
       
-      if (i < 10)
-        System.out.print("0" + i + " ");
+      if (i < 10) 
+        day = "0" + String.valueOf(i);
       else 
-        System.out.print(i + " ");  
-
+        day = String.valueOf(i);
+      System.out.print(day + " ");
+      
+      // the following line should print after all dates in the line has been printed
+      // for example 
+      // 01 02 03
+      // XX XX XX
+      status.append(getStatusOfDay(month, day, "2024"));
+      status.append(" ");
       i++;
     }
 
-    System.out.println("\n---------------------");
+    if (status != null) {
+        System.out.println(); 
+          System.out.println(status);
+          status = new StringBuilder();
+          System.out.println("---------------------");
+    }
+
   }
 
-
+ 
   private String[][][] scheduleArray;
 }
