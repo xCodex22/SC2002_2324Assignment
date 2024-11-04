@@ -5,7 +5,7 @@ import menu.Sanitise;
 
 public class Test {
   public static void main(String[] args) {
-    try {
+    /* try {
       Doctor doc = new Doctor("12346");
       ScheduleInfo si = doc.getScheduleInfo();
       String date = Sanitise.readDate();
@@ -14,7 +14,10 @@ public class Test {
       si.displayDay(date);
     } catch(Exception e) {
       e.printStackTrace();
-    }
+    } */
+
+   AccountSystem acs = new AccountSystem();
+  acs.copyDir("../data/ScheduleDB/init/2024", "../data/ScheduleDB/0000", true);
   }
 }
 
