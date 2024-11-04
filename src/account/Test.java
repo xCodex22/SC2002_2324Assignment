@@ -1,30 +1,23 @@
 package account;
 
+import users.*;
+
 public class Test {
   public static void main(String[] args) {
     try {
-      System.out.println("");
-      MedicalInfo mi = new MedicalInfo("12345");
-      mi.displayInfo();
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
+      Doctor doc = new Doctor("12346");
+      ScheduleInfo si = new ScheduleInfo(doc);
+      for (int i = 1; i <= 12; i++) {
+        String tmp;
+        if (i < 10) 
+          tmp = "0" + String.valueOf(i);
+        else
+          tmp = String.valueOf(i);
+        si.printSchedule(tmp);
+      }
+    } catch(Exception e) {
+      e.printStackTrace();
     }
-
-    try {
-      System.out.println("");
-      MedicalInfo mi = new MedicalInfo("12355");
-      mi.displayInfo();
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
-
-    try {
-      System.out.println();
-      MedicalInfo mi = new MedicalInfo("12356");
-      mi.displayInfo();
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
-
   }
 }
+
