@@ -267,6 +267,15 @@ public class Menu {
   public void doctor_menu(){
     clearScreen();	
     user = new Doctor(acc.getID());
+    Doctor doc;
+    if (user instanceof Doctor) {
+      doc = (Doctor) user;
+    }
+    else {
+        System.out.println("[-] Unexpected Error in doctor_menu()");
+        return;
+    }
+
     String surname = user.getBasicInfo().getLastName();
     final String menu = "=====[ Doctor Menu ]=====\n" +
     "||  Welcome back, Dr. " + surname + " ||\n\n" +
@@ -286,80 +295,176 @@ public class Menu {
       System.out.print("Enter option (1-9): ");
       choice = Sanitise.readInt(1, 9, 10);
       switch (choice) {
-        case 1:
+        case 1: // view patient medical records 
           break;
-        case 2:
+
+        case 2: // update patient medical records
           break;
-        case 3:
+
+        case 3: // view personal schedule
           int in1 = 4;
           clearScreen(); 
-          String month = "01";
-          if (user instanceof Doctor) {
-            Doctor doc = (Doctor) user;
-            doc.getScheduleInfo().printSchedule(month); 
-            do {
-              System.out.println("[1] Next");
-              System.out.println("[2] Previous");
-              System.out.println("[3] Exit");
-              System.out.print("Enter option (1-3): ");
-              in1 = Sanitise.readInt(1, 3, 4);
-              switch (in1) {
-                case 1:
-                  if (Integer.valueOf(month) + 1 == 13) 
-                    System.out.println("[-] Already at end of year"); 
-                  else {
-                    int tmp = Integer.valueOf(month) + 1;
-                    if (tmp < 10)
-                      month = "0" + String.valueOf(tmp);
-                    else 
-                      month = String.valueOf(tmp);
-                    clearScreen();
-                    doc.getScheduleInfo().printSchedule(month);
-                  }
+        String month = "01";
 
-                  break;
-                case 2:
-                  if (Integer.valueOf(month) - 1 == 0)
-                    System.out.println("[-] Already at start of year");
-                   else {
-                    int tmp = Integer.valueOf(month) - 1;
-                    if (tmp < 10)
-                      month = "0" + String.valueOf(tmp);
-                    else 
-                      month = String.valueOf(tmp);
-                    clearScreen();
-                    doc.getScheduleInfo().printSchedule(month);
-                  }
- 
-                  break;
-                case 3:
-                  break;
-                default:
-                  System.out.println("[-] Invalid option. Try again.");
-                  break;
-              }
-            } while(in1 != 3);
+        doc.getScheduleInfo().printSchedule(month); 
+        do {
+          System.out.println("[1] Next");
+          System.out.println("[2] Previous");
+          System.out.println("[3] Exit");
+          System.out.print("Enter option (1-3): ");
+          in1 = Sanitise.readInt(1, 3, 4);
+          switch (in1) {
+            case 1:
+            if (Integer.valueOf(month) + 1 == 13) 
+            System.out.println("[-] Already at end of year"); 
+            else {
+              int tmp = Integer.valueOf(month) + 1;
+              if (tmp < 10)
+              month = "0" + String.valueOf(tmp);
+              else 
+              month = String.valueOf(tmp);
+              clearScreen();
+              doc.getScheduleInfo().printSchedule(month);
+            }
+            break;
+
+            case 2:
+            if (Integer.valueOf(month) - 1 == 0)
+            System.out.println("[-] Already at start of year");
+            else {
+              int tmp = Integer.valueOf(month) - 1;
+              if (tmp < 10)
+              month = "0" + String.valueOf(tmp);
+              else 
+              month = String.valueOf(tmp);
+              clearScreen();
+              doc.getScheduleInfo().printSchedule(month);
+            }
+            break;
+            case 3:
+            break;
+            default:
+            System.out.println("[-] Invalid option. Try again.");
+            break;
           }
+        } while(in1 != 3);
+          
           clearScreen();
           System.out.println(menu);
           break;
-        case 4:
-        break;
+
+        case 4: // set availability
+          clearScreen();
+          System.out.println("========[ Update Schedule ]========");
+          String date = null;
+          do {
+            System.out.print("Enter the date to modify: ");
+            try {
+              date = Sanitise.readDate(); 
+              break;
+            } catch (Exception e) {
+              System.out.println("[-] Invalid date. Try again");
+            }
+          } while (true);
+           
+          doc.getScheduleInfo().displayDay(date);
+        
+          AvailStatus option;
+          int in4 = 3;
+          
+          do { 
+            System.out.println("\n[!] Choose option:");
+            System.out.println("[1] Mark a slot as available");
+            System.out.println("[2] Mark a slot as unavailable");
+            System.out.print("Enter option (1-2): ");
+            in4 = Sanitise.readInt(1,2,3);
+            if (in4 == 3)
+              System.out.println("[-] Invalid option. Try again");
+          } while (in4 == 3);
+          
+          switch (in4) {
+            case 1:
+              option = AvailStatus.OPEN;
+              break;
+            case 2:
+              option = AvailStatus.CLOSE;
+              break;
+            default:
+              System.out.println("[-] in updateSchedule(): unkown option");
+              return;
+          }
+
+          do { 
+            System.out.println("\n[!] Choose time slot base on the numbering given");
+            System.out.print("Enter option (1-7): ");
+            in4 = Sanitise.readInt(1,7,8);
+            if (in4 == 8)
+              System.out.println("[-] Invalid option. Try again");
+          } while (in4 == 8);
+
+          String slot;
+
+          switch (in4) {
+            case 1:
+              slot = "0900-1000";
+              break;
+            case 2:
+              slot = "1000-1100";
+              break;
+            case 3:
+              slot = "1100-1200";
+              break;
+            case 4:
+              slot = "1300-1400";
+              break;
+            case 5:
+              slot = "1400-1500";
+              break;
+            case 6:
+              slot = "1500-1600";
+              break;
+            case 7:
+              slot = "1600-1700";
+              break;
+            default:
+              System.out.println("[-] in updateSchedule(): unknown slot");
+              return;
+          }
+
+          if(doc.getScheduleInfo().setAvailability(date, slot, option)) {
+            clearScreen();
+            doc.getScheduleInfo().displayDay(date);
+            System.out.println("\n[+] Schedule updated successfully");
+          }
+          else {
+            System.out.println("\n[-] Schedule update failed");
+          }
+
+          confirm();
+          clearScreen();
+          System.out.println(menu);
+          break;
+
         case 5:
-        break;
+          break;
+
         case 6:
-        break;
+          break;
+
         case 7:
-        break;
+          break;
+
         case 8:
-        password_menu();
-        System.out.println(menu);
-        break;
+          password_menu();
+          System.out.println(menu);
+          break;
+
         case 9:
-        break;
+          break;
+
         default:
-        System.out.println("[-] Invalid Choice");
-        break;
+          System.out.println("[-] Invalid Choice");
+          break;
       }
     } while(choice != 9);
     clearScreen();	

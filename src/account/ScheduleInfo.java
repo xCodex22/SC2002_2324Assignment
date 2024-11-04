@@ -223,14 +223,14 @@ public class ScheduleInfo{
   public void displayDay(String date) {
     try {
       List<String> status = getSlotStatus(date);
-      System.out.println("Schedule for " + date);
-      System.out.println("0900-1000: " + status.get(0));
-      System.out.println("1000-1100: " + status.get(1));
-      System.out.println("1100-1200: " + status.get(2));
-      System.out.println("1300-1400: " + status.get(3));
-      System.out.println("1400-1500: " + status.get(4));
-      System.out.println("1500-1600: " + status.get(5));
-      System.out.println("1600-1700: " + status.get(6));
+      System.out.println("\n=====[ Schedule for " + date + " ]=====");
+      System.out.println("[1] 0900-1000: " + status.get(0));
+      System.out.println("[2] 1000-1100: " + status.get(1));
+      System.out.println("[3] 1100-1200: " + status.get(2));
+      System.out.println("[4] 1300-1400: " + status.get(3));
+      System.out.println("[5] 1400-1500: " + status.get(4));
+      System.out.println("[6] 1500-1600: " + status.get(5));
+      System.out.println("[7] 1600-1700: " + status.get(6));
     } catch (Exception e) {
       System.out.println(e.getMessage());      
     }
