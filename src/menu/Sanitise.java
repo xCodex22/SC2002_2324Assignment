@@ -59,6 +59,7 @@ public class Sanitise {
    * Sanitise date of birth to check if it satisfies the form of DD-MM-YYYY; does not check leap year nor age
    * @return the santisied date of birth
    */
+
   public static String readDOB() throws Exception {
     String dob = null;
 
@@ -78,6 +79,22 @@ public class Sanitise {
     }
     return dob;
   }
+
+  public static String readDate() throws Exception {
+    String ans = null;
+    System.out.println("\nEnter date of in DD-MM format: "); 
+    try {
+      System.out.print("Enter here: ");
+      Scanner sc = new Scanner(System.in);
+      ans= sc.nextLine().trim().replaceAll("\\s+","");
+      if (!VALID_DATE.matcher(ans).matches()) 
+        throw new Exception("[-] Invalid Format. Try Again.");
+    } catch(InputMismatchException e) {
+      throw new Exception("[-] Illegal Characters. Try Again.");
+    }
+    return ans;
+  }
+
 
   /**
    * Sanitise user input phone number and validate using regex; assume domestic phone number
@@ -189,6 +206,7 @@ public class Sanitise {
     return res;
   }
   
+  public static final Pattern VALID_DATE = Pattern.compile("^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])$");
   public static final Pattern VALID_AGE = Pattern.compile("^(1[01]?\\d|[1-9]?\\d)$"); 
   public static final Pattern VALID_ID = Pattern.compile("^[0-9]+");
   public static final Pattern VALID_NAME = Pattern.compile("^[A-Za-z\s]+$");

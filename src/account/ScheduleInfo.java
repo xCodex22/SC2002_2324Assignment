@@ -12,6 +12,11 @@ import users.*;
 
 public class ScheduleInfo{
   public ScheduleInfo(String hospitalID) {
+    this.id = hospitalID;
+    load(hospitalID);    
+  }
+
+  private void load(String hospitalID) {
     String[][][] res = new String[13][32][7];
     // String[month][date][timeslots]
     // for simplicity assume only for the year 2024
@@ -84,7 +89,7 @@ public class ScheduleInfo{
     boolean hasAvailable = false;
 
     for (String i : slots) {
-      if (i.equals("!"))
+      if (!i.equals("O") && !i.equals("X"))
         hasPending = true;
       else if (i.equals("O"))
         hasAvailable = true;
@@ -215,6 +220,128 @@ public class ScheduleInfo{
 
   }
 
- 
+  public void displayDay(String date) {
+    try {
+      List<String> status = getSlotStatus(date);
+      System.out.println("Schedule for " + date);
+      System.out.println("0900-1000: " + status.get(0));
+      System.out.println("1000-1100: " + status.get(1));
+      System.out.println("1100-1200: " + status.get(2));
+      System.out.println("1300-1400: " + status.get(3));
+      System.out.println("1400-1500: " + status.get(4));
+      System.out.println("1500-1600: " + status.get(5));
+      System.out.println("1600-1700: " + status.get(6));
+    } catch (Exception e) {
+      System.out.println(e.getMessage());      
+    }
+  }
+
+  private List<String> getSlotStatus(String date) throws Exception {
+    String day = date.substring(0, 2);
+    String month = date.substring(3, 5);
+    try {
+      String path = "../data/ScheduleDB/" + id + "/2024/" + month + "/" + day + ".csv";
+      List<String> content = new ArrayList<>(Files.readAllLines(Paths.get(path), StandardCharsets.UTF_8));
+      String[] line = content.get(1).split(",");
+      List<String> ans = new ArrayList<>();
+      for (String i : line) {
+        if (i.equals("X"))
+          ans.add("Unavailable");
+        else if (i.equals("O"))
+          ans.add("Available");
+        else 
+          ans.add("Pending Appointment by ID: " + i);
+      }
+      return ans;
+    } catch (Exception e) {
+      throw new Exception("[-] date does not exist"); 
+    }
+  }
+
+  public boolean setAvailability(String date, String slot, AvailStatus status) {
+    // input format will  be DD-MM (assume only one year)
+    String day = date.substring(0, 2);
+    String month = date.substring(3, 5);
+    try {
+      int index = getIndexFromSlot(slot);
+      String path = "../data/ScheduleDB/" + id + "/2024/" + month + "/" + day + ".csv";
+      List<String> content = new ArrayList<>(Files.readAllLines(Paths.get(path), StandardCharsets.UTF_8));
+      List<String> newContent = new ArrayList<>();
+      newContent.add(content.get(0));
+      String[] newLine = content.get(1).split(",");
+
+      switch(status) {
+        case AvailStatus.CLOSE:
+          if (newLine[index].equals("O"))
+            newLine[index] = "X"; 
+          else {
+            System.out.println("[-] Unable to set date as unavailable. Time slot is reserved or already unavailable.");
+            return false;
+          }
+          break;
+        case AvailStatus.OPEN:
+          if (newLine[index].equals("X"))
+            newLine[index] = "O"; 
+          else {
+            System.out.println("[-] Unable to set date as available. Time slot is reserved or already available.");
+            return false;
+          }
+          break;
+        default:
+          System.out.println("[-] in setAvailability(): unknown status");
+          return false;
+      }
+
+      String newEntry = String.join(",", newLine);
+      newContent.add(newEntry);
+
+      String tmpPath = path + "~";
+      Files.write(Paths.get(tmpPath), newContent, StandardCharsets.UTF_8);
+			Files.copy(Paths.get(tmpPath), Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
+			Files.delete(Paths.get(tmpPath));
+
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      System.out.println("[-] Failed to set availability");
+      return false;
+    }
+       
+    load(id);
+    return true;
+  }
+
+  private int getIndexFromSlot(String slot) throws Exception {
+    int index;
+     
+    switch(slot) {
+      case "0900-1000":
+        index = 0;
+        break;
+      case "1000-1100":
+        index = 1;
+        break;
+      case "1100-1200":
+        index = 2;
+        break;
+      case "1300-1400":
+        index = 3;
+        break;
+      case "1400-1500":
+        index = 4;
+        break;
+      case "1500-1600":
+        index = 5;
+        break;
+      case "1600-1700":
+        index = 6;
+        break;
+      default:
+        throw new Exception("[-] in getIndexFromSlot(): invalid slot"); 
+    }
+    
+    return index;
+  }
+
   private String[][][] scheduleArray;
+  private String id;
 }
