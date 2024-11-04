@@ -11,7 +11,7 @@ import java.util.*;
 import users.*;
 
 public class ScheduleInfo{
-  public ScheduleInfo(Doctor dr) {
+  public ScheduleInfo(String hospitalID) {
     String[][][] res = new String[13][32][7];
     // String[month][date][timeslots]
     // for simplicity assume only for the year 2024
@@ -24,7 +24,7 @@ public class ScheduleInfo{
 
     for (int i = 0; i < 13; i++) res[i][0] = null; 
 
-    String id = dr.getBasicInfo().getID();
+    String id = hospitalID;
     String path1 = "../data/ScheduleDB/";
     String path2 = "/2024/";
     Scanner sc;
@@ -207,6 +207,11 @@ public class ScheduleInfo{
           status = new StringBuilder();
           System.out.println("---------------------");
     }
+
+    System.out.println("\nLegends: ");
+    System.out.println("[XX] Date marked unavailable");
+    System.out.println("[OO] Date marked available");
+    System.out.println("[!!] Date with pending appointment request\n");
 
   }
 

@@ -6,7 +6,7 @@ public class Test {
   public static void main(String[] args) {
     try {
       Doctor doc = new Doctor("12346");
-      ScheduleInfo si = new ScheduleInfo(doc);
+      ScheduleInfo si = doc.getScheduleInfo();
       for (int i = 1; i <= 12; i++) {
         String tmp;
         if (i < 10) 

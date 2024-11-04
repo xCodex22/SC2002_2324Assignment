@@ -289,9 +289,60 @@ public class Menu {
         case 1:
           break;
         case 2:
-        break;
+          break;
         case 3:
-        break;
+          int in1 = 4;
+          clearScreen(); 
+          String month = "01";
+          if (user instanceof Doctor) {
+            Doctor doc = (Doctor) user;
+            doc.getScheduleInfo().printSchedule(month); 
+            do {
+              System.out.println("[1] Next");
+              System.out.println("[2] Previous");
+              System.out.println("[3] Exit");
+              System.out.print("Enter option (1-3): ");
+              in1 = Sanitise.readInt(1, 3, 4);
+              switch (in1) {
+                case 1:
+                  if (Integer.valueOf(month) + 1 == 13) 
+                    System.out.println("[-] Already at end of year"); 
+                  else {
+                    int tmp = Integer.valueOf(month) + 1;
+                    if (tmp < 10)
+                      month = "0" + String.valueOf(tmp);
+                    else 
+                      month = String.valueOf(tmp);
+                    clearScreen();
+                    doc.getScheduleInfo().printSchedule(month);
+                  }
+
+                  break;
+                case 2:
+                  if (Integer.valueOf(month) - 1 == 0)
+                    System.out.println("[-] Already at start of year");
+                   else {
+                    int tmp = Integer.valueOf(month) - 1;
+                    if (tmp < 10)
+                      month = "0" + String.valueOf(tmp);
+                    else 
+                      month = String.valueOf(tmp);
+                    clearScreen();
+                    doc.getScheduleInfo().printSchedule(month);
+                  }
+ 
+                  break;
+                case 3:
+                  break;
+                default:
+                  System.out.println("[-] Invalid option. Try again.");
+                  break;
+              }
+            } while(in1 != 3);
+          }
+          clearScreen();
+          System.out.println(menu);
+          break;
         case 4:
         break;
         case 5:
