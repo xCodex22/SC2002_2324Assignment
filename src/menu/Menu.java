@@ -313,6 +313,34 @@ public class Menu {
       choice = Sanitise.readInt(1, 9, 10);
       switch (choice) {
         case 1: // view patient medical records 
+          clearScreen();
+          System.out.println("======[ View Patient Medical Record ]======");
+          System.out.print("Enter patient's ID number: ");
+          String pid = null;
+          try {
+            pid = Sanitise.readID(); 
+          } catch(Exception e) { 
+            System.out.println("[-] Invalid ID number format");
+            confirm();
+            clearScreen();
+            System.out.println(menu);
+            break;
+          }
+          
+          try {
+            Patient p = new Patient(pid);
+            p.getMedicalInfo().displayInfo(user);
+          } catch(Exception e) {
+            System.out.println("[-] Patient not found. ");
+            confirm();
+            clearScreen();
+            System.out.println(menu);
+            break;
+          }
+          
+          confirm(); 
+          clearScreen();
+          System.out.println(menu);
           break;
 
         case 2: // update patient medical records

@@ -11,7 +11,7 @@ public class User {
       basicInfo = new BasicInfo(hospitalID, role);
     } catch(Exception e) {
       basicInfo = null;
-      e.printStackTrace();
+      System.out.println(e.getMessage()); 
     }
   }
 
