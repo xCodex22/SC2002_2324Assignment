@@ -1,6 +1,7 @@
 package menu;
 import account.*;
 import users.*;
+import appointment.*;
 import staffmanagement.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -240,7 +241,23 @@ public class Menu {
         case 2:
           updatePersonalInfo_menu(user);
           break;
-        case 3:
+        case 3: //view available slots
+          clearScreen();
+          System.out.println("=======[ View Available Slots ]=======");
+          AppointmentSystem aps = new AppointmentSystem();
+          String d = null;
+          do {
+            try {
+              d = Sanitise.readDate();
+              break;
+            } catch (Exception e) {
+              System.out.println(e.getMessage());
+            }
+          } while(true);
+          System.out.println("\n[!] The available slots for " + d + " are: ");
+          aps.displayAvailSlots(d);
+          confirm();
+          clearScreen();
           break;
         case 4:
           break;

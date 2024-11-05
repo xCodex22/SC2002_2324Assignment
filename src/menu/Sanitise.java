@@ -82,7 +82,7 @@ public class Sanitise {
 
   public static String readDate() throws Exception {
     String ans = null;
-    System.out.println("\nEnter date of in DD-MM format: "); 
+    System.out.println("\nEnter date in DD-MM format: "); 
     try {
       System.out.print("Enter here: ");
       Scanner sc = new Scanner(System.in);

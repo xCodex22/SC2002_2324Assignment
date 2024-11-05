@@ -310,6 +310,35 @@ public class ScheduleInfo{
     return true;
   }
 
+
+  public static String getSlotFromIndex(int i) {
+    String ans = null;
+    switch(i) {
+      case 0:
+        ans = "0900-1000";
+        break;
+      case 1:
+        ans = "1000-1100";
+        break;
+      case 2:
+        ans = "1100-1200";
+        break;
+      case 3:
+        ans = "1300-1400";
+        break;
+      case 4:
+        ans = "1400-1500";
+        break;
+      case 5:
+        ans = "1500-1600";
+        break;
+      case 6:
+        ans = "1600-1700";
+        break;
+    }
+    return ans;
+  }
+
   private int getIndexFromSlot(String slot) throws Exception {
     int index;
      
@@ -341,6 +370,30 @@ public class ScheduleInfo{
     
     return index;
   }
+
+  /* public List<String> getDoctorDayTimeSlot(String date, String docID) throws Exception {
+    String day = date.substring(0, 2);
+    String month = date.substring(3, 5);
+    Doctor doc = new Doctor(docID);
+    try {
+      String path = "../data/ScheduleDB/" + docID + "/2024/" + month + "/" + day + ".csv";
+      List<String> content = new ArrayList<>(Files.readAllLines(Paths.get(path), StandardCharsets.UTF_8));
+      String[] line = content.get(1).split(",");
+      List<String> ans = new ArrayList<>();
+      for (String i : line) {
+        if (i.equals("X"))
+          ans.add("Unavailable");
+        else if (i.equals("O"))
+          ans.add("Dr. " + doc.getBasicInfo().getFirstName() + " " + doc.getBasicInfo().getLastName());
+        else 
+          ans.add("Unavailable");
+      }
+      return ans;
+    } catch (Exception e) {
+      throw new Exception("[-] date does not exist"); 
+    }
+    aint need all these
+  } */
 
   private String[][][] scheduleArray;
   private String id;
