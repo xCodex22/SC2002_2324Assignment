@@ -12,10 +12,26 @@ import users.*;
 import account.ScheduleInfo;
 
 public class AppointmentSystem {
- 
-    // should read from all DOCTORS schedule info
+   
+  public void printAvailSlot(String date) {
+    loadAvailSlot(date);
+    for (Map.Entry<String, boolean[]> entry : docAvailForTheDay.entrySet()) {
+      String docID = entry.getKey(); 
+      boolean[] slots = entry.getValue();        
+      Doctor doc = new Doctor(docID);
+      String docName = "Dr. " + doc.getBasicInfo().getFirstName() + " " + doc.getBasicInfo().getLastName();
 
-  public void displayAvailSlots(String date) {
+      for (int i = 0; i < slots.length; i++) {
+        if (slots[i]) {
+          System.out.println(ScheduleInfo.getSlotFromIndex(i) + ": " + docName + " ID: " + docID);
+        }
+      }
+    }
+  }
+
+  private void loadAvailSlot(String date) {
+    HashMap<String, boolean[]> map = new HashMap<String,boolean[]>();
+
     try {
       String day = date.substring(0,2);
       String month = date.substring(3,5);
@@ -25,32 +41,37 @@ public class AppointmentSystem {
       if (dirList != null) {
         for (File child : dirList) {
           if (!child.equals(init)) {
-            // System.out.println(child.getAbsolutePath());
-            String test = child.getAbsolutePath().substring(child.getAbsolutePath().length()-5);
-            // System.out.println("ID: " + test);
+            String docID = child.getAbsolutePath().substring(child.getAbsolutePath().length()-5);
             File file = new File(child.getAbsolutePath() + "/" + "2024/" + month + "/" + day + ".csv");  
-            // System.out.println(file.getAbsolutePath());
             Scanner sc = new Scanner(file);
             sc.nextLine();
             String[] line = null;
+            boolean[] isSlotFree = new boolean[7];
             while(sc.hasNextLine()) {
               line = sc.nextLine().split(",");
             }
             for (int i = 0; i < line.length; i++) {
-              if(line[i].equals("O")) {
-                Doctor doc = new Doctor(test);
-                System.out.print(ScheduleInfo.getSlotFromIndex(i));
-                System.out.println(": Dr. " + doc.getBasicInfo().getFirstName() + " " + doc.getBasicInfo().getLastName() + " ID: " + test);
-              }
+              if(line[i].equals("O")) 
+               isSlotFree[i] = true;
+              else
+                isSlotFree[i] = false;
             }
+            map.put(docID, isSlotFree);
           }
         }
       }
+      docAvailForTheDay = map;
     } catch(Exception e) {
       System.out.println(e.getMessage()); 
-      e.printStackTrace();
     }
   }
+
+  public boolean scheduleAppointment(String date, int slot, String docID, String patID) {
+   return true; 
+  }
+
+  private HashMap<String, boolean[]> docAvailForTheDay;
+
 
   // print availble slot for appointment for the day
   // 1. search by day 

@@ -255,7 +255,7 @@ public class Menu {
             }
           } while(true);
           System.out.println("\n[!] The available slots for " + d + " are: ");
-          aps.displayAvailSlots(d);
+          aps.printAvailSlot(d);
           confirm();
           clearScreen();
           break;
@@ -344,7 +344,80 @@ public class Menu {
           break;
 
         case 2: // update patient medical records
+          clearScreen();
+          System.out.println("======[ Update Patient Medical Record ]======");
+          System.out.print("Enter patient's ID number: ");
+          pid = null;
+        try {
+          pid = Sanitise.readID(); 
+        } catch(Exception e) { 
+          System.out.println("[-] Invalid ID number format");
+          confirm();
+          clearScreen();
+          System.out.println(menu);
           break;
+        }
+
+        System.out.println("\n[!] You are attempting to update the medical record of the following user:\n");
+        Patient p = new Patient(pid);
+        p.getBasicInfo().displayInfo();
+        System.out.println();
+        String[] newEntry = new String[11]; // directly map
+        // 0. hospitalID of patient
+        // 1. bloodType of patient
+        // 2. service date
+        // 3. service name
+        // 4. doctor ID
+        // 5. doctor name
+        // 6. diagnosis
+        // 7. medication prescribed
+        // 8. medication amount
+        // 9. treatment plan
+        // 10. remarks
+        newEntry[0] = p.getBasicInfo().getID();
+        newEntry[1] = p.getMedicalInfo().getBloodType();
+        newEntry[3] = "Medical Record Update";
+        newEntry[4] = user.getBasicInfo().getID();
+        newEntry[5] = user.getBasicInfo().getFirstName() + " " + user.getBasicInfo().getLastName(); 
+        newEntry[10] = "NIL";
+
+        String newDate, newDiag, newMed, newQty, newPlan;
+        do {
+          try {
+            System.out.println("Enter the date of update: ");
+            newDate = Sanitise.readDate();
+            newEntry[2] = newDate + "-2024";
+            break;
+          } catch (Exception e) {
+            System.out.println(e.getMessage());
+          }
+        } while (true);
+
+        System.out.println("Enter new diagnosis: ");
+        newDiag = sc.nextLine(); 
+        System.out.println("Enter new prescription: "); 
+        newMed= sc.nextLine();
+        System.out.println("Enter new prescribed quantity: ");
+        newQty = sc.nextLine();
+        System.out.println("Enter new treatment plan: ");
+        newPlan = sc.nextLine();
+
+        newEntry[6] = newDiag;
+        newEntry[7] = newMed;
+        newEntry[8] = newQty;
+        newEntry[9] = newPlan;
+
+        for (String i : newEntry) {
+          System.out.println(i);
+        }
+ 
+        // need dependency from inventory system
+        // TODO: local save
+
+        confirm(); 
+        clearScreen();
+        System.out.println(menu);
+        break;
 
         case 3: // view personal schedule
           int in1 = 4;
