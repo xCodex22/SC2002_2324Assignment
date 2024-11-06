@@ -1,10 +1,9 @@
 hospitalID,firstName,lastName,gender,dateOfBirth,phoneNumber,emailAddress
 12345,Joever,Biden,MALE,12-03-1989,88881234,readldonald@gmail.com
 12349,John,Doe,MALE,09-06-1942,91234567,johndoe@gmail.com
-12350,Tim Wong,Sum,MALE,06-09-2000,88881234,sugma1924@yahoo.com
+12350,Tim,Sum,MALE,06-09-2000,88881234,sum1924@yahoo.com
 12351,I,L,OTHERS,02-02-0000,88889999,a@gmail.com
 12352,Alex,Terrible,MALE,09-06-1999,82311234,slaughtertoprevail@gmail.com
 12353,Ashley,Tay,FEMALE,25-10-2024,88424242,ashleytay@hotmail.com
 12354,Tucker,Carlson,MALE,04-07-1988,88121211,tuckercarlson@gmail.com
-12355,Elijah,Tay,OTHERS,11-11-2001,81214444,offended@gmail.com
-12359,Test,Test,MALE,12-12-1212,81234567,1@gmail.com
+12355,Elijah,Tay,OTHERS,11-11-2001,81214444,tay@gmail.com

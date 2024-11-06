@@ -125,6 +125,12 @@ public class AccountSystem {
         writer = new FileWriter("../data/MedicalRecordsDB/" + info[0] + ".csv");
         writer.write("hospitalID,bloodType,serviceDate,serviceName,drID,drName,diagnosis,medicationPrescribed,medicationAmount,treatmentPlan,remarks\n");
         writer.close();
+        writer = new FileWriter("../data/AppointmentDB/" + info[0] + "request.csv");
+        writer.write("status,patientID,appointmentDate,timeSlot,drID,drName\n");
+        writer.close();
+        writer = new FileWriter("../data/AppointmentDB/" + info[0] + "outcome.csv");
+        writer.write("patientID,serviceDate,serviceName,drID,diagnosis,medicationPrescribed,medicationAmount,medicationStatus,treatmentPlan,remarks\n");
+        writer.close();
       }
 
       if (role == "DOCTOR") 
