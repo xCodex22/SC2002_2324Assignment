@@ -1,0 +1,4 @@
+hospitalID,firstName,lastName,gender,dateOfBirth,phoneNumber,emailAddress
+12346,Stephen,Strange,MALE,18-11-1980,81238123,drstrange@gmail.com
+12356,Tom,Sanders,MALE,09-09-2000,88126666,tomsanders@gmail.com
+12357,Shane,Dawson,FEMALE,12-11-1999,81010001,shane@gmail.com

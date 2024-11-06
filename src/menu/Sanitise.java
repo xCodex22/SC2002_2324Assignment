@@ -8,6 +8,9 @@ import java.util.regex.Pattern;
  * A class providing class methods for santising user input during menu interaction.
  */
 public class Sanitise {
+
+  private Sanitise(){};
+
   /**
    * Sanitise int values from user input.
    * @param start the starting value of the range of int allowed
@@ -15,7 +18,8 @@ public class Sanitise {
    * @param sanitised the sanitised value when input int fell out of range
    * @return the resultant sanitised value
    */
-  static int readInt(int start, int end, int sanitised) {
+
+  public static int readInt(int start, int end, int sanitised) {
     int res = sanitised;
     Scanner sc = new Scanner(System.in);
     try {
@@ -31,7 +35,7 @@ public class Sanitise {
    * Sanitise name fields of user input to Camel Case, strips space and throws error if invalid
    * @return the sanitised name
    */
-  static String readName() throws Exception {
+  public static String readName() throws Exception {
     try {
       Scanner sc = new Scanner(System.in);
       String res = sc.nextLine().trim();
@@ -55,7 +59,7 @@ public class Sanitise {
    * Sanitise date of birth to check if it satisfies the form of DD-MM-YYYY; does not check leap year nor age
    * @return the santisied date of birth
    */
-  static String readDOB() throws Exception {
+  public static String readDOB() throws Exception {
     String dob = null;
 
    final String dobExample = "[!] Example \n" + 
@@ -79,7 +83,7 @@ public class Sanitise {
    * Sanitise user input phone number and validate using regex; assume domestic phone number
    * @return the sanitised phone number
    */
-  static String readPhoneNumber() throws Exception {
+  public static String readPhoneNumber() throws Exception {
     String res = null;
     try {
       Scanner sc = new Scanner(System.in);
@@ -95,7 +99,7 @@ public class Sanitise {
    * Santise user input email address by validating format; does not check if email is real
    * @return the santised email address
    */
-  static String readEmailAddress() throws Exception {
+  public static String readEmailAddress() throws Exception {
     String res = null;
     try {
       Scanner sc = new Scanner(System.in);
@@ -111,10 +115,10 @@ public class Sanitise {
    * Sanitise user input for gender by choosing discrete options
    * @return the sanitised gender field
    */
-  static String readGender() {
+  public static String readGender() {
     int option = 4;
         do {
-          System.out.println("\nSelect your gender: "); 
+          System.out.println("\nEnter gender option: ");
           System.out.println("1. Male");
           System.out.println("2. Female");
           System.out.println("3. Others");
@@ -134,9 +138,62 @@ public class Sanitise {
         } while(option==4);
       return "OTHERS";
   }
+
+  /**
+   * Sanitise user input for role by choosing discrete options
+   * @return the sanitised role field
+   */
+  public static String readRole() {
+    int option = 4;
+        do {
+          System.out.println("\nEnter role option: ");
+          System.out.println("1. Doctor");
+          System.out.println("2. Pharmacist");
+          System.out.print("Choose option (1-2): ");
+          option = readInt(1, 2, 3);
+          switch(option) {
+            case 1:
+              return "DOCTOR";
+            case 2:
+              return "PHARMACIST";
+            default :
+              System.out.println("[-] Invalid option. Try again");
+          }
+        } while(true);
+  }
+
+
+  /**
+   * Sanitise user input for hospital ID entry by making sure it is numerals; doesn't check for existence 
+   * @return the sanitised hospital ID number
+   */
+  public static String readID() throws Exception {
+    String res = null;
+    Scanner sc = new Scanner(System.in);
+    res = sc.nextLine().trim().replaceAll("\\s+","");
+    if (!VALID_ID.matcher(res).matches()) 
+        throw new Exception("[-] Invalid ID Number. Remove Non-Numerals and Try Again.");
+    return res;
+  }
+
+  /**
+   * Sanitise user input for age, such that it is between 0-120 years old 
+   * @return the sanitised age number
+   */
+  public static String readAge() throws Exception {
+    String res = null;
+    Scanner sc = new Scanner(System.in);
+    res = sc.nextLine().trim().replaceAll("\\s+","");
+    if (!VALID_AGE.matcher(res).matches()) 
+        throw new Exception("[-] Invalid Age. Try Again.");
+    return res;
+  }
   
+  public static final Pattern VALID_AGE = Pattern.compile("^(1[01]?\\d|[1-9]?\\d)$"); 
+  public static final Pattern VALID_ID = Pattern.compile("^[0-9]+");
   public static final Pattern VALID_NAME = Pattern.compile("^[A-Za-z\s]+$");
   public static final Pattern VALID_DOB = Pattern.compile("^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-(\\d{4})$");
   public static final Pattern VALID_PHONE_NUMBER = Pattern.compile("^(8|9)\\d{7}$");
   public static final Pattern VALID_EMAIL_ADDRESS = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+  public static final Pattern VALID_HOSPITAL_ID = Pattern.compile("^[0-9]$");
 }

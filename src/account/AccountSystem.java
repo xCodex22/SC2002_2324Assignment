@@ -10,9 +10,9 @@ import java.io.Console;
 import java.util.*;
 			
 public class AccountSystem { 
-	public LoginStatus login(String uname, String passwd) {
+	public LoginStatus login(String hospitalID, String passwd) {
 		try {
-			this.uname = uname;
+			this.hospitalID = hospitalID;
 			this.passwd = passwd;	
 			
 			boolean found = false;
@@ -24,7 +24,7 @@ public class AccountSystem {
 			while(read.hasNextLine()) {
 				String[] line = read.nextLine().split(",");
 				name = line[0]; password = line[1]; role = line[2];
-				if (this.uname.equals(name)) { found = true; break; }	
+				if (this.hospitalID.equals(name)) { found = true; break; }	
 			}
 			read.close();
 			if (found) {
@@ -56,8 +56,8 @@ public class AccountSystem {
 				return false;
 			}
 			
-			String oldInfo = uname + "," + passwd + "," + role; 
-			String newInfo = uname + "," + newPass1 + "," + role;
+			String oldInfo = hospitalID + "," + passwd + "," + role; 
+			String newInfo = hospitalID + "," + newPass1 + "," + role;
 
 			try {
 				List<String> content = new ArrayList<>(Files.readAllLines(Paths.get("../data/AccountDB/accounts.csv"), StandardCharsets.UTF_8));
@@ -83,42 +83,74 @@ public class AccountSystem {
       File accounts = new File("../data/AccountDB/accounts.csv");
       Scanner read = new Scanner(accounts);
       String[] lastLine = null;
-      while(read.hasNextLine()) {
+      while(read.hasNextLine()) 
         lastLine = read.nextLine().split(",");
-      } 
       read.close(); 
-
-      int hospitalID = Integer.parseInt(lastLine[0]) + 1;
-      info[0] = String.valueOf(hospitalID);
-      uname = info[0];
+      int new_ID = Integer.parseInt(lastLine[0]) + 1;
+      info[0] = String.valueOf(new_ID);
+      this.hospitalID = info[0];
       String newEntry = String.join(",", info);
+      String fileName = null;
+      String dirName = "../data/BasicInfoDB/";
+      String accEntry = "password,";
+      FileWriter writer = null;
       
       switch(role) {
         case "PATIENT":
-          FileWriter writer = new FileWriter("../data/BasicInfoDB/patient.csv", true);
-          writer.write(newEntry+"\n");
-          writer.close();
-          writer = new FileWriter("../data/AccountDB/accounts.csv", true);
-          newEntry = info[0] + ",password,PATIENT\n";
-          writer.write(newEntry);
-          writer.close();
+          fileName = "patient.csv";
+          accEntry += "PATIENT\n";
           break;
+        case "DOCTOR":
+          fileName = "doctor.csv";
+          accEntry += "DOCTOR\n";
+          break;
+        case "PHARMACIST":
+          fileName = "pharmacist.csv";
+          accEntry += "PHARMACIST\n";
+         break; 
         default:
           System.out.println("[-] Illegal Registration");
           return false;
       }
-		  return true;
 
+      writer = new FileWriter(dirName+fileName, true);
+      writer.write(newEntry+"\n");
+      writer.close();
+      writer = new FileWriter("../data/AccountDB/accounts.csv", true);
+      newEntry = info[0] + "," + accEntry;
+      writer.write(newEntry);
+      writer.close();
+		  return true;
     } catch(Exception e) {
       e.printStackTrace();
       return false;
     }
   }
 
+  public boolean deleteAccount(String id) {
+    try {
+				List<String> content = new ArrayList<>(Files.readAllLines(Paths.get("../data/AccountDB/accounts.csv"), StandardCharsets.UTF_8));
+        List<String> newContent = new ArrayList<>();
+				for (int i = 0; i < content.size(); i++) {
+					if(content.get(i).substring(0,id.length()).equals(id)) {
+						continue;
+					}  
+          newContent.add(content.get(i));
+				}
+				Files.write(Paths.get("../data/AccountDB/accounts~.csv"), newContent, StandardCharsets.UTF_8);
+				Files.copy(Paths.get("../data/AccountDB/accounts~.csv"), Paths.get("../data/AccountDB/accounts.csv"), StandardCopyOption.REPLACE_EXISTING);
+				Files.delete(Paths.get("../data/AccountDB/accounts~.csv"));
+			} catch(IOException e) {
+				e.printStackTrace();
+        return false;
+			}
+		return true;
+  }
+
   public String getRole() { return role; }
-  public String getUname() { return uname; }
+  public String getID() { return hospitalID; }
 		
-	private String uname;
+	private String hospitalID;
 	private String passwd;
 	private String role;
 }
