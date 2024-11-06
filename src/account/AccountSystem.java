@@ -120,6 +120,11 @@ public class AccountSystem {
       newEntry = info[0] + "," + accEntry;
       writer.write(newEntry);
       writer.close();
+      if (role == "PATIENT") {
+        writer = new FileWriter("../data/MedicalRecordsDB/" + info[0] + ".csv");
+        writer.write("hospitalID,bloodType,serviceDate,serviceName,drID,drName,diagnosis,medicationPrescribed,medicationAmount,treatmentPlan,remarks\n");
+        writer.close();
+      }
 		  return true;
     } catch(Exception e) {
       e.printStackTrace();
