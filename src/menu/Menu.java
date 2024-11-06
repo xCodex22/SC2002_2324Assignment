@@ -312,6 +312,111 @@ public class Menu {
           clearScreen();
           break;
         case 5: // reschuedle appointment
+          clearScreen();
+          String newDate, newDoc; newDate = null; newDoc = null;
+          System.out.println("=====[ Reschedule an appointment ]=====");
+          System.out.println("First, enter the original schedule date");
+          confirm();
+           do {
+            try {
+              d2 = Sanitise.readDate()+"-2024"; //TODO: IMPORTANT 
+              break;
+            } catch (Exception e) {
+              System.out.println(e.getMessage());
+            }
+          } while(true);
+
+          do {
+              System.out.println("Select a time slot: ");
+              System.out.println("[1] 0900-1000");
+              System.out.println("[2] 1000-1100");
+              System.out.println("[3] 1100-1200");
+              System.out.println("[4] 1300-1400");
+              System.out.println("[5] 1400-1500");
+              System.out.println("[6] 1500-1600");
+              System.out.println("[7] 1600-1700");
+              System.out.print("Enter option (1-7): ");
+              in = Sanitise.readInt(1,7,8);
+              slot = ScheduleInfo.getSlotFromIndex(in-1); 
+          } while(in == 8);
+          
+        do {
+            try {
+              System.out.print("Enter the ID of the doctor that you have scheduled with: ");
+              docID = Sanitise.readID();
+              StaffManagementSystem tmp = new StaffManagementSystem();
+              if (tmp.findStaff(Integer.valueOf(docID)) == null) 
+                throw new Exception("[-] Doctor does not exist. Try again");
+              break;
+            } catch (Exception e) {
+              System.out.println(e.getMessage());
+            }
+          } while(true);
+
+        if(!AppointmentSystem.scheduleAppointment(d2, slot, docID, user.getBasicInfo().getID(), ScheduleOption.CANCEL))
+          {
+            System.out.println("[-] Failed to reschedule. You did not have the slot booked");
+            confirm();
+            clearScreen();
+            break;
+        }
+        else {
+          clearScreen();
+          System.out.println("=====[ Reschedule an appointment ]=====");
+          System.out.println("Next, enter new date to reschedule");
+          do {
+            try {
+              newDate = Sanitise.readDate()+"-2024"; //TODO: IMPORTANT 
+              break;
+            } catch (Exception e) {
+              System.out.println(e.getMessage());
+            }
+          } while(true);
+
+          do {
+              System.out.println("Select a time slot: ");
+              System.out.println("[1] 0900-1000");
+              System.out.println("[2] 1000-1100");
+              System.out.println("[3] 1100-1200");
+              System.out.println("[4] 1300-1400");
+              System.out.println("[5] 1400-1500");
+              System.out.println("[6] 1500-1600");
+              System.out.println("[7] 1600-1700");
+              System.out.print("Enter option (1-7): ");
+              in = Sanitise.readInt(1,7,8);
+              slot = ScheduleInfo.getSlotFromIndex(in-1); 
+          } while(in == 8);
+          
+        do {
+            try {
+              System.out.print("Enter the ID of the doctor that you want to schedule with: ");
+              newDoc = Sanitise.readID();
+              StaffManagementSystem tmp = new StaffManagementSystem();
+              if (tmp.findStaff(Integer.valueOf(newDoc)) == null) 
+                throw new Exception("[-] Doctor does not exist. Try again");
+              break;
+            } catch (Exception e) {
+              System.out.println(e.getMessage());
+            }
+          } while(true);
+
+        }
+
+        if(!AppointmentSystem.scheduleAppointment(newDate, slot, newDoc, user.getBasicInfo().getID(), ScheduleOption.NEW))
+          {
+            System.out.println("[-] Failed to reschedule. The slot is not available");
+            System.out.println("[!] Slot reverted");
+            AppointmentSystem.scheduleAppointment(d2,slot,docID,user.getBasicInfo().getID(), ScheduleOption.NEW);
+            confirm();
+            clearScreen();
+            break;
+        }
+
+          // reschdule will just be book appointment, followed by cancel original appointment
+          // attempt to schedule new one 
+          System.out.println("[+] Successfully rescheduled");
+          confirm();
+          clearScreen();
           break;
         case 6: // cancel appointment
           clearScreen();

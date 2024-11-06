@@ -165,10 +165,6 @@ public class AppointmentSystem {
 
       break;
 
-      case ScheduleOption.REPLACE:
-
-      break;
-
       case ScheduleOption.CANCEL:
       // if the slot wasn't in scheduled list, then error
       
