@@ -107,26 +107,29 @@ public class AppointmentSystem {
         // need to first check if there is even any avail schedule slot
     loadAvailSlot(date); 
     int index = 0; 
-    try {
-      index = ScheduleInfo.getIndexFromSlot(slot);
-    } catch(Exception e) {
-      System.out.println("\n"+e.getMessage());
-      System.out.println("[-] Failed to book appointment");
-      return false;
-    }
-    int noSlotCount = 0;
-    int totalCount = docAvailForTheDay.size();
 
-    for (Map.Entry<String, boolean[]> entry : docAvailForTheDay.entrySet()) {
-      String key = entry.getKey();
-      boolean[] value = entry.getValue();
-      if (!value[index]) 
+    if (opt != ScheduleOption.CANCEL) {
+      try {
+        index = ScheduleInfo.getIndexFromSlot(slot);
+      } catch(Exception e) {
+        System.out.println("\n"+e.getMessage());
+        System.out.println("[-] Failed to book appointment");
+        return false;
+      }
+      int noSlotCount = 0;
+      int totalCount = docAvailForTheDay.size();
+
+      for (Map.Entry<String, boolean[]> entry : docAvailForTheDay.entrySet()) {
+        String key = entry.getKey();
+        boolean[] value = entry.getValue();
+        if (!value[index]) 
         noSlotCount++;
-    }
+      }
 
-    if (noSlotCount == totalCount) {
-      System.out.println("\n[-] Failed to book appointment. No slots are available");
-      return false;
+      if (noSlotCount == totalCount) {
+        System.out.println("\n[-] Failed to book appointment. No slots are available");
+        return false;
+      }
     }
 
     HashMap<List<String>, List<String>> patSchedule = getScheduledAppointment(patID);
@@ -161,6 +164,22 @@ public class AppointmentSystem {
       break;
 
       case ScheduleOption.CANCEL:
+      // if the slot wasn't in scheduled list, then error
+      for (String i : key) {
+        System.out.println(i);
+      }
+      if(!patSchedule.containsKey(key)) {
+        System.out.println("[-] You have not booked this slot yet");
+        return false;
+      }
+
+      List<String> val = patSchedule.get(key);
+      val.set(0,"cancelled");
+      patSchedule.put(key, val);
+      if(!updatePatientAppointment(patID, patSchedule)) return false; 
+      if(!si.setAvailability(date,slot,patID,AvailStatus.CANCEL)) return false;
+      // otherwise 1) set the status to cancelled
+      // 2) set the doctor schedule to available
       break;
     }
     return true;     

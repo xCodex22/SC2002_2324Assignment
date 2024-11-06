@@ -290,6 +290,9 @@ public class ScheduleInfo{
         case AvailStatus.BOOK:
           newLine[index] = patID; 
           break;
+        case AvailStatus.CANCEL:
+          newLine[index] = "O";
+          break;
         default:
           System.out.println("[-] in setAvailability(): unknown status");
           return false;
