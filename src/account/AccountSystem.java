@@ -163,7 +163,7 @@ public class AccountSystem {
 		return true;
   }
 
-  private void copyDir(String src, String dest, boolean overwrite) {
+  protected void copyDir(String src, String dest, boolean overwrite) {
     if (!Files.exists(Paths.get(dest))) {
       try {
         Files.createDirectories(Paths.get(dest));

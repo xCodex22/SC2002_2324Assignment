@@ -244,7 +244,6 @@ public class Menu {
         case 3: //view available slots
           clearScreen();
           System.out.println("=======[ View Available Slots ]=======");
-          AppointmentSystem aps = new AppointmentSystem();
           String d = null;
           do {
             try {
@@ -255,7 +254,7 @@ public class Menu {
             }
           } while(true);
           System.out.println("\n[!] The available slots for " + d + " are: ");
-          aps.printAvailSlot(d);
+          AppointmentSystem.printAvailSlot(d);
           confirm();
           clearScreen();
           break;
@@ -554,7 +553,7 @@ public class Menu {
               return;
           }
 
-          if(doc.getScheduleInfo().setAvailability(date, slot, option)) {
+          if(doc.getScheduleInfo().setAvailability(date, slot, null, option)) {
             clearScreen();
             doc.getScheduleInfo().displayDay(date);
             System.out.println("\n[+] Schedule updated successfully");

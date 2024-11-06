@@ -10,13 +10,14 @@ import java.io.Console;
 import java.util.*;
 import users.*;
 import account.ScheduleInfo;
+import account.AvailStatus;
 
 public class AppointmentSystem {
   private AppointmentSystem(){};
    
   public static void printAvailSlot(String date) {
     loadAvailSlot(date);
-    
+    // doctorID --> [availability for the day]  
     for (Map.Entry<String, boolean[]> entry : docAvailForTheDay.entrySet()) {
       String docID = entry.getKey(); 
       boolean[] slots = entry.getValue();        
@@ -98,17 +99,44 @@ public class AppointmentSystem {
       newLine += (v.get(2) + "," + v.get(1)); 
       ans.add(newLine);  
     }
+    
     return ans;
   }
 
   public static boolean scheduleAppointment(String date, String slot, String docID, String patID, ScheduleOption opt) {
+        // need to first check if there is even any avail schedule slot
     loadAvailSlot(date); 
+    int index = 0; 
+    try {
+      index = ScheduleInfo.getIndexFromSlot(slot);
+    } catch(Exception e) {
+      System.out.println("\n"+e.getMessage());
+      System.out.println("[-] Failed to book appointment");
+      return false;
+    }
+    int noSlotCount = 0;
+    int totalCount = docAvailForTheDay.size();
+
+    for (Map.Entry<String, boolean[]> entry : docAvailForTheDay.entrySet()) {
+      String key = entry.getKey();
+      boolean[] value = entry.getValue();
+      if (!value[index]) 
+        noSlotCount++;
+    }
+
+    if (noSlotCount == totalCount) {
+      System.out.println("\n[-] Failed to book appointment. No slots are available");
+      return false;
+    }
+
     HashMap<List<String>, List<String>> patSchedule = getScheduledAppointment(patID);
     List<String> key = new ArrayList<>();
     key.add(date); key.add(slot);
-
+    ScheduleInfo si = new ScheduleInfo(docID);
+    
     switch(opt) {
       case ScheduleOption.NEW:
+
       if (patSchedule.containsKey(key)) {
         if (!patSchedule.get(key).get(0).equals("cancelled")) {
           System.out.println("\n[-] There is an existing appointment: ");
@@ -116,19 +144,20 @@ public class AppointmentSystem {
           System.out.println(key.get(0) + " " + key.get(1) + " " + patSchedule.get(key).get(0) + " " + patSchedule.get(key).get(1) + " " + patSchedule.get(key).get(2));
           return false;
         }
-        else {
-          List<String> newVal = new ArrayList<>();
-          Doctor doc = new Doctor(docID);
-          newVal.add("pending"); 
-          newVal.add(doc.getBasicInfo().getFirstName() + " " + doc.getBasicInfo().getLastName());
-          newVal.add(docID);
-          patSchedule.put(key, newVal);
-          if(!updatePatientAppointment(patID, patSchedule)) return false;
-        }
-      } 
+      }
+        List<String> newVal = new ArrayList<>();
+        Doctor doc = new Doctor(docID);
+        newVal.add("pending"); 
+        newVal.add(doc.getBasicInfo().getFirstName() + " " + doc.getBasicInfo().getLastName());
+        newVal.add(docID);
+        patSchedule.put(key, newVal);
+        if(!updatePatientAppointment(patID, patSchedule)) return false; 
+        if(!si.setAvailability(date,slot,patID,AvailStatus.BOOK)) return false;
+
       break;
 
       case ScheduleOption.REPLACE:
+
       break;
 
       case ScheduleOption.CANCEL:
@@ -181,41 +210,4 @@ public class AppointmentSystem {
   private static HashMap<String, boolean[]> docAvailForTheDay;
   private static String REQUEST_HEADER = "status,patientID,appointmentDate,timeSlot,drID,drName";
   private static String OUTCOME_HEADER = "patientID,serviceDate,serviceName,drID,diagnosis,medicationPrescribed,medicationAmount,medicationStatus,treatmentPlan,remarks";
-
-
-  // print availble slot for appointment for the day
-  // 1. search by day 
-  // 2. it should display
-  // ====[ Available Slots for DD-MM ]===
-  // 9-10: Dr. First Name + Last Name
-  // 9-10: Dr. First Name + Last Name
-  //
-  // ..
-  // ..
-  // f() to show available time slots for the DAY
-  // To improve performance, should not read the entirety of the databse
-  // must choose a day <-- returns an array of status for each of the time slot in the day
-  // should use a map
-  // doctor ID -> time slot that is AVAILABLE
-  // read all ../data/ScheduleDB/numbers/mm/dd.csv
-
-  // patients should have data fields for schedule appointment
-  // Appointment Date
-  // Doctor ID
-  // Status: 1) Completed 2) Cancelled 3) Pending
-
-  // 12345.csv
-  // patientID,date,service,status,drID,medication,quantity
-  // allow easy access through Patient 
-  //
-  // maybe should keep all.csv
-  // for everything 
-  //
-  //separate completed.csv
-  // appointment outcome 
-  
-  // appointment record
-  // temporary db before writing to medical records?
-  // so will keep recording lines
-  
 }

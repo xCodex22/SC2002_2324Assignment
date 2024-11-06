@@ -258,7 +258,7 @@ public class ScheduleInfo{
     }
   }
 
-  public boolean setAvailability(String date, String slot, AvailStatus status) {
+  public boolean setAvailability(String date, String slot, String patID, AvailStatus status) {
     // input format will  be DD-MM (assume only one year)
     String day = date.substring(0, 2);
     String month = date.substring(3, 5);
@@ -286,6 +286,9 @@ public class ScheduleInfo{
             System.out.println("[-] Unable to set date as available. Time slot is reserved or already available.");
             return false;
           }
+          break;
+        case AvailStatus.BOOK:
+          newLine[index] = patID; 
           break;
         default:
           System.out.println("[-] in setAvailability(): unknown status");
@@ -339,7 +342,7 @@ public class ScheduleInfo{
     return ans;
   }
 
-  private int getIndexFromSlot(String slot) throws Exception {
+  public static int getIndexFromSlot(String slot) throws Exception {
     int index;
      
     switch(slot) {
