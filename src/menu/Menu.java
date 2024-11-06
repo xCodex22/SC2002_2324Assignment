@@ -265,7 +265,12 @@ public class Menu {
           break;
         case 6:
           break;
-        case 7:
+        case 7: // view scheduled appointment
+          clearScreen();
+          System.out.println("======[ All Scheduled Appointments ]=======\n");
+          AppointmentSystem.printScheduledAppointment(user.getBasicInfo().getID());
+          confirm();
+          clearScreen();
           break;
         case 8:
           password_menu();

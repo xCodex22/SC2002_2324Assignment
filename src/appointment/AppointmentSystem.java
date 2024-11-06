@@ -66,8 +66,50 @@ public class AppointmentSystem {
     }
   }
 
-  public boolean scheduleAppointment(String date, int slot, String docID, String patID) {
-   return true; 
+  public boolean scheduleAppointment(String date, int slotIndex, String docID, String patID) {
+    loadAvailSlot(date); 
+    return true;     
+  }
+
+  /*
+   * @return the hash map for current appointment of patient, key: [Date, TimeSlot] value: [status, drName, drID]
+   */
+  private static HashMap<List<String>, List<String>> getScheduledAppointment(String patID) {
+    // pending, completed, confirmed, cancelled
+    try {
+      HashMap<List<String>, List<String>> ans = new HashMap<List<String>, List<String>>();
+      String pathName = "../data/AppointmentDB/" + patID + "request.csv";
+      File file = new File(pathName);
+      Scanner sc = new Scanner(file);
+      sc.nextLine();
+      String[] line;
+      while (sc.hasNextLine()) {
+        List<String> key = new ArrayList<>();
+        List<String> value = new ArrayList<>();
+        line = sc.nextLine().split(",");
+        key.add(line[2]); key.add(line[3]);
+        value.add(line[0]); value.add(line[5]); value.add(line[4]);
+        ans.put(key, value);
+      }
+      return ans;
+    } catch(FileNotFoundException e) {
+      System.out.println("[-] User not found");
+      return null;
+    }
+  }
+
+  public static void printScheduledAppointment(String patID) {
+    HashMap<List<String>, List<String>> ans = getScheduledAppointment(patID);
+    System.out.println("[1] Scheduled Date [2] Scheduled Slot [3] Appointment Status [4] Doctor Name [5] Doctor ID");
+    for (Map.Entry<List<String>, List<String>> entry : ans.entrySet()) { 
+        List<String> k = entry.getKey();
+        List<String> v = entry.getValue();
+        for (String i : k) 
+          System.out.print(i + " ");
+        for (String j : v)
+          System.out.print(j + " ");
+        System.out.println();
+      }
   }
 
   private HashMap<String, boolean[]> docAvailForTheDay;
