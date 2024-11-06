@@ -12,9 +12,11 @@ import users.*;
 import account.ScheduleInfo;
 
 public class AppointmentSystem {
+  private AppointmentSystem(){};
    
-  public void printAvailSlot(String date) {
+  public static void printAvailSlot(String date) {
     loadAvailSlot(date);
+    
     for (Map.Entry<String, boolean[]> entry : docAvailForTheDay.entrySet()) {
       String docID = entry.getKey(); 
       boolean[] slots = entry.getValue();        
@@ -22,14 +24,14 @@ public class AppointmentSystem {
       String docName = "Dr. " + doc.getBasicInfo().getFirstName() + " " + doc.getBasicInfo().getLastName();
 
       for (int i = 0; i < slots.length; i++) {
-        if (slots[i]) {
+        if (slots[i])
           System.out.println(ScheduleInfo.getSlotFromIndex(i) + ": " + docName + " ID: " + docID);
-        }
       }
     }
+
   }
 
-  private void loadAvailSlot(String date) {
+  private static void loadAvailSlot(String date) {
     HashMap<String, boolean[]> map = new HashMap<String,boolean[]>();
 
     try {
@@ -66,12 +68,76 @@ public class AppointmentSystem {
     }
   }
 
-  public boolean scheduleAppointment(String date, int slotIndex, String docID, String patID) {
+
+  private static boolean updatePatientAppointment(String patID, HashMap<List<String>, List<String>> scheduledApt) {
+    try {
+      String path = "../data/AppointmentDB/" + patID + "request.csv";
+      String tmp = "../data/AppointmentDB/" + patID + "request.csv~";
+      List<String> content = scheduleMapToFileContent(patID, scheduledApt);
+      Files.write(Paths.get(tmp), content, StandardCharsets.UTF_8);
+      Files.copy(Paths.get(tmp), Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
+      Files.delete(Paths.get(tmp));
+      return true;
+    } catch(IOException e) {
+      e.printStackTrace();
+      System.out.println("[-] No permission to read / write file");
+      return false;
+    }
+  }
+
+  private static List<String> scheduleMapToFileContent(String patID, HashMap<List<String>, List<String>> map) {
+    // key: [Date, TimeSlot] value: [status, drName, drID]
+    List<String> ans = new ArrayList<>();
+    ans.add(REQUEST_HEADER);
+
+    for (Map.Entry<List<String>, List<String>> entry : map.entrySet()) { 
+      List<String> k = entry.getKey();
+      List<String> v = entry.getValue();
+      String newLine = v.get(0) + "," + patID + ",";
+      for (int i = 0; i < k.size(); i++) newLine += (k.get(i) + ",");       
+      newLine += (v.get(2) + "," + v.get(1)); 
+      ans.add(newLine);  
+    }
+    return ans;
+  }
+
+  public static boolean scheduleAppointment(String date, String slot, String docID, String patID, ScheduleOption opt) {
     loadAvailSlot(date); 
+    HashMap<List<String>, List<String>> patSchedule = getScheduledAppointment(patID);
+    List<String> key = new ArrayList<>();
+    key.add(date); key.add(slot);
+
+    switch(opt) {
+      case ScheduleOption.NEW:
+      if (patSchedule.containsKey(key)) {
+        if (!patSchedule.get(key).get(0).equals("cancelled")) {
+          System.out.println("\n[-] There is an existing appointment: ");
+          System.out.println("[1] Scheduled Date [2] Scheduled Slot [3] Appointment Status [4] Doctor Name [5] Doctor ID");
+          System.out.println(key.get(0) + " " + key.get(1) + " " + patSchedule.get(key).get(0) + " " + patSchedule.get(key).get(1) + " " + patSchedule.get(key).get(2));
+          return false;
+        }
+        else {
+          List<String> newVal = new ArrayList<>();
+          Doctor doc = new Doctor(docID);
+          newVal.add("pending"); 
+          newVal.add(doc.getBasicInfo().getFirstName() + " " + doc.getBasicInfo().getLastName());
+          newVal.add(docID);
+          patSchedule.put(key, newVal);
+          if(!updatePatientAppointment(patID, patSchedule)) return false;
+        }
+      } 
+      break;
+
+      case ScheduleOption.REPLACE:
+      break;
+
+      case ScheduleOption.CANCEL:
+      break;
+    }
     return true;     
   }
 
-  /*
+  /* @param patient's ID
    * @return the hash map for current appointment of patient, key: [Date, TimeSlot] value: [status, drName, drID]
    */
   private static HashMap<List<String>, List<String>> getScheduledAppointment(String patID) {
@@ -112,7 +178,9 @@ public class AppointmentSystem {
       }
   }
 
-  private HashMap<String, boolean[]> docAvailForTheDay;
+  private static HashMap<String, boolean[]> docAvailForTheDay;
+  private static String REQUEST_HEADER = "status,patientID,appointmentDate,timeSlot,drID,drName";
+  private static String OUTCOME_HEADER = "patientID,serviceDate,serviceName,drID,diagnosis,medicationPrescribed,medicationAmount,medicationStatus,treatmentPlan,remarks";
 
 
   // print availble slot for appointment for the day
