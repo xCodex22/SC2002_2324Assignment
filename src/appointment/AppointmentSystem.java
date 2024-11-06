@@ -95,7 +95,13 @@ public class AppointmentSystem {
       List<String> k = entry.getKey();
       List<String> v = entry.getValue();
       String newLine = v.get(0) + "," + patID + ",";
-      for (int i = 0; i < k.size(); i++) newLine += (k.get(i) + ",");       
+
+      if (k.get(0).length() > 5)
+        newLine += k.get(0) + ",";
+      else
+        newLine += k.get(0) + "-2024,";
+
+      newLine += k.get(1) + ",";
       newLine += (v.get(2) + "," + v.get(1)); 
       ans.add(newLine);  
     }
