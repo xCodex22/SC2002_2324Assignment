@@ -265,7 +265,7 @@ public class Menu {
           String slot = null;
           do {
             try {
-              d2 = Sanitise.readDate()+"-2024";
+              d2 = Sanitise.readDate()+"-2024"; //TODO: IMPORTANT 
               break;
             } catch (Exception e) {
               System.out.println(e.getMessage());
@@ -314,6 +314,52 @@ public class Menu {
         case 5: // reschuedle appointment
           break;
         case 6: // cancel appointment
+          clearScreen();
+          System.out.println("====[ Cancel an appointment ]====");
+          do {
+            try {
+              d2 = Sanitise.readDate()+"-2024"; //TODO: IMPORTANT 
+              break;
+            } catch (Exception e) {
+              System.out.println(e.getMessage());
+            }
+          } while(true);
+
+          do {
+              System.out.println("Select a time slot: ");
+              System.out.println("[1] 0900-1000");
+              System.out.println("[2] 1000-1100");
+              System.out.println("[3] 1100-1200");
+              System.out.println("[4] 1300-1400");
+              System.out.println("[5] 1400-1500");
+              System.out.println("[6] 1500-1600");
+              System.out.println("[7] 1600-1700");
+              System.out.print("Enter option (1-7): ");
+              in = Sanitise.readInt(1,7,8);
+              slot = ScheduleInfo.getSlotFromIndex(in-1); 
+          } while(in == 8);
+          
+        do {
+            try {
+              System.out.print("Enter the ID of the doctor that you have scheduled with: ");
+              docID = Sanitise.readID();
+              StaffManagementSystem tmp = new StaffManagementSystem();
+              if (tmp.findStaff(Integer.valueOf(docID)) == null) 
+                throw new Exception("[-] Doctor does not exist. Try again");
+              break;
+            } catch (Exception e) {
+              System.out.println(e.getMessage());
+            }
+          } while(true);
+          
+          if(AppointmentSystem.scheduleAppointment(d2, slot, docID, user.getBasicInfo().getID(), ScheduleOption.CANCEL)) {
+            System.out.println("[+] Successfully cancelled appointment");
+        }
+          else
+            System.out.println("[-] Failed to cancel appointment");
+ 
+          confirm();
+          clearScreen();
           break;
         case 7: // view scheduled appointment
           clearScreen();

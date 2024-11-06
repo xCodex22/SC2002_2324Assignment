@@ -171,14 +171,11 @@ public class AppointmentSystem {
 
       case ScheduleOption.CANCEL:
       // if the slot wasn't in scheduled list, then error
-      for (String i : key) {
-        System.out.println(i);
-      }
+      
       if(!patSchedule.containsKey(key)) {
         System.out.println("[-] You have not booked this slot yet");
         return false;
       }
-
       List<String> val = patSchedule.get(key);
       val.set(0,"cancelled");
       patSchedule.put(key, val);
