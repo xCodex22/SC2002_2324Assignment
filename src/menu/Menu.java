@@ -609,12 +609,13 @@ public class Menu {
         newEntry[8] = "NIL";
         newEntry[9] = newPlan;
 
+        System.out.println("[+] Updated patient's medical record");
         for (String i : newEntry) {
           System.out.println(i);
         }
-      
-        //TODO: ignore inventory, just need to write entry to file
 
+        p.getMedicalInfo().updateInfo(user, String.join(",", newEntry));
+        //TODO: ignore inventory, just need to write entry to file
         confirm(); 
         clearScreen();
         System.out.println(menu);
