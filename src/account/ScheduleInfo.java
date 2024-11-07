@@ -288,7 +288,14 @@ public class ScheduleInfo{
           }
           break;
         case AvailStatus.BOOK:
-          newLine[index] = patID; 
+          newLine[index] = "P"+patID; 
+          break;
+        case AvailStatus.CONFIRM:
+         if (!newLine[index].startsWith("P")) {
+            System.out.println("[-] Unable to confirm the time slot. There is no pending appointment");     
+            return false;
+          }
+          newLine[index] = "C"+patID;
           break;
         case AvailStatus.CANCEL:
           newLine[index] = "O";
@@ -473,7 +480,6 @@ public class ScheduleInfo{
   // 3. record into outcome.csv, so patients can view their outcome by indexing the file easily (outcome means completed)
   // 4. record into all .csv ?
   // 5. go and updat ehte all.csv 
-
 
   private String[][][] scheduleArray;
   private String id;

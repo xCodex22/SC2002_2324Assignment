@@ -613,9 +613,7 @@ public class Menu {
         for (String i : newEntry) {
           System.out.println(i);
         }
-
         p.getMedicalInfo().updateInfo(user, String.join(",", newEntry));
-        //TODO: ignore inventory, just need to write entry to file
         confirm(); 
         clearScreen();
         System.out.println(menu);
@@ -766,6 +764,9 @@ public class Menu {
           break;
 
         case 5: // accept or decline
+          // 1. update doctors schedule
+          //  2. update patient's appointment
+          
           break;
 
         case 6: // view schedule
@@ -780,7 +781,7 @@ public class Menu {
           System.out.println(menu);
           break;
 
-        case 7: // record appoitnment outcome
+        case 7: // record appointnment outcome
           break;
 
         case 8:

@@ -1,5 +1,5 @@
 package account;
 
 public enum AvailStatus {
-  OPEN, CLOSE, BOOK, CANCEL
+  OPEN, CLOSE, BOOK, CANCEL, CONFIRM
 }
