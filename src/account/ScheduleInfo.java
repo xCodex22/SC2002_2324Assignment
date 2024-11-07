@@ -316,6 +316,23 @@ public class ScheduleInfo{
     return true;
   }
 
+  private String getMonthFromIndex(int i) {
+    String ans;
+    if (i < 10) 
+      ans = "0" + String.valueOf(i);
+    else
+      ans = String.valueOf(i);
+    return ans;
+  }
+
+  private String getDateFromIndex(int i) {
+    String ans;
+    if (i < 10)
+      ans = "0" + String.valueOf(i);
+    else
+      ans = String.valueOf(i);
+    return ans;
+  }
 
   public static String getSlotFromIndex(int i) {
     String ans = null;
@@ -400,6 +417,63 @@ public class ScheduleInfo{
     }
     aint need all these
   } */
+
+
+  /**
+   * @return array of String with the upcoming appointment 
+   */
+  public List<String> getUpcomingAppointment() {
+    // iterate through scheduleArray[month][date][timeslot]
+    // P12345 (pending)
+    // C12345 (confirmed)
+    // X (done)
+    // O (cancelled)
+    // only read the ones that are subtring(0,).equals("C");
+    // string format
+    // Date Timeslot PatientID 
+
+    List<String> ans = new ArrayList<>();
+
+    for (int month = 1; month < scheduleArray.length; month++) {
+      for (int date = 1; date < scheduleArray[month].length; date++) {
+        if (scheduleArray[month][date] != null) { // num of days in mth is different
+          for (int timeSlot = 0; timeSlot < scheduleArray[month][date].length; timeSlot++) {
+            if (scheduleArray[month][date][timeSlot].startsWith("C")) {
+              String m = getMonthFromIndex(month) + "-";
+              String d = getDateFromIndex(date) + "-";
+              String y = "2024";
+              String s = getSlotFromIndex(timeSlot);
+              String patID = scheduleArray[month][date][timeSlot].substring(1);
+              String entry = d+m+y+" "+ s + " " +patID;
+              ans.add(entry);
+            }
+          }
+        }
+      }
+    }  
+    return ans;
+  }
+
+  // accept or decling request is just setting availabiilty
+  // use overwrite option
+  // --> check that it must first be a String that is not (X) or (O)
+  // --> if confirm, change to C12345
+  // || also needs to update the patient side
+  // || update this in request to their request, just make a new entry saying confirmed?
+  // || this will work?  
+  // --> if cancelled, change to O
+  // || also need to update the patient side
+  // || to cancell
+  // so will just  
+  //
+
+  // record outcome has the following jsteps
+  // 1. Update Medical Record
+  // 2. availability is allready set 
+  // 3. record into outcome.csv, so patients can view their outcome by indexing the file easily (outcome means completed)
+  // 4. record into all .csv ?
+  // 5. go and updat ehte all.csv 
+
 
   private String[][][] scheduleArray;
   private String id;

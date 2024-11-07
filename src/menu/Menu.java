@@ -5,7 +5,7 @@ import appointment.*;
 import staffmanagement.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.util.*;
 import java.io.Console;
 import java.util.InputMismatchException;
 import java.nio.file.*;
@@ -601,24 +601,19 @@ public class Menu {
 
         System.out.println("Enter new diagnosis: ");
         newDiag = sc.nextLine(); 
-        System.out.println("Enter new prescription: "); 
-        newMed= sc.nextLine();
-        System.out.println("Enter new prescribed quantity: ");
-        newQty = sc.nextLine();
         System.out.println("Enter new treatment plan: ");
         newPlan = sc.nextLine();
 
         newEntry[6] = newDiag;
-        newEntry[7] = newMed;
-        newEntry[8] = newQty;
+        newEntry[7] = "NIL";
+        newEntry[8] = "NIL";
         newEntry[9] = newPlan;
 
         for (String i : newEntry) {
           System.out.println(i);
         }
- 
-        // need dependency from inventory system
-        // TODO: local save
+      
+        //TODO: ignore inventory, just need to write entry to file
 
         confirm(); 
         clearScreen();
@@ -769,13 +764,22 @@ public class Menu {
           System.out.println(menu);
           break;
 
-        case 5:
+        case 5: // accept or decline
           break;
 
-        case 6:
+        case 6: // view schedule
+          clearScreen();
+          System.out.println("=======[ Your Upcoming Schedules ]======");
+          System.out.println("[1] Date [2] Time Slot [3] Patient ID"); 
+          List<String> upcoming = doc.getScheduleInfo().getUpcomingAppointment();
+          for (String i : upcoming)
+            System.out.println(i);
+          confirm();
+          clearScreen();
+          System.out.println(menu);
           break;
 
-        case 7:
+        case 7: // record appoitnment outcome
           break;
 
         case 8:
