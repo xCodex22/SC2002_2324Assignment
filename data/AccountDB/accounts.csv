@@ -1,6 +1,7 @@
 hospitalID,password,Role
 12345,password,PATIENT
-12347,12347,PHARMACIST
+12346,password,DOCTOR
+12347,password,PHARMACIST
 12348,admin,ADMIN
 12349,password,PATIENT
 12350,password,PATIENT

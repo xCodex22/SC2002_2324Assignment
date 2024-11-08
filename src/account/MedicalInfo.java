@@ -1,6 +1,7 @@
 package account;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.*;
@@ -13,9 +14,11 @@ public class MedicalInfo {
     File file = null;
     String[] line = null;
     List<String[]> record = new ArrayList<>();
+    String path = null;
 
     try {
-      file = new File("../data/MedicalRecordsDB/" + hospitalID + ".csv");
+      path = "../data/MedicalRecordsDB/" + hospitalID + ".csv";
+      file = new File(path);
       Scanner read = new Scanner(file);
       read.nextLine();
       while(read.hasNextLine()) {
@@ -28,8 +31,24 @@ public class MedicalInfo {
         this.bloodType = line[1];
       this.ID = hospitalID;
       medicalRecords = record;
+      this.filePath = path;
     } catch (FileNotFoundException e) {
      throw new Exception("[-] User does not exist"); 
+    }
+  }
+
+  public void updateInfo(User doctor, String newEntry) {
+    if (doctor instanceof Doctor) {
+       try {
+          FileWriter writer = new FileWriter(this.filePath, true);  
+          writer.write(newEntry+"\n");
+          writer.close();
+       } catch (IOException e) {
+        System.out.println("[-] Failed to update patient medical records. Record does not exist in data base");
+      }
+    }
+    else {
+      System.out.println("[-] Current user does not have permission to update medical info");
     }
   }
 
@@ -69,5 +88,6 @@ public class MedicalInfo {
 
   private String bloodType = null;
   private String ID;
+  private String filePath = null;
   private List<String[]> medicalRecords;
 }

@@ -1,7 +1,7 @@
 package users;
 
 public class Administrator extends User {
-  public Aministrator(String hospitalID) {
+  public Administrator(String hospitalID) {
     super(hospitalID, "ADMIN");
   }
 }

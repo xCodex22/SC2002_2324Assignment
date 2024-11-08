@@ -41,13 +41,13 @@ public class StaffManagementSystem {
 
   public void display(FilterOption option) {
     switch(option) {
-      case FilterOption.ALL:
+      case ALL:
         System.out.println("\n==================[ List of Doctors ]======================\n");
         for (User i : doctorArray) { i.getBasicInfo().displayInfo(); }
         System.out.println("\n================[ List of Pharmacists ]====================\n");
         for (User i : pharmacistArray) { i.getBasicInfo().displayInfo(); }
         break;
-      case FilterOption.GENDER:
+      case GENDER:
         String gender = Sanitise.readGender();
         System.out.println("\n==================[ Filter: Gender  ]======================\n");
         System.out.println("\n==================[ List of Doctors ]======================\n");
@@ -61,7 +61,7 @@ public class StaffManagementSystem {
               i.getBasicInfo().displayInfo();
           }
         break;
-      case FilterOption.ROLE:
+      case ROLE:
         String role = Sanitise.readRole();
         if (role == "DOCTOR") {
           System.out.println("\n==================[ List of Doctors ]======================\n");
@@ -72,7 +72,7 @@ public class StaffManagementSystem {
           for (User i : pharmacistArray) { i.getBasicInfo().displayInfo(); }
         }
         break;
-      case FilterOption.AGE:
+      case AGE:
         System.out.print("\n[!] Enter the age to be filtered: ");
         String age = null;
         int year = Year.now().getValue();
@@ -92,7 +92,7 @@ public class StaffManagementSystem {
           e.getMessage();
         }
         break;
-      case FilterOption.ID:
+      case ID:
         System.out.print("\n[!] Enter the ID number to be filtered: ");
         String id = null;
         try {

@@ -48,7 +48,7 @@ public class BasicInfo {
         phoneNumber = line[5];
         emailAddress = line[6];
       } catch(FileNotFoundException e) {
-        e.printStackTrace();
+       System.out.println("[-] No such data exist in data base"); 
     }
   }
 

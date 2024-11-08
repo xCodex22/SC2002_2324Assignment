@@ -1,10 +1,11 @@
 package menu;
 import account.*;
 import users.*;
+import appointment.*;
 import staffmanagement.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.util.*;
 import java.io.Console;
 import java.util.InputMismatchException;
 import java.nio.file.*;
@@ -80,22 +81,22 @@ public class Menu {
       passwd = new String(cnsl.readPassword("Enter your password: "));
 
       switch(acc.login(uname, passwd)) {
-        case LoginStatus.SUCCESS:
+        case SUCCESS:
         select_menu(acc.getRole());
         break;
-        case LoginStatus.WRONG_PASSWORD:
+        case WRONG_PASSWORD:
         clearScreen();
         System.out.println("=================================================================");
         System.out.println("                   [!!] Wrong Password. Try Again.               ");
         System.out.println("=================================================================");
         break;
-        case LoginStatus.USER_NOT_FOUND:
+        case USER_NOT_FOUND:
         clearScreen();
         System.out.println("==================================================================");
         System.out.println("                   [!!] User Not Found. Try Again.                ");
         System.out.println("==================================================================");
         break;
-        case LoginStatus.ERROR:
+        case ERROR:
         throw new Exception("[-] Unexpected error has Occurred");
       }
     } catch(Exception e) { e.printStackTrace(); }
@@ -240,15 +241,237 @@ public class Menu {
         case 2:
           updatePersonalInfo_menu(user);
           break;
-        case 3:
+        case 3: //view available slots
+          clearScreen();
+          System.out.println("=======[ View Available Slots ]=======");
+          String d = null;
+          do {
+            try {
+              d = Sanitise.readDate();
+              break;
+            } catch (Exception e) {
+              System.out.println(e.getMessage());
+            }
+          } while(true);
+          System.out.println("\n[!] The available slots for " + d + " are: ");
+          AppointmentSystem.printAvailSlot(d);
+          confirm();
+          clearScreen();
           break;
-        case 4:
+        case 4: // schedule appointment
+          clearScreen();
+          System.out.println("======[ Schedule Appoinment ]=====");
+          String d2 = null;
+          String slot = null;
+          do {
+            try {
+              d2 = Sanitise.readDate()+"-2024"; //TODO: IMPORTANT 
+              break;
+            } catch (Exception e) {
+              System.out.println(e.getMessage());
+            }
+          } while(true);
+
+          int in = 8;
+          
+          do {
+              System.out.println("Select a time slot: ");
+              System.out.println("[1] 0900-1000");
+              System.out.println("[2] 1000-1100");
+              System.out.println("[3] 1100-1200");
+              System.out.println("[4] 1300-1400");
+              System.out.println("[5] 1400-1500");
+              System.out.println("[6] 1500-1600");
+              System.out.println("[7] 1600-1700");
+              System.out.print("Enter option (1-7): ");
+              in = Sanitise.readInt(1,7,8);
+              slot = ScheduleInfo.getSlotFromIndex(in-1); 
+          } while(in == 8);
+
+          String docID = null;
+          
+          do {
+            try {
+              System.out.print("Enter ID of doctor to schedule with: ");
+              docID = Sanitise.readID();
+              StaffManagementSystem tmp = new StaffManagementSystem();
+              if (tmp.findStaff(Integer.valueOf(docID)) == null) 
+                throw new Exception("[-] Doctor does not exist. Try again");
+              break;
+            } catch (Exception e) {
+              System.out.println(e.getMessage());
+            }
+          } while(true);
+   
+          if(AppointmentSystem.scheduleAppointment(d2, slot, docID, user.getBasicInfo().getID(), ScheduleOption.NEW)) {
+            System.out.println("[+] Successfully scheduled appointment");
+        }
+          else
+            System.out.println("[-] Failed to schedule appointment");
+          confirm();
+          clearScreen();
           break;
-        case 5:
+        case 5: // reschuedle appointment
+          clearScreen();
+          String newDate, newDoc; newDate = null; newDoc = null;
+          System.out.println("=====[ Reschedule an appointment ]=====");
+          System.out.println("First, enter the original schedule date");
+          confirm();
+           do {
+            try {
+              d2 = Sanitise.readDate()+"-2024"; //TODO: IMPORTANT 
+              break;
+            } catch (Exception e) {
+              System.out.println(e.getMessage());
+            }
+          } while(true);
+
+          do {
+              System.out.println("Select a time slot: ");
+              System.out.println("[1] 0900-1000");
+              System.out.println("[2] 1000-1100");
+              System.out.println("[3] 1100-1200");
+              System.out.println("[4] 1300-1400");
+              System.out.println("[5] 1400-1500");
+              System.out.println("[6] 1500-1600");
+              System.out.println("[7] 1600-1700");
+              System.out.print("Enter option (1-7): ");
+              in = Sanitise.readInt(1,7,8);
+              slot = ScheduleInfo.getSlotFromIndex(in-1); 
+          } while(in == 8);
+          
+        do {
+            try {
+              System.out.print("Enter the ID of the doctor that you have scheduled with: ");
+              docID = Sanitise.readID();
+              StaffManagementSystem tmp = new StaffManagementSystem();
+              if (tmp.findStaff(Integer.valueOf(docID)) == null) 
+                throw new Exception("[-] Doctor does not exist. Try again");
+              break;
+            } catch (Exception e) {
+              System.out.println(e.getMessage());
+            }
+          } while(true);
+
+        if(!AppointmentSystem.scheduleAppointment(d2, slot, docID, user.getBasicInfo().getID(), ScheduleOption.CANCEL))
+          {
+            System.out.println("[-] Failed to reschedule. You did not have the slot booked");
+            confirm();
+            clearScreen();
+            break;
+        }
+        else {
+          clearScreen();
+          System.out.println("=====[ Reschedule an appointment ]=====");
+          System.out.println("Next, enter new date to reschedule");
+          do {
+            try {
+              newDate = Sanitise.readDate()+"-2024"; //TODO: IMPORTANT 
+              break;
+            } catch (Exception e) {
+              System.out.println(e.getMessage());
+            }
+          } while(true);
+
+          do {
+              System.out.println("Select a time slot: ");
+              System.out.println("[1] 0900-1000");
+              System.out.println("[2] 1000-1100");
+              System.out.println("[3] 1100-1200");
+              System.out.println("[4] 1300-1400");
+              System.out.println("[5] 1400-1500");
+              System.out.println("[6] 1500-1600");
+              System.out.println("[7] 1600-1700");
+              System.out.print("Enter option (1-7): ");
+              in = Sanitise.readInt(1,7,8);
+              slot = ScheduleInfo.getSlotFromIndex(in-1); 
+          } while(in == 8);
+          
+        do {
+            try {
+              System.out.print("Enter the ID of the doctor that you want to schedule with: ");
+              newDoc = Sanitise.readID();
+              StaffManagementSystem tmp = new StaffManagementSystem();
+              if (tmp.findStaff(Integer.valueOf(newDoc)) == null) 
+                throw new Exception("[-] Doctor does not exist. Try again");
+              break;
+            } catch (Exception e) {
+              System.out.println(e.getMessage());
+            }
+          } while(true);
+
+        }
+
+        if(!AppointmentSystem.scheduleAppointment(newDate, slot, newDoc, user.getBasicInfo().getID(), ScheduleOption.NEW))
+          {
+            System.out.println("[-] Failed to reschedule. The slot is not available");
+            System.out.println("[!] Slot reverted");
+            AppointmentSystem.scheduleAppointment(d2,slot,docID,user.getBasicInfo().getID(), ScheduleOption.NEW);
+            confirm();
+            clearScreen();
+            break;
+        }
+
+          // reschdule will just be book appointment, followed by cancel original appointment
+          // attempt to schedule new one 
+          System.out.println("[+] Successfully rescheduled");
+          confirm();
+          clearScreen();
           break;
-        case 6:
+        case 6: // cancel appointment
+          clearScreen();
+          System.out.println("====[ Cancel an appointment ]====");
+          do {
+            try {
+              d2 = Sanitise.readDate()+"-2024"; //TODO: IMPORTANT 
+              break;
+            } catch (Exception e) {
+              System.out.println(e.getMessage());
+            }
+          } while(true);
+
+          do {
+              System.out.println("Select a time slot: ");
+              System.out.println("[1] 0900-1000");
+              System.out.println("[2] 1000-1100");
+              System.out.println("[3] 1100-1200");
+              System.out.println("[4] 1300-1400");
+              System.out.println("[5] 1400-1500");
+              System.out.println("[6] 1500-1600");
+              System.out.println("[7] 1600-1700");
+              System.out.print("Enter option (1-7): ");
+              in = Sanitise.readInt(1,7,8);
+              slot = ScheduleInfo.getSlotFromIndex(in-1); 
+          } while(in == 8);
+          
+        do {
+            try {
+              System.out.print("Enter the ID of the doctor that you have scheduled with: ");
+              docID = Sanitise.readID();
+              StaffManagementSystem tmp = new StaffManagementSystem();
+              if (tmp.findStaff(Integer.valueOf(docID)) == null) 
+                throw new Exception("[-] Doctor does not exist. Try again");
+              break;
+            } catch (Exception e) {
+              System.out.println(e.getMessage());
+            }
+          } while(true);
+          
+          if(AppointmentSystem.scheduleAppointment(d2, slot, docID, user.getBasicInfo().getID(), ScheduleOption.CANCEL)) {
+            System.out.println("[+] Successfully cancelled appointment");
+        }
+          else
+            System.out.println("[-] Failed to cancel appointment");
+ 
+          confirm();
+          clearScreen();
           break;
-        case 7:
+        case 7: // view scheduled appointment
+          clearScreen();
+          System.out.println("======[ All Scheduled Appointments ]=======\n");
+          AppointmentSystem.printScheduledAppointment(user.getBasicInfo().getID());
+          confirm();
+          clearScreen();
           break;
         case 8:
           password_menu();
@@ -267,6 +490,15 @@ public class Menu {
   public void doctor_menu(){
     clearScreen();	
     user = new Doctor(acc.getID());
+    Doctor doc;
+    if (user instanceof Doctor) {
+      doc = (Doctor) user;
+    }
+    else {
+        System.out.println("[-] Unexpected Error in doctor_menu()");
+        return;
+    }
+
     String surname = user.getBasicInfo().getLastName();
     final String menu = "=====[ Doctor Menu ]=====\n" +
     "||  Welcome back, Dr. " + surname + " ||\n\n" +
@@ -286,29 +518,346 @@ public class Menu {
       System.out.print("Enter option (1-9): ");
       choice = Sanitise.readInt(1, 9, 10);
       switch (choice) {
-        case 1:
+        case 1: // view patient medical records 
+          clearScreen();
+          System.out.println("======[ View Patient Medical Record ]======");
+          System.out.print("Enter patient's ID number: ");
+          String pid = null;
+          try {
+            pid = Sanitise.readID(); 
+          } catch(Exception e) { 
+            System.out.println("[-] Invalid ID number format");
+            confirm();
+            clearScreen();
+            System.out.println(menu);
+            break;
+          }
+          
+          try {
+            Patient p = new Patient(pid);
+            p.getMedicalInfo().displayInfo(user);
+          } catch(Exception e) {
+            System.out.println("[-] Patient not found. ");
+            confirm();
+            clearScreen();
+            System.out.println(menu);
+            break;
+          }
+
+          confirm(); 
+          clearScreen();
+          System.out.println(menu);
           break;
-        case 2:
-        break;
-        case 3:
-        break;
-        case 4:
-        break;
-        case 5:
-        break;
-        case 6:
-        break;
-        case 7:
-        break;
-        case 8:
-        password_menu();
+
+        case 2: // update patient medical records
+          clearScreen();
+          System.out.println("======[ Update Patient Medical Record ]======");
+          System.out.print("Enter patient's ID number: ");
+          pid = null;
+        try {
+          pid = Sanitise.readID(); 
+        } catch(Exception e) { 
+          System.out.println("[-] Invalid ID number format");
+          confirm();
+          clearScreen();
+          System.out.println(menu);
+          break;
+        }
+
+        System.out.println("\n[!] You are attempting to update the medical record of the following user:\n");
+        Patient p = new Patient(pid);
+        p.getBasicInfo().displayInfo();
+        System.out.println();
+        String[] newEntry = new String[11]; // directly map
+        // 0. hospitalID of patient
+        // 1. bloodType of patient
+        // 2. service date
+        // 3. service name
+        // 4. doctor ID
+        // 5. doctor name
+        // 6. diagnosis
+        // 7. medication prescribed
+        // 8. medication amount
+        // 9. treatment plan
+        // 10. remarks
+        newEntry[0] = p.getBasicInfo().getID();
+        newEntry[1] = p.getMedicalInfo().getBloodType();
+        newEntry[3] = "Medical Record Update";
+        newEntry[4] = user.getBasicInfo().getID();
+        newEntry[5] = user.getBasicInfo().getFirstName() + " " + user.getBasicInfo().getLastName(); 
+        newEntry[10] = "NIL";
+
+        String newDate, newDiag, newMed, newQty, newPlan;
+        do {
+          try {
+            System.out.println("Enter the date of update: ");
+            newDate = Sanitise.readDate();
+            newEntry[2] = newDate + "-2024";
+            break;
+          } catch (Exception e) {
+            System.out.println(e.getMessage());
+          }
+        } while (true);
+
+        System.out.println("Enter new diagnosis: ");
+        newDiag = sc.nextLine(); 
+        System.out.println("Enter new treatment plan: ");
+        newPlan = sc.nextLine();
+
+        newEntry[6] = newDiag;
+        newEntry[7] = "NIL";
+        newEntry[8] = "NIL";
+        newEntry[9] = newPlan;
+
+        System.out.println("[+] Updated patient's medical record");
+        for (String i : newEntry) {
+          System.out.println(i);
+        }
+        p.getMedicalInfo().updateInfo(user, String.join(",", newEntry));
+        confirm(); 
+        clearScreen();
         System.out.println(menu);
         break;
+
+        case 3: // view personal schedule
+          int in1 = 4;
+          clearScreen(); 
+        String month = "01";
+
+        doc.getScheduleInfo().printSchedule(month); 
+        do {
+          System.out.println("[1] Next");
+          System.out.println("[2] Previous");
+          System.out.println("[3] Exit");
+          System.out.print("Enter option (1-3): ");
+          in1 = Sanitise.readInt(1, 3, 4);
+          switch (in1) {
+            case 1:
+            if (Integer.valueOf(month) + 1 == 13) 
+            System.out.println("[-] Already at end of year"); 
+            else {
+              int tmp = Integer.valueOf(month) + 1;
+              if (tmp < 10)
+              month = "0" + String.valueOf(tmp);
+              else 
+              month = String.valueOf(tmp);
+              clearScreen();
+              doc.getScheduleInfo().printSchedule(month);
+            }
+            break;
+
+            case 2:
+            if (Integer.valueOf(month) - 1 == 0)
+            System.out.println("[-] Already at start of year");
+            else {
+              int tmp = Integer.valueOf(month) - 1;
+              if (tmp < 10)
+              month = "0" + String.valueOf(tmp);
+              else 
+              month = String.valueOf(tmp);
+              clearScreen();
+              doc.getScheduleInfo().printSchedule(month);
+            }
+            break;
+            case 3:
+            break;
+            default:
+            System.out.println("[-] Invalid option. Try again.");
+            break;
+          }
+        } while(in1 != 3);
+          
+          clearScreen();
+          System.out.println(menu);
+          break;
+
+        case 4: // set availability
+          clearScreen();
+          System.out.println("========[ Update Schedule ]========");
+          String date = null;
+          do {
+            System.out.print("Enter the date to modify: ");
+            try {
+              date = Sanitise.readDate(); 
+              break;
+            } catch (Exception e) {
+              System.out.println("[-] Invalid date. Try again");
+            }
+          } while (true);
+           
+          doc.getScheduleInfo().displayDay(date);
+        
+          AvailStatus option;
+          int in4 = 3;
+          
+          do { 
+            System.out.println("\n[!] Choose option:");
+            System.out.println("[1] Mark a slot as available");
+            System.out.println("[2] Mark a slot as unavailable");
+            System.out.print("Enter option (1-2): ");
+            in4 = Sanitise.readInt(1,2,3);
+            if (in4 == 3)
+              System.out.println("[-] Invalid option. Try again");
+          } while (in4 == 3);
+          
+          switch (in4) {
+            case 1:
+              option = AvailStatus.OPEN;
+              break;
+            case 2:
+              option = AvailStatus.CLOSE;
+              break;
+            default:
+              System.out.println("[-] in updateSchedule(): unkown option");
+              return;
+          }
+
+          do { 
+            System.out.println("\n[!] Choose time slot base on the numbering given");
+            System.out.print("Enter option (1-7): ");
+            in4 = Sanitise.readInt(1,7,8);
+            if (in4 == 8)
+              System.out.println("[-] Invalid option. Try again");
+          } while (in4 == 8);
+
+          String slot;
+
+          switch (in4) {
+            case 1:
+              slot = "0900-1000";
+              break;
+            case 2:
+              slot = "1000-1100";
+              break;
+            case 3:
+              slot = "1100-1200";
+              break;
+            case 4:
+              slot = "1300-1400";
+              break;
+            case 5:
+              slot = "1400-1500";
+              break;
+            case 6:
+              slot = "1500-1600";
+              break;
+            case 7:
+              slot = "1600-1700";
+              break;
+            default:
+              System.out.println("[-] in updateSchedule(): unknown slot");
+              return;
+          }
+
+          if(doc.getScheduleInfo().setAvailability(date, slot, null, option)) {
+            clearScreen();
+            doc.getScheduleInfo().displayDay(date);
+            System.out.println("\n[+] Schedule updated successfully");
+          }
+          else {
+            System.out.println("\n[-] Schedule update failed");
+          }
+
+          confirm();
+          clearScreen();
+          System.out.println(menu);
+          break;
+
+        case 5: // accept or decline
+          // 1. update doctors schedule
+          //  2. update patient's appointment
+          clearScreen();
+          System.out.println("=======[ Accept or Decline Appointment Request ]=======");
+          System.out.println("[1] Date [2] Time Slot [3] Patient ID"); 
+          List<String> ls = doc.getScheduleInfo().getPendingAppointment();
+          int idx = 1;
+          for (String i : ls) {
+            System.out.print("[ " + idx + " ] ");
+            System.out.println(i);
+            idx++;
+          }
+
+          if (ls.size() == 0) {
+            System.out.println("[-] There are no appointment requests!");
+            confirm();
+            clearScreen();
+            System.out.println(menu);
+            break;
+          }
+         
+          int ch = ls.size()+1;
+          do {
+           System.out.print("\nEnter the index of the scheduled appoitnment to accept or decline: ");
+           ch = Sanitise.readInt(1, ls.size(), ls.size()+1);
+            if (ch == ls.size()+1)
+              System.out.println("[-] Invalid index, choose from list given");
+          } while(ch == ls.size()+1);
+        
+          String chosenRequest = ls.get(ch-1);
+          System.out.println("[!] Selected Request: " + chosenRequest);
+
+          // chosenRequest is
+          // 01-01-2024 1500-1600 12345
+          String d = chosenRequest.substring(0,10);
+          String s = chosenRequest.substring(11,20);
+          String patid = chosenRequest.substring(21);
+          
+          do {
+            System.out.println("\n[1] Accept appointment request");
+            System.out.println("[2] Decline appointment request");
+            System.out.print("[!] Enter option (1-2): ");
+            ch = Sanitise.readInt(1,2,3);
+            if (ch == 3)
+              System.out.println("[-] Invalid option. Try again");
+          } while (ch == 3);
+
+          switch (ch) {
+            case 1:
+              // first set doctor side (schedule)
+              // then set appoitnment side  
+              // doc.getScheduleInfo().setAvailability(d, s, patid, AvailStatus.CONFIRM);
+              AppointmentSystem.acceptAppointment(d, s, doc.getBasicInfo().getID(), patid);
+               
+              System.out.println("[+] Appointment is confirmed");
+              break;
+            case 2:
+              doc.getScheduleInfo().setAvailability(d, s, patid, AvailStatus.CANCEL);
+              AppointmentSystem.declineAppointment(d, s, doc.getBasicInfo().getID(), patid);
+              System.out.println("[+] Appointment is declined.");
+              break;
+          }
+          
+          confirm();
+          clearScreen();
+          System.out.println(menu);
+          break;
+
+        case 6: // view schedule
+          clearScreen();
+          System.out.println("=======[ View Appointment Request");
+          System.out.println("[1] Date [2] Time Slot [3] Patient ID"); 
+          List<String> upcoming = doc.getScheduleInfo().getUpcomingAppointment();
+          for (String i : upcoming)
+            System.out.println(i);
+          confirm();
+          clearScreen();
+          System.out.println(menu);
+          break;
+
+        case 7: // record appointnment outcome
+          break;
+
+        case 8:
+          password_menu();
+          System.out.println(menu);
+          break;
+
         case 9:
-        break;
+          break;
+
         default:
-        System.out.println("[-] Invalid Choice");
-        break;
+          System.out.println("[-] Invalid Choice");
+          break;
       }
     } while(choice != 9);
     clearScreen();	
@@ -331,13 +880,19 @@ public class Menu {
       System.out.print("Enter option (1-6): ");
       choice = Sanitise.readInt(1, 6, 7);
       switch (choice) {
-        case 1:
+        case 1: // view outcome record
+        clearScreen();
+        System.out.println("=========[ View Appointment Outcomes ]===========");
+        AppointmentSystem.printAllOutcome();
+        confirm();
+        clearScreen();
+        System.out.println(menu);
         break;
-        case 2:
+        case 2: // update prescription status
         break;
-        case 3:
+        case 3: // view medical inventory
         break;
-        case 4:
+        case 4: // submit replenishment reques
         break;
         case 5:
         password_menu();
@@ -373,16 +928,45 @@ public class Menu {
           staffManagement_menu();
           System.out.println(menu);
           break;
-        case 2:
-        break;
-        case 3:
-        break;
-        case 4:
-        break;
+
+        case 2: // view appointment detail
+          clearScreen();
+          int case2in = 3;
+          System.out.println("========[ View All Appointment Details ]=========");
+        do { 
+          System.out.println("[!] Choose what to view ");
+          System.out.println("[1] Scheduled Appointments");
+          System.out.println("[2] Appointment Outcomes");
+          System.out.print("Enter option (1-2): ");
+          case2in = Sanitise.readInt(1,2,3);
+          if (case2in == 3)
+            System.out.println("[-] Invalid option, try again");
+        } while (case2in == 3);
+
+          switch (case2in) {
+            case 1:
+              AppointmentSystem.printAllAppointment();
+              break;
+            case 2:
+              AppointmentSystem.printAllOutcome(); 
+              break;
+          }
+          confirm();
+          clearScreen();
+          System.out.println(menu);
+          break;
+
+        case 3: // view and manage medication inventory
+          break;
+
+        case 4: // approve replenishment requests
+          break;
+
         case 5:
           password_menu();
           System.out.println(menu);
-        break;
+          break;
+
         case 6:
         break;
         default:

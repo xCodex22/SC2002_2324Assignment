@@ -8,6 +8,7 @@ import java.nio.file.*;
 import java.nio.charset.StandardCharsets;
 import java.io.Console;
 import java.util.*;
+
 			
 public class AccountSystem { 
 	public LoginStatus login(String hospitalID, String passwd) {
@@ -124,7 +125,17 @@ public class AccountSystem {
         writer = new FileWriter("../data/MedicalRecordsDB/" + info[0] + ".csv");
         writer.write("hospitalID,bloodType,serviceDate,serviceName,drID,drName,diagnosis,medicationPrescribed,medicationAmount,treatmentPlan,remarks\n");
         writer.close();
+        writer = new FileWriter("../data/AppointmentDB/" + info[0] + "request.csv");
+        writer.write("status,patientID,appointmentDate,timeSlot,drID,drName\n");
+        writer.close();
+        writer = new FileWriter("../data/AppointmentDB/" + info[0] + "outcome.csv");
+        writer.write("patientID,serviceDate,serviceName,drID,diagnosis,medicationPrescribed,medicationAmount,medicationStatus,treatmentPlan,remarks\n");
+        writer.close();
       }
+
+      if (role == "DOCTOR") 
+        copyDir("../data/ScheduleDB/init/2024", "../data/ScheduleDB/" + String.valueOf(new_ID) + "/2024", true);
+
 		  return true;
     } catch(Exception e) {
       e.printStackTrace();
@@ -152,6 +163,31 @@ public class AccountSystem {
 		return true;
   }
 
+  protected void copyDir(String src, String dest, boolean overwrite) {
+    if (!Files.exists(Paths.get(dest))) {
+      try {
+        Files.createDirectories(Paths.get(dest));
+      } catch (IOException e) {
+        e.printStackTrace();
+        return; 
+      }
+    }
+
+    try {
+      Files.walk(Paths.get(src)).forEach(a -> {
+        Path b = Paths.get(dest, a.toString().substring(src.length()));
+        try {
+          if (!a.toString().equals(src))
+          Files.copy(a, b, overwrite ? new CopyOption[]{StandardCopyOption.REPLACE_EXISTING} : new CopyOption[]{});
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      });
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+  }
   public String getRole() { return role; }
   public String getID() { return hospitalID; }
 		
