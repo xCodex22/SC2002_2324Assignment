@@ -202,7 +202,15 @@ public class AppointmentSystem {
 
   public static void declineAppointment(String date, String slot, String docID, String patID) {
     // error handling will be done by other classes
-    
+     HashMap<List<String>, List<String>> patSchedule = getScheduledAppointment(patID); // pat schedule
+    List<String> key = new ArrayList<>();
+    key.add(date); key.add(slot);
+    List<String> val = patSchedule.get(key);
+    val.set(0, "cancelled");
+    patSchedule.put(key, val); 
+    // need to update appointment
+    updatePatientAppointment(patID, patSchedule);
+   
   }
 
   /* @param patient's ID

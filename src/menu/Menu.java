@@ -821,7 +821,8 @@ public class Menu {
               System.out.println("[+] Appointment is confirmed");
               break;
             case 2:
-              // doc.getScheduleInfo().setAvailability(d, s, patid, AvailStatus.CANCEL);
+              doc.getScheduleInfo().setAvailability(d, s, patid, AvailStatus.CANCEL);
+              AppointmentSystem.declineAppointment(d, s, doc.getBasicInfo().getID(), patid);
               System.out.println("[+] Appointment is declined.");
               break;
           }
