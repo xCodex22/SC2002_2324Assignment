@@ -167,7 +167,6 @@ public class AppointmentSystem {
 
       case ScheduleOption.CANCEL:
       // if the slot wasn't in scheduled list, then error
-      
       if(!patSchedule.containsKey(key)) {
         System.out.println("[-] You have not booked this slot yet");
         return false;
@@ -180,8 +179,28 @@ public class AppointmentSystem {
       // otherwise 1) set the status to cancelled
       // 2) set the doctor schedule to available
       break;
+
+      default:
+        break;
     }
     return true;     
+  }
+
+  public static void acceptAppointment(String date, String slot, String docID, String patID) {
+    // error handling will be done by other classes
+    // all this does is add to the appointment database
+    HashMap<List<String>, List<String>> patSchedule = getScheduledAppointment(patID); // pat schedule
+    List<String> key = new ArrayList<>();
+    key.add(date); key.add(slot);
+    List<String> val = patSchedule.get(key);
+    val.set(0, "confirmed");
+    patSchedule.put(key, val); 
+    // need to update appointment
+  }
+
+  public static void declineAppointment(String date, String slot, String docID, String patID) {
+    // error handling will be done by other classes
+    
   }
 
   /* @param patient's ID

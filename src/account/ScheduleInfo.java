@@ -288,6 +288,10 @@ public class ScheduleInfo{
           }
           break;
         case AvailStatus.BOOK:
+          if (!newLine[index].equals("O")) {
+            System.out.println("[-] Unable to book slot. The time slot is unavailable.");
+            return false;
+          }
           newLine[index] = "P"+patID; 
           break;
         case AvailStatus.CONFIRM:
@@ -298,6 +302,10 @@ public class ScheduleInfo{
           newLine[index] = "C"+patID;
           break;
         case AvailStatus.CANCEL:
+          if (!newLine[index].startsWith("P")) {
+            System.out.println("[-] Unable to cancel the time slot. There is no pending appointment");
+            return false;
+          }
           newLine[index] = "O";
           break;
         default:
@@ -460,6 +468,39 @@ public class ScheduleInfo{
     }  
     return ans;
   }
+
+public List<String> getPendingAppointment() {
+    // iterate through scheduleArray[month][date][timeslot]
+    // P12345 (pending)
+    // C12345 (confirmed)
+    // X (done)
+    // O (cancelled)
+    // only read the ones that are subtring(0,).equals("C");
+    // string format
+    // Date Timeslot PatientID 
+
+    List<String> ans = new ArrayList<>();
+
+    for (int month = 1; month < scheduleArray.length; month++) {
+      for (int date = 1; date < scheduleArray[month].length; date++) {
+        if (scheduleArray[month][date] != null) { // num of days in mth is different
+          for (int timeSlot = 0; timeSlot < scheduleArray[month][date].length; timeSlot++) {
+            if (scheduleArray[month][date][timeSlot].startsWith("P")) {
+              String m = getMonthFromIndex(month) + "-";
+              String d = getDateFromIndex(date) + "-";
+              String y = "2024";
+              String s = getSlotFromIndex(timeSlot);
+              String patID = scheduleArray[month][date][timeSlot].substring(1);
+              String entry = d+m+y+" "+ s + " " +patID;
+              ans.add(entry);
+            }
+          }
+        }
+      }
+    }  
+    return ans;
+  }
+
 
   // accept or decling request is just setting availabiilty
   // use overwrite option

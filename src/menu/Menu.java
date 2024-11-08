@@ -766,12 +766,73 @@ public class Menu {
         case 5: // accept or decline
           // 1. update doctors schedule
           //  2. update patient's appointment
+          clearScreen();
+          System.out.println("=======[ Accept or Decline Appointment Request ]=======");
+          System.out.println("[1] Date [2] Time Slot [3] Patient ID"); 
+          List<String> ls = doc.getScheduleInfo().getPendingAppointment();
+          int idx = 1;
+          for (String i : ls) {
+            System.out.print("[ " + idx + " ] ");
+            System.out.println(i);
+            idx++;
+          }
+
+          if (ls.size() == 0) {
+            System.out.println("[-] There are no appointment requests!");
+            confirm();
+            clearScreen();
+            System.out.println(menu);
+            break;
+          }
+         
+          int ch = ls.size()+1;
+          do {
+           System.out.print("\nEnter the index of the scheduled appoitnment to accept or decline: ");
+           ch = Sanitise.readInt(1, ls.size(), ls.size()+1);
+            if (ch == ls.size()+1)
+              System.out.println("[-] Invalid index, choose from list given");
+          } while(ch == ls.size()+1);
+        
+          String chosenRequest = ls.get(ch-1);
+          System.out.println("we get: " + chosenRequest);
+
+          // chosenRequest is
+          // 01-01-2024 1500-1600 12345
+          String d = chosenRequest.substring(0,10);
+          String s = chosenRequest.substring(11,20);
+          String patid = chosenRequest.substring(21);
           
+          do {
+            System.out.println("\n[1] Accept appointment request");
+            System.out.println("[2] Decline appointment request");
+            System.out.print("[!] Enter option (1-2): ");
+            ch = Sanitise.readInt(1,2,3);
+            if (ch == 3)
+              System.out.println("[-] Invalid option. Try again");
+          } while (ch == 3);
+
+          switch (ch) {
+            case 1:
+              // first set doctor side (schedule)
+              // then set appoitnment side  
+              // doc.getScheduleInfo().setAvailability(d, s, patid, AvailStatus.CONFIRM);
+              AppointmentSystem.acceptAppointment(d, s, doc.getBasicInfo().getID(), patid);
+              System.out.println("[+] Appointment is confirmed");
+              break;
+            case 2:
+              // doc.getScheduleInfo().setAvailability(d, s, patid, AvailStatus.CANCEL);
+              System.out.println("[+] Appointment is declined.");
+              break;
+          }
+          
+          confirm();
+          clearScreen();
+          System.out.println(menu);
           break;
 
         case 6: // view schedule
           clearScreen();
-          System.out.println("=======[ Your Upcoming Schedules ]======");
+          System.out.println("=======[ View Appointment Request");
           System.out.println("[1] Date [2] Time Slot [3] Patient ID"); 
           List<String> upcoming = doc.getScheduleInfo().getUpcomingAppointment();
           for (String i : upcoming)
