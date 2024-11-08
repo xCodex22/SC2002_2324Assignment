@@ -196,6 +196,8 @@ public class AppointmentSystem {
     val.set(0, "confirmed");
     patSchedule.put(key, val); 
     // need to update appointment
+    updatePatientAppointment(patID, patSchedule);
+    // private static boolean updatePatientAppointment(String patID, HashMap<List<String>, List<String>> scheduledApt) 
   }
 
   public static void declineAppointment(String date, String slot, String docID, String patID) {

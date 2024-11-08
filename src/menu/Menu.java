@@ -543,7 +543,7 @@ public class Menu {
             System.out.println(menu);
             break;
           }
-          
+
           confirm(); 
           clearScreen();
           System.out.println(menu);
@@ -794,7 +794,7 @@ public class Menu {
           } while(ch == ls.size()+1);
         
           String chosenRequest = ls.get(ch-1);
-          System.out.println("we get: " + chosenRequest);
+          System.out.println("[!] Selected Request: " + chosenRequest);
 
           // chosenRequest is
           // 01-01-2024 1500-1600 12345
@@ -817,6 +817,7 @@ public class Menu {
               // then set appoitnment side  
               // doc.getScheduleInfo().setAvailability(d, s, patid, AvailStatus.CONFIRM);
               AppointmentSystem.acceptAppointment(d, s, doc.getBasicInfo().getID(), patid);
+               
               System.out.println("[+] Appointment is confirmed");
               break;
             case 2:
