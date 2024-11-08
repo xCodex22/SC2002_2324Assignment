@@ -880,13 +880,19 @@ public class Menu {
       System.out.print("Enter option (1-6): ");
       choice = Sanitise.readInt(1, 6, 7);
       switch (choice) {
-        case 1:
+        case 1: // view outcome record
+        clearScreen();
+        System.out.println("=========[ View Appointment Outcomes ]===========");
+        AppointmentSystem.printAllOutcome();
+        confirm();
+        clearScreen();
+        System.out.println(menu);
         break;
-        case 2:
+        case 2: // update prescription status
         break;
-        case 3:
+        case 3: // view medical inventory
         break;
-        case 4:
+        case 4: // submit replenishment reques
         break;
         case 5:
         password_menu();
