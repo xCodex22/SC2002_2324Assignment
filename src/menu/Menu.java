@@ -81,22 +81,22 @@ public class Menu {
       passwd = new String(cnsl.readPassword("Enter your password: "));
 
       switch(acc.login(uname, passwd)) {
-        case LoginStatus.SUCCESS:
+        case SUCCESS:
         select_menu(acc.getRole());
         break;
-        case LoginStatus.WRONG_PASSWORD:
+        case WRONG_PASSWORD:
         clearScreen();
         System.out.println("=================================================================");
         System.out.println("                   [!!] Wrong Password. Try Again.               ");
         System.out.println("=================================================================");
         break;
-        case LoginStatus.USER_NOT_FOUND:
+        case USER_NOT_FOUND:
         clearScreen();
         System.out.println("==================================================================");
         System.out.println("                   [!!] User Not Found. Try Again.                ");
         System.out.println("==================================================================");
         break;
-        case LoginStatus.ERROR:
+        case ERROR:
         throw new Exception("[-] Unexpected error has Occurred");
       }
     } catch(Exception e) { e.printStackTrace(); }

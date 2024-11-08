@@ -146,7 +146,7 @@ public class AppointmentSystem {
     ScheduleInfo si = new ScheduleInfo(docID);
     
     switch(opt) {
-      case ScheduleOption.NEW:
+      case NEW:
 
       if (patSchedule.containsKey(key)) {
         if (!patSchedule.get(key).get(0).equals("cancelled")) {
@@ -167,7 +167,7 @@ public class AppointmentSystem {
 
       break;
 
-      case ScheduleOption.CANCEL:
+      case CANCEL:
       // if the slot wasn't in scheduled list, then error
       if(!patSchedule.containsKey(key)) {
         System.out.println("[-] You have not booked this slot yet");

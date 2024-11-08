@@ -271,7 +271,7 @@ public class ScheduleInfo{
       String[] newLine = content.get(1).split(",");
 
       switch(status) {
-        case AvailStatus.CLOSE:
+        case CLOSE:
           if (newLine[index].equals("O"))
             newLine[index] = "X"; 
           else {
@@ -279,7 +279,7 @@ public class ScheduleInfo{
             return false;
           }
           break;
-        case AvailStatus.OPEN:
+        case OPEN:
           if (newLine[index].equals("X"))
             newLine[index] = "O"; 
           else {
@@ -287,21 +287,21 @@ public class ScheduleInfo{
             return false;
           }
           break;
-        case AvailStatus.BOOK:
+        case BOOK:
           if (!newLine[index].equals("O")) {
             System.out.println("[-] Unable to book slot. The time slot is unavailable.");
             return false;
           }
           newLine[index] = "P"+patID; 
           break;
-        case AvailStatus.CONFIRM:
+        case CONFIRM:
          if (!newLine[index].startsWith("P")) {
             System.out.println("[-] Unable to confirm the time slot. There is no pending appointment");     
             return false;
           }
           newLine[index] = "C"+patID;
           break;
-        case AvailStatus.CANCEL:
+        case CANCEL:
           if (!newLine[index].startsWith("P")) {
             System.out.println("[-] Unable to cancel the time slot. There is no pending appointment");
             return false;
