@@ -922,16 +922,27 @@ public class Menu {
           staffManagement_menu();
           System.out.println(menu);
           break;
-        case 2:
-        break;
-        case 3:
-        break;
-        case 4:
-        break;
+
+        case 2: // view appointment detail
+          clearScreen();
+          System.out.println("========[ View All Appointment Details ]=========");
+          AppointmentSystem.printAllAppointment();
+          confirm();
+          clearScreen();
+          System.out.println(menu);
+          break;
+
+        case 3: // view and manage medication inventory
+          break;
+
+        case 4: // approve replenishment requests
+          break;
+
         case 5:
           password_menu();
           System.out.println(menu);
-        break;
+          break;
+
         case 6:
         break;
         default:

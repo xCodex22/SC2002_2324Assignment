@@ -8,9 +8,11 @@ import java.nio.file.*;
 import java.nio.charset.StandardCharsets;
 import java.io.Console;
 import java.util.*;
+import java.util.stream.Stream;
 import users.*;
 import account.ScheduleInfo;
 import account.AvailStatus;
+import java.util.regex.Pattern;
 
 public class AppointmentSystem {
   private AppointmentSystem(){};
@@ -252,6 +254,45 @@ public class AppointmentSystem {
           System.out.print(j + " ");
         System.out.println();
       }
+  }
+
+  
+  public static boolean recordOutcome() {
+    return true;
+  }
+
+
+  public static void printAllAppointment() {
+    // read all request files
+    Pattern pattern = Pattern.compile("^\\d+request\\.csv$");     
+    String dir = "../data/AppointmentDB/";
+    // see Files.walk documentation
+    System.out.println("\n Colums: Status, Patient ID, Appointment Date, Time Slot, Doctor ID, Doctor Name\n");
+    try (Stream<Path> filePathStream = Files.walk(Paths.get(dir))) {
+      filePathStream
+        .filter(Files::isRegularFile) 
+        .map(Path::getFileName) 
+        .map(Path::toString) 
+        .filter(fileName -> pattern.matcher(fileName).matches()) 
+        .forEach(fileName -> {
+          try {
+          List<String> allRows = Files.readAllLines(Paths.get(dir, fileName));
+          for (int i = 1; i < allRows.size(); i++) {
+            System.out.println("[" + i + "]" + " " + allRows.get(i));
+          }
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }); 
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+
+  public static void printAllOutcome() {
+
+
   }
 
   private static HashMap<String, boolean[]> docAvailForTheDay;
