@@ -925,8 +925,26 @@ public class Menu {
 
         case 2: // view appointment detail
           clearScreen();
+          int case2in = 3;
           System.out.println("========[ View All Appointment Details ]=========");
-          AppointmentSystem.printAllAppointment();
+        do { 
+          System.out.println("[!] Choose what to view ");
+          System.out.println("[1] Scheduled Appointments");
+          System.out.println("[2] Appointment Outcomes");
+          System.out.print("Enter option (1-2): ");
+          case2in = Sanitise.readInt(1,2,3);
+          if (case2in == 3)
+            System.out.println("[-] Invalid option, try again");
+        } while (case2in == 3);
+
+          switch (case2in) {
+            case 1:
+              AppointmentSystem.printAllAppointment();
+              break;
+            case 2:
+              AppointmentSystem.printAllOutcome(); 
+              break;
+          }
           confirm();
           clearScreen();
           System.out.println(menu);

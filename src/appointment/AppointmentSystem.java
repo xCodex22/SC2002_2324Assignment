@@ -267,7 +267,7 @@ public class AppointmentSystem {
     Pattern pattern = Pattern.compile("^\\d+request\\.csv$");     
     String dir = "../data/AppointmentDB/";
     // see Files.walk documentation
-    System.out.println("\n Colums: Status, Patient ID, Appointment Date, Time Slot, Doctor ID, Doctor Name\n");
+    System.out.println("\n[!] Colums: Status, Patient ID, Appointment Date, Time Slot, Doctor ID, Doctor Name\n");
     try (Stream<Path> filePathStream = Files.walk(Paths.get(dir))) {
       filePathStream
         .filter(Files::isRegularFile) 
@@ -291,8 +291,29 @@ public class AppointmentSystem {
 
 
   public static void printAllOutcome() {
-
-
+    System.out.println("\n[!] Colums: Patient ID, Date, Service, Doctor ID, Diagnosis, Medication, Qty, Status, Treatment, Memo\n");
+    Pattern pattern = Pattern.compile("^\\d+outcome\\.csv$");     
+    String dir = "../data/AppointmentDB/";
+    // see Files.walk documentation
+    try (Stream<Path> filePathStream = Files.walk(Paths.get(dir))) {
+      filePathStream
+        .filter(Files::isRegularFile) 
+        .map(Path::getFileName) 
+        .map(Path::toString) 
+        .filter(fileName -> pattern.matcher(fileName).matches()) 
+        .forEach(fileName -> {
+          try {
+          List<String> allRows = Files.readAllLines(Paths.get(dir, fileName));
+          for (int i = 1; i < allRows.size(); i++) {
+            System.out.println("[" + i + "]" + " " + allRows.get(i));
+          }
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }); 
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   private static HashMap<String, boolean[]> docAvailForTheDay;
