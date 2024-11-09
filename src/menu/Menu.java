@@ -3,6 +3,7 @@ import account.*;
 import users.*;
 import appointment.*;
 import staffmanagement.*;
+import inventory.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -957,6 +958,44 @@ public class Menu {
           break;
 
         case 3: // view and manage medication inventory
+          clearScreen();
+          InventorySystem ins = new InventorySystem();
+          System.out.println("======[ View and Manage Medication Inventory ]======");
+          System.out.println("[1] View medication inventory");
+          System.out.println("[2] Add stock");
+          System.out.println("[3] Remove stock");
+          System.out.println("[4] Update stock low alert threshold");
+          int in3 = 5;
+
+        do {
+          System.out.print("Enter option (1-4): "); 
+          in3 = Sanitise.readInt(1,4,5);
+          if (in3 == 5)
+          System.out.println("[-] Invalid option");
+        } while(in3 == 5);
+
+        switch (in3) {
+          case 1:
+          System.out.println("=====[ List of all medication ]=======");
+          ins.printAllDetail(); 
+          break;
+
+          case 2:
+          break;
+
+          case 3:
+          break;
+          
+          case 4:
+          break;
+
+          default:
+          break;
+        }
+
+          confirm();
+          clearScreen();
+          System.out.println(menu);
           break;
 
         case 4: // approve replenishment requests
