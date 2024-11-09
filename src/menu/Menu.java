@@ -866,6 +866,7 @@ public class Menu {
 
   public void pharma_menu(){
     clearScreen();	
+    this.user = new Pharmacist(acc.getID());
     final String menu = "====[ Pharmacist Menu]===\n" +
                        "1. View Appointment Outcome Record\n" +
                        "2. Update Prescription Status\n" +
@@ -893,8 +894,54 @@ public class Menu {
         break;
         case 3: // view medical inventory
         break;
+
         case 4: // submit replenishment reques
+        clearScreen();
+        System.out.println("===========[ Submit Replenishment Request ]=========");
+        System.out.println("[!] Choose the medication based on index\n");
+        InventorySystem ins = new InventorySystem();
+        List<String> meds = ins.getListMedName();  
+        int j = 1; int len = meds.size();
+        for (String i : meds) {
+          System.out.println("[ " + j + " ] " + i);
+          j++;
+        }
+
+        int choi = len + 1; 
+        do {
+          System.out.print("[!] Enter index: ");
+          choi = Sanitise.readInt(1,len,len+1);
+          if (choi == len + 1)
+            System.out.println("[-] Invalid option. Try again");
+        } while (choi == len + 1);
+
+        String qty = null;
+        do {
+          try {
+            System.out.print("[!] Enter amount of quantity to top up: ");
+            qty = Sanitise.readID();
+            break;
+          } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("[-] Try again");
+          }
+        } while (true);
+
+        try {
+          Medicine med = new Medicine(meds.get(choi-1)); 
+          ins.requestReplenishment(med, qty, this.user);  
+          System.out.println("[+] Request sent");
+        } catch (Exception e) {
+          System.out.println(e.getMessage());
+          System.out.println("[-] Request failed");
+        }
+
+        confirm();
+        clearScreen();
+        System.out.println(menu);
+
         break;
+
         case 5:
         password_menu();
         System.out.println(menu);

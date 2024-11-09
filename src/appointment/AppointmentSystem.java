@@ -257,7 +257,27 @@ public class AppointmentSystem {
   }
 
   
-  public static boolean recordOutcome() {
+  public static boolean recordOutcome(String docID, String patID, String date, String slot, String entry) {
+    // patient request entry is deleted
+    // add new entry to outcome
+    // doctor schedule info set to X
+    
+    Doctor doc = new Doctor(docID);
+    doc.getScheduleInfo().setAvailability(date, slot, patID, AvailStatus.COMPLETE);
+    HashMap<List<String>, List<String>> patSchedule = getScheduledAppointment(patID);
+    List<String> key = new ArrayList<>();
+    key.add(date); key.add(slot);
+    patSchedule.remove(key);
+    updatePatientAppointment(patID, patSchedule);
+    try {
+      String path = "../data/AppointmentDB/" + patID + "outcome.csv";
+      FileWriter writer = new FileWriter(path, true);
+      writer.write(entry + "\n");
+      writer.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+      return false;
+    }
     return true;
   }
 

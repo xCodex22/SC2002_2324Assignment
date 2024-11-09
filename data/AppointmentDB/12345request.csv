@@ -1,5 +1,5 @@
 status,patientID,appointmentDate,timeSlot,drID,drName
 cancelled,12345,01-01-2024,1500-1600,12346,Stephen Strange
-pending,12345,01-01-2024,1300-1400,12346,Stephen Strange
+confirmed,12345,01-01-2024,1300-1400,12346,Stephen Strange
 cancelled,12345,01-01-2024,0900-1000,12346,Stephen Strange
 pending,12345,01-01-2024,1600-1700,12346,Stephen Strange

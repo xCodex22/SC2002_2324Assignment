@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import users.*;
 
 
 public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert{
@@ -44,6 +45,12 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert{
   }
 
   public List<Medicine> getListMed() { return medList; }
+  public List<String> getListMedName() {
+    List<String> ans = new ArrayList<>();
+    for (Medicine i : medList) 
+      ans.add(i.name);
+    return ans;
+  }
 
   public void printAllDetail() {
     try {
@@ -102,6 +109,27 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert{
       return false;
     }
   }
+
+  public boolean requestReplenishment(Medicine med, String requestQty, User pharma) {
+   List<String> ans = new ArrayList<>();
+    ans.add(med.name);
+    ans.add(med.unit);
+    ans.add(requestQty);
+    ans.add(pharma.getBasicInfo().getID());
+    ans.add(pharma.getBasicInfo().getFirstName() + " " + pharma.getBasicInfo().getLastName());
+    String entry = String.join(",", ans);
+    try {
+     String path = "../data/InventoryDB/request.csv"; 
+      FileWriter writer = new FileWriter(path, true);
+      writer.write(entry + "\n");
+      writer.close();
+      return true;
+    } catch (IOException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
 
   private List<Medicine> medList;
   private List<String> summaryList;
