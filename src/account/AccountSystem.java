@@ -9,9 +9,25 @@ import java.nio.charset.StandardCharsets;
 import java.io.Console;
 import java.util.*;
 
-			
+/* 
+ * Manages account-related operations such as login, registration, password changes,
+ * and user role management in the hospital system.
+ * 
+ * @author [Your Name]
+ * @version 1.0
+ */
+
 public class AccountSystem { 
-	public LoginStatus login(String hospitalID, String passwd) {
+	 /* 
+    * Logs in a user with a given hospital ID and password.
+    * 
+    * @param hospitalID The ID of the hospital account.
+    * @param passwd The password for the account.
+    * @return The status of the login attempt.
+    * @throws FileNotFoundException if the accounts file is not found.
+    */
+
+  public LoginStatus login(String hospitalID, String passwd) {
 		try {
 			this.hospitalID = hospitalID;
 			this.passwd = passwd;	
@@ -41,6 +57,14 @@ public class AccountSystem {
 			return LoginStatus.ERROR;
 		}	
 	} 
+
+  /* 
+   * Changes the password of the user, ensuring it meets the requirements. 
+   * @param oldPass The current password.
+   * @param newPass1 The new password.
+   * @param newPass2 The new password for confirmation.
+   * @return true if the password change is successful, false otherwise.
+   */
 
 	public boolean changePassword(String oldPass, String newPass1, String newPass2) {
 		if (!passwd.equals(oldPass)) {
@@ -78,6 +102,14 @@ public class AccountSystem {
 		}
 		return true;
 	}
+  
+  /*
+   * Registers a new user with the provided information and role.
+   * @param info An array of user details.
+   * @param role The role of the user (e.g., patient, doctor, pharmacist).
+   * @return true if registration is successful, false otherwise.
+   * @throws Exception if registration fails due to an error.
+   */
 
 	public boolean register(String[] info, String role) {
     try {
@@ -142,6 +174,13 @@ public class AccountSystem {
       return false;
     }
   }
+
+  /* 
+   * Deletes an account associated with the given hospital ID.
+   * 
+   * @param id The ID of the account to delete.
+   * @return true if the account is deleted successfully, false otherwise.
+   */
 
   public boolean deleteAccount(String id) {
     try {
