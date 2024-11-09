@@ -981,6 +981,40 @@ public class Menu {
           break;
 
           case 2:
+            System.out.println("\n[!] Choose from the the following list of inventory");
+            List<String> summary = ins.getSummary(); 
+            System.out.println("\nColumns: Medicine Name, Unit, Max Stock, Current Stock, Low Stock Benchmark"); 
+            int i = 1;
+            for (String s : summary) {
+              System.out.print("[ " + i + " ] ");
+              System.out.println(s); 
+              i++;
+            }
+
+            in3 = summary.size() + 1;
+            
+            do {
+              System.out.print("Enter index: ");
+              in3 = Sanitise.readInt(1,summary.size(), summary.size()+1);
+            } while (in3 == summary.size()+1);
+
+            List<Medicine> medList = ins.getListMed(); 
+            String offset = null;
+            do {
+              try {
+                System.out.print("Enter amount of stock to add: ");
+                offset = Sanitise.readID();
+                break;
+              } catch (Exception e) {
+                System.out.println("[-] Please enter valid numerals");
+              }
+            } while (true);
+             
+            if (!ins.addStock(medList.get(in3-1), offset)) 
+              System.out.println("[-] Failed to add stock");
+            else
+             System.out.println("[+] Stock added successfully");
+            
           break;
 
           case 3:

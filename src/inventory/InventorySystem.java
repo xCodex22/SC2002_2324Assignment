@@ -12,17 +12,21 @@ import java.util.*;
 public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert{
   public InventorySystem() {
     List<Medicine> ans = new ArrayList<>();
+    List<String> sum = new ArrayList<>();
     try {
       String path = "../data/InventoryDB/medicine.csv";
       File file = new File(path);
       Scanner sc = new Scanner(file);
       sc.nextLine();
       while (sc.hasNextLine()) {
-        String[] line = sc.nextLine().split(",");
+        String entry = sc.nextLine();
+        String[] line = entry.split(",");
         Medicine med = new Medicine(line[0]);
         ans.add(med);
+        sum.add(entry);
       } 
       this.medList = ans;
+      this.summaryList = sum;
     }catch(Exception e) {
       System.out.println(e.getMessage());
       System.out.println("[-] System initialisation failed");
@@ -34,6 +38,12 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert{
       System.out.println(i.name);
     }
   }
+
+  public List<String> getSummary() {
+    return summaryList;
+  }
+
+  public List<Medicine> getListMed() { return medList; }
 
   public void printAllDetail() {
     try {
@@ -94,4 +104,5 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert{
   }
 
   private List<Medicine> medList;
+  private List<String> summaryList;
 }
