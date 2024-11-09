@@ -11,7 +11,18 @@ import java.util.*;
  * Class for managing basic personal information of users
  */
 public class BasicInfo {
+  /*
+   * Default constructor for creating an empty BasicInfo object.
+   */
   public BasicInfo(){}
+  
+  /*
+   * Constructs a BasicInfo object for a user with the specified hospital ID and role.
+   * 
+   * @param hospitalID The ID of the hospital account.
+   * @param role The role of the user (e.g., patient, doctor, pharmacist).
+   * @throws Exception if the hospital ID is not found.
+   */
   public BasicInfo(String hospitalID, String role) throws Exception {
     this.hospitalID = hospitalID;
     this.role = role;
@@ -69,6 +80,9 @@ public class BasicInfo {
     return copy;
   }
 
+  /*
+   * Displays the personal information of the user.
+   */
   public void displayInfo() {
     System.out.println("===========[ Personal Information ]============");
     System.out.println("[-] ID Number: " + summary[0]);
@@ -81,6 +95,10 @@ public class BasicInfo {
     System.out.println("[6] Email Address: " + summary[6]);
   }
 
+   /*
+    * Updates the personal information of the user.
+    * @return true if the update is successful, false otherwise.
+    */
   public boolean update() {
     String newInfo = String.join(",", summary);
     String dir = "../data/BasicInfoDB/";
@@ -123,6 +141,11 @@ public class BasicInfo {
     return true;
   }
 
+  /*
+   * Deletes the user's personal information from the system.
+   * 
+   * @return true if the deletion is successful, false otherwise.
+   */
   public boolean delete() {
     String dir = "../data/BasicInfoDB/";
     String loc = null;
