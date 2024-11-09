@@ -965,11 +965,12 @@ public class Menu {
           System.out.println("[2] Add stock");
           System.out.println("[3] Remove stock");
           System.out.println("[4] Update stock low alert threshold");
-          int in3 = 5;
+          System.out.println("[5] Exit");
+          int in3 = 6;
 
         do {
           System.out.print("Enter option (1-4): "); 
-          in3 = Sanitise.readInt(1,4,5);
+          in3 = Sanitise.readInt(1,5,6);
           if (in3 == 5)
           System.out.println("[-] Invalid option");
         } while(in3 == 5);
@@ -1017,10 +1018,81 @@ public class Menu {
             
           break;
 
-          case 3:
+          case 3: // remove stock
+           System.out.println("\n[!] Choose from the the following list of inventory");
+            summary = ins.getSummary(); 
+            System.out.println("\nColumns: Medicine Name, Unit, Max Stock, Current Stock, Low Stock Benchmark"); 
+            i = 1;
+            for (String s : summary) {
+              System.out.print("[ " + i + " ] ");
+              System.out.println(s); 
+              i++;
+            }
+
+            in3 = summary.size() + 1;
+            
+            do {
+              System.out.print("Enter index: ");
+              in3 = Sanitise.readInt(1,summary.size(), summary.size()+1);
+            } while (in3 == summary.size()+1);
+
+            medList = ins.getListMed(); 
+            offset = null;
+            do {
+              try {
+                System.out.print("Enter amount of stock to add: ");
+                offset = Sanitise.readID();
+                break;
+              } catch (Exception e) {
+                System.out.println("[-] Please enter valid numerals");
+              }
+            } while (true);
+             
+            if (!ins.removeStock(medList.get(in3-1), offset)) 
+              System.out.println("[-] Failed to remove stock");
+            else
+             System.out.println("[+] Stock removed successfully");
+
           break;
           
-          case 4:
+          case 4: // update low stock level
+            System.out.println("\n[!] Choose from the the following list of inventory");
+            summary = ins.getSummary(); 
+            System.out.println("\nColumns: Medicine Name, Unit, Max Stock, Current Stock, Low Stock Benchmark"); 
+            i = 1;
+            for (String s : summary) {
+              System.out.print("[ " + i + " ] ");
+              System.out.println(s); 
+              i++;
+            }
+
+            in3 = summary.size() + 1;
+            
+            do {
+              System.out.print("Enter index: ");
+              in3 = Sanitise.readInt(1,summary.size(), summary.size()+1);
+            } while (in3 == summary.size()+1);
+
+            medList = ins.getListMed(); 
+            offset = null;
+            do {
+              try {
+                System.out.print("Enter new low alert threshold: ");
+                offset = Sanitise.readID();
+                break;
+              } catch (Exception e) {
+                System.out.println("[-] Please enter valid numerals");
+              }
+            } while (true);
+             
+            if (!ins.updateAlert(medList.get(in3-1), offset)) 
+              System.out.println("[-] Failed to update threshold");
+            else
+             System.out.println("[+] Threshold updated successfully");
+
+          break;
+
+          case 5:
           break;
 
           default:
