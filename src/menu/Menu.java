@@ -3,6 +3,7 @@ import account.*;
 import users.*;
 import appointment.*;
 import staffmanagement.*;
+import inventory.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -218,15 +219,16 @@ public class Menu {
                        "5. Reschedule an Appointment\n" +
                        "6. Cancel an Appointment\n" +
                        "7. View Scheduled Appointments\n" +
-                       "8. Change password\n" +
-                       "9. Logout";
+                       "8. View Past Appointment Outcome Records\n" +
+                       "9. Change password\n" +
+                       "10. Logout";
     Scanner sc = new Scanner(System.in);
     System.out.println(menu);
 
     int choice = 9;
     do {
-      System.out.print("Enter option (1-9): ");
-      choice = Sanitise.readInt(1, 9, 10);
+      System.out.print("Enter option (1-10): ");
+      choice = Sanitise.readInt(1, 10, 11);
       switch (choice) {
         case 1:
           clearScreen();
@@ -473,17 +475,24 @@ public class Menu {
           confirm();
           clearScreen();
           break;
-        case 8:
-          password_menu();
+        case 8: // view past outcome
+          clearScreen();
+          System.out.println("====[ Past Appointment Outcome Records ]=====");
+          AppointmentSystem.printPatientOutcome(user.getBasicInfo().getID());
+          confirm();
+          clearScreen();
           break;
         case 9:
+          password_menu();
+          break;
+        case 10:
           break;
         default:
           System.out.println("[-] Invalid Option");
           break;
       }
       System.out.println(menu);
-    } while(choice != 9);
+    } while(choice != 10);
     clearScreen();	
   }
 
@@ -845,6 +854,118 @@ public class Menu {
           break;
 
         case 7: // record appointnment outcome
+        // patientID,serviceDate,timeSlot,serviceName,drID,diagnosis,medicationPrescribed,medicationAmount,medicationStatus,treatmentPlan,remarks
+          clearScreen();
+          String[] line = new String[11];
+        
+          String docID = user.getBasicInfo().getID();
+          date = null;
+          String patID = null;
+          System.out.println("=====[ Record Appointment Outcome ]=====");
+          do {
+            try {
+              System.out.print("Enter patient ID: ");
+             patID = Sanitise.readID(); 
+             break;
+            } catch (Exception e) {
+              System.out.println("[-] Invalid format. Try again");
+            }
+          } while (true);
+
+
+          do {
+            try {
+              System.out.print("Enter date of appointment: ");
+              date = Sanitise.readDate() + "-2024";
+              break;
+            } catch (Exception e) {
+              System.out.println(e.getMessage()); 
+            }
+          } while (true);
+           
+        int in = 8;
+
+        do {
+          System.out.println("Select a time slot: ");
+          System.out.println("[1] 0900-1000");
+          System.out.println("[2] 1000-1100");
+          System.out.println("[3] 1100-1200");
+          System.out.println("[4] 1300-1400");
+          System.out.println("[5] 1400-1500");
+          System.out.println("[6] 1500-1600");
+          System.out.println("[7] 1600-1700");
+          System.out.print("Enter option (1-7): ");
+          in = Sanitise.readInt(1,7,8);
+          slot = ScheduleInfo.getSlotFromIndex(in-1); 
+        } while(in == 8);
+
+
+          System.out.print("Enter name of service provided: ");
+          String serviceName = sc.nextLine();
+          
+          System.out.print("Enter diagnosis: ");
+          String diagnosis = sc.nextLine();
+
+          InventorySystem ins = new InventorySystem(); 
+          List<String> medName = ins.getListMedName();  
+         
+          int ii = 1;
+          System.out.println("\n Choose from the following medication to prescribe: ");
+          for (String i : medName) {
+            System.out.println("[ " + ii + " ] " + i);
+          }
+
+          ii = -1;
+          do {
+            System.out.print("Enter index of the medication: ");
+            ii = Sanitise.readInt(1, medName.size(), -1);
+            if (ii == -1) 
+              System.out.println("[-] Invalid option. Try again");
+          } while (ii == -1);
+
+          String med = medName.get(ii-1);
+
+          String qty = null;
+          do {
+            try {
+              System.out.print("Enter quantity to prescibe: ");
+              qty = Sanitise.readID();
+              break;
+            } catch (Exception e) {
+              System.out.println("[-] Please enter valid amount. Try again.");
+            }
+          } while(true);
+
+          System.out.print("Enter treatment plan: ");
+          String plan = sc.nextLine();
+
+          System.out.print("Enter consultation notes: ");
+          String memo = sc.nextLine();
+
+          line[0] = patID;
+          line[1] = date;
+          line[2] = slot;
+          line[3] = serviceName;
+          line[4] = docID;
+          line[5] = diagnosis;
+          line[6] = med;
+          line[7] = qty;
+          line[8] = "pending";
+          line[9] = plan;
+          line[10] = memo;
+          
+          String entry = String.join(",", line);
+          System.out.println("patientID,serviceDate,serviceName,drID,diagnosis,medicationPrescribed,medicationAmount,medicationStatus,treatmentPlan,remarks");
+          System.out.println(entry);
+
+           if(!AppointmentSystem.recordOutcome(docID, patID, date, slot, entry))
+            System.out.println("[-] Failed to record outcome. One or more fields is invalid");
+          else
+            System.out.println("[+] Successfully recorded outcome");
+          
+          confirm();
+          clearScreen();
+          System.out.println(menu);
           break;
 
         case 8:
@@ -865,6 +986,7 @@ public class Menu {
 
   public void pharma_menu(){
     clearScreen();	
+    this.user = new Pharmacist(acc.getID());
     final String menu = "====[ Pharmacist Menu]===\n" +
                        "1. View Appointment Outcome Record\n" +
                        "2. Update Prescription Status\n" +
@@ -873,6 +995,7 @@ public class Menu {
                        "5. Change Password\n" +
                        "6. Logout";
 
+    InventorySystem ins = new InventorySystem();
     System.out.println(menu);
     Scanner sc = new Scanner(System.in);
     int choice = 6;
@@ -888,18 +1011,113 @@ public class Menu {
         clearScreen();
         System.out.println(menu);
         break;
+
         case 2: // update prescription status
+        clearScreen();
+        System.out.println("=========[ Update Prescription Status ]==========");
+        List<String> all = AppointmentSystem.getAllPendingMed();
+        int ii = 1;
+        for (String i : all) {
+          System.out.println("[ " + ii + " ] " + i);
+          ii++;
+        }
+
+        int choi = -1;
+
+        do {
+          System.out.print("[!] Enter request to dispense based on index: ");
+          choi = Sanitise.readInt(1, all.size(), -1);
+          if (choi == -1)
+            System.out.println("[-] Invalid option try again");
+        } while (choi == -1);
+
+// patientID,serviceDate,timeSlot,serviceName,drID,diagnosis,medicationPrescribed,medicationAmount,medicationStatus,treatmentPlan,remarks
+        
+        String[] entry = all.get(choi-1).split(",");
+        String medName = entry[6];
+        String offset = entry[7];
+        try {
+          Medicine med = new Medicine(medName);
+          if (!ins.dispense(med, offset, all.get(choi-1)))
+            System.out.println("[-] Failed to dispense medicine");
+          else
+            System.out.println("[+] Medicine dispensed");
+        } catch (Exception e) {
+          System.out.println(e.getMessage());
+          System.out.println("[-] failed to dispense medicine");
+        }
+        confirm();
+        clearScreen();
+        System.out.println(menu);
         break;
+
         case 3: // view medical inventory
+        clearScreen();
+        System.out.println("======[ View Medical Inventory ]========");
+        ins.printAllDetail(); 
+        confirm();
+        clearScreen();
+        System.out.println(menu);
         break;
+
         case 4: // submit replenishment reques
+        clearScreen();
+        System.out.println("===========[ Submit Replenishment Request ]=========");
+        System.out.println("[!] The following medication have low stock count: ");
+        for (String i : ins.getLowStockList())
+          System.out.println(i);
+        System.out.println();
+        System.out.println("[!] Choose the medication based on index\n");
+        List<String> meds = ins.getListMedName();  
+        int j = 1; int len = meds.size();
+        for (String i : meds) {
+          System.out.println("[ " + j + " ] " + i);
+          j++;
+        }
+
+        choi = len + 1; 
+        do {
+          System.out.print("[!] Enter index: ");
+          choi = Sanitise.readInt(1,len,len+1);
+          if (choi == len + 1)
+            System.out.println("[-] Invalid option. Try again");
+        } while (choi == len + 1);
+
+        String qty = null;
+        do {
+          try {
+            System.out.print("[!] Enter amount of quantity to top up: ");
+            qty = Sanitise.readID();
+            break;
+          } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("[-] Try again");
+          }
+        } while (true);
+
+        try {
+          Medicine med = new Medicine(meds.get(choi-1)); 
+          ins.requestReplenishment(med, qty, this.user);  
+          System.out.println("[+] Request sent");
+        } catch (Exception e) {
+          System.out.println(e.getMessage());
+          System.out.println("[-] Request failed");
+        }
+
+        confirm();
+        clearScreen();
+        System.out.println(menu);
+
         break;
+
         case 5:
         password_menu();
         System.out.println(menu);
         break;
+
         case 6:
         break;
+
         default:
         System.out.println("[-] Invalid Choice");
         break;
@@ -919,6 +1137,7 @@ public class Menu {
     "6. Logout";
     Scanner sc = new Scanner(System.in);
     int choice = 7;
+    InventorySystem ins = new InventorySystem();
     System.out.println(menu);
     do {
       System.out.print("Enter option (1-6): ");
@@ -957,9 +1176,183 @@ public class Menu {
           break;
 
         case 3: // view and manage medication inventory
+          clearScreen();
+          System.out.println("======[ View and Manage Medication Inventory ]======");
+          System.out.println("[1] View medication inventory");
+          System.out.println("[2] Add stock");
+          System.out.println("[3] Remove stock");
+          System.out.println("[4] Update stock low alert threshold");
+          System.out.println("[5] Exit");
+          int in3 = 6;
+
+        do {
+          System.out.print("Enter option (1-4): "); 
+          in3 = Sanitise.readInt(1,5,6);
+          if (in3 == 5)
+          System.out.println("[-] Invalid option");
+        } while(in3 == 5);
+
+        switch (in3) {
+          case 1:
+          System.out.println("=====[ List of all medication ]=======");
+          ins.printAllDetail(); 
+          break;
+
+          case 2:
+            System.out.println("\n[!] Choose from the the following list of inventory");
+            List<String> summary = ins.getSummary(); 
+            System.out.println("\nColumns: Medicine Name, Unit, Max Stock, Current Stock, Low Stock Benchmark"); 
+            int i = 1;
+            for (String s : summary) {
+              System.out.print("[ " + i + " ] ");
+              System.out.println(s); 
+              i++;
+            }
+
+            in3 = summary.size() + 1;
+            
+            do {
+              System.out.print("Enter index: ");
+              in3 = Sanitise.readInt(1,summary.size(), summary.size()+1);
+            } while (in3 == summary.size()+1);
+
+            List<Medicine> medList = ins.getListMed(); 
+            String offset = null;
+            do {
+              try {
+                System.out.print("Enter amount of stock to add: ");
+                offset = Sanitise.readID();
+                break;
+              } catch (Exception e) {
+                System.out.println("[-] Please enter valid numerals");
+              }
+            } while (true);
+             
+            if (!ins.addStock(medList.get(in3-1), offset)) 
+              System.out.println("[-] Failed to add stock");
+            else
+             System.out.println("[+] Stock added successfully");
+            
+          break;
+
+          case 3: // remove stock
+           System.out.println("\n[!] Choose from the the following list of inventory");
+            summary = ins.getSummary(); 
+            System.out.println("\nColumns: Medicine Name, Unit, Max Stock, Current Stock, Low Stock Benchmark"); 
+            i = 1;
+            for (String s : summary) {
+              System.out.print("[ " + i + " ] ");
+              System.out.println(s); 
+              i++;
+            }
+
+            in3 = summary.size() + 1;
+            
+            do {
+              System.out.print("Enter index: ");
+              in3 = Sanitise.readInt(1,summary.size(), summary.size()+1);
+            } while (in3 == summary.size()+1);
+
+            medList = ins.getListMed(); 
+            offset = null;
+            do {
+              try {
+                System.out.print("Enter amount of stock to add: ");
+                offset = Sanitise.readID();
+                break;
+              } catch (Exception e) {
+                System.out.println("[-] Please enter valid numerals");
+              }
+            } while (true);
+             
+            if (!ins.removeStock(medList.get(in3-1), offset)) 
+              System.out.println("[-] Failed to remove stock");
+            else
+             System.out.println("[+] Stock removed successfully");
+
+          break;
+          
+          case 4: // update low stock level
+            System.out.println("\n[!] Choose from the the following list of inventory");
+            summary = ins.getSummary(); 
+            System.out.println("\nColumns: Medicine Name, Unit, Max Stock, Current Stock, Low Stock Benchmark"); 
+            i = 1;
+            for (String s : summary) {
+              System.out.print("[ " + i + " ] ");
+              System.out.println(s); 
+              i++;
+            }
+
+            in3 = summary.size() + 1;
+            
+            do {
+              System.out.print("Enter index: ");
+              in3 = Sanitise.readInt(1,summary.size(), summary.size()+1);
+            } while (in3 == summary.size()+1);
+
+            medList = ins.getListMed(); 
+            offset = null;
+            do {
+              try {
+                System.out.print("Enter new low alert threshold: ");
+                offset = Sanitise.readID();
+                break;
+              } catch (Exception e) {
+                System.out.println("[-] Please enter valid numerals");
+              }
+            } while (true);
+             
+            if (!ins.updateAlert(medList.get(in3-1), offset)) 
+              System.out.println("[-] Failed to update threshold");
+            else
+             System.out.println("[+] Threshold updated successfully");
+
+          break;
+
+          case 5:
+          break;
+
+          default:
+          break;
+        }
+
+          confirm();
+          clearScreen();
+          System.out.println(menu);
           break;
 
         case 4: // approve replenishment requests
+          //name,unit,requestQty,pharmaID,pharmaName
+          clearScreen();
+          System.out.println("====[ Approve Replenishment Request ]=====");
+          System.out.println("[!] The following is all the request");
+          System.out.println("[!] Columns: Medication Name, Unit, Request Amount, Pharmacist ID, Pharmacist Name");
+          List<String> allReq = ins.getReplenRequest();
+          int ii = 1;
+
+          for (String i : allReq) {
+            System.out.println("[ " + ii + " ] " + i);
+            ii++;
+          }
+
+          System.out.println(); 
+          
+          int enter = -1;
+          do {
+            System.out.print("Enter request to approve by index: "); 
+            enter = Sanitise.readInt(1, allReq.size(), -1);
+            if (enter == -1)
+              System.out.println("[-] Invalid option. Try again.");
+          } while (enter == -1);
+
+          if (!ins.approveRequest(allReq.get(enter-1)))
+            System.out.println("[-] Failed to approve request");
+          else
+            System.out.println("[+] Request approved");
+          
+          confirm();
+          clearScreen();
+          System.out.println(menu);
           break;
 
         case 5:

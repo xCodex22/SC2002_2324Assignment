@@ -257,7 +257,27 @@ public class AppointmentSystem {
   }
 
   
-  public static boolean recordOutcome() {
+  public static boolean recordOutcome(String docID, String patID, String date, String slot, String entry) {
+    // patient request entry is deleted
+    // add new entry to outcome
+    // doctor schedule info set to X
+    
+    Doctor doc = new Doctor(docID);
+    doc.getScheduleInfo().setAvailability(date, slot, patID, AvailStatus.COMPLETE);
+    HashMap<List<String>, List<String>> patSchedule = getScheduledAppointment(patID);
+    List<String> key = new ArrayList<>();
+    key.add(date); key.add(slot);
+    patSchedule.remove(key);
+    updatePatientAppointment(patID, patSchedule);
+    try {
+      String path = "../data/AppointmentDB/" + patID + "outcome.csv";
+      FileWriter writer = new FileWriter(path, true);
+      writer.write(entry + "\n");
+      writer.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+      return false;
+    }
     return true;
   }
 
@@ -291,7 +311,7 @@ public class AppointmentSystem {
 
 
   public static void printAllOutcome() {
-    System.out.println("\n[!] Colums: Patient ID, Date, Service, Doctor ID, Diagnosis, Medication, Qty, Status, Treatment, Memo\n");
+    System.out.println("\n[!] Colums: Patient ID, Date, Slot, Service, Doctor ID, Diagnosis, Medication, Qty, Status, Treatment, Memo\n");
     Pattern pattern = Pattern.compile("^\\d+outcome\\.csv$");     
     String dir = "../data/AppointmentDB/";
     // see Files.walk documentation
@@ -312,6 +332,54 @@ public class AppointmentSystem {
           }
         }); 
     } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public static List<String> getAllPendingMed() {
+    List<String> ans = new ArrayList<>();
+    Pattern pattern = Pattern.compile("^\\d+outcome\\.csv$");     
+    String dir = "../data/AppointmentDB/";
+    // see Files.walk documentation
+    try (Stream<Path> filePathStream = Files.walk(Paths.get(dir))) {
+      filePathStream
+        .filter(Files::isRegularFile) 
+        .map(Path::getFileName) 
+        .map(Path::toString) 
+        .filter(fileName -> pattern.matcher(fileName).matches()) 
+        .forEach(fileName -> {
+          try {
+            List<String> allRows = Files.readAllLines(Paths.get(dir, fileName));
+            for (int i = 1; i < allRows.size(); i++) {
+              String line = allRows.get(i);
+              String[] fields = line.split(",");
+              if (fields.length > 8 && !fields[8].equalsIgnoreCase("dispensed")) {
+                ans.add(line);  
+              }
+            }          
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }); 
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    return ans;
+  }
+
+  public static void printPatientOutcome(String id) {
+    System.out.println("\n[!] Colums: Patient ID, Date, Slot, Service, Doctor ID, Diagnosis, Medication, Qty, Status, Treatment, Memo\n");
+    try {
+      String path = "../data/AppointmentDB/" + id + "outcome.csv";
+      File file = new File(path);
+      Scanner sc = new Scanner(file);
+      sc.nextLine();
+      while (sc.hasNextLine()) {
+        String line = sc.nextLine();
+        System.out.println(line);
+      }
+    } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
   }

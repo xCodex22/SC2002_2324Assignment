@@ -308,6 +308,13 @@ public class ScheduleInfo{
           }
           newLine[index] = "O";
           break;
+        case COMPLETE:
+          if (!newLine[index].startsWith("C")) {
+            System.out.println("[-] Unable to complete appointment. There is no confirmed appointment");
+            return false;
+          }
+          newLine[index] = "X";
+          break;
         default:
           System.out.println("[-] in setAvailability(): unknown status");
           return false;
