@@ -45,8 +45,6 @@ Because of the way `Java` handles dynamic binding, we often use the keyword `ins
     account.register(info, inputRole)
 ```
 
-
-
 ### Cohesion 
 
 Our classes are encapsulated with specific responsibility. For example, a `Doctor` class has `BasicInfo`, `ScheduleInfo`. `BasicInfo` class is responsible for updating and returning any changes in personal information, whereas `ScheduleInfo` handle tasks related to setting and returning availability. 
@@ -76,7 +74,7 @@ The base classes `User` can be easily replaced with derived classes `Doctor`, `P
 
 ### I - Interface Segregation Principle
 
-The classes are not forced to depend on `interface` or `abstract` classes even if they are not required to use. 
+The classes are not forced to depend on `interface` or `abstract` classes even if they are not required to use. This is done by making `interface` more specific. For example, `InventorySystem` implements `IDispense`, `IAddStock` and `IRemoveStock` etc at the same time, only because it needs it. This segregation allows future `System` classes to pick only the functionality they desire.
 
 ### D - Dependency Inversion Principle
 
@@ -198,6 +196,7 @@ Instead of reading every time slot one by one in the year, this directory struct
 ### Key Assumptions
 
 - **Compatibility**: For the CLI to render properly, users must use a **true terminal**, not one that is built-in within a IDE. Additionally, depending on the fonts you have chosen for your terminal, some of the alignment of texts may seem off. We recommend to use **monospace** terminal fonts
+- **Termination Signal**: If a user forces a termination unexpectedly, for example, through `keyboardInterrupt`, the data base may become corrupted and the CLI will exhibit weird behaviour. We assume that the users will let our `ExceptionHandler` do their job
 - **The data files MUST NOT be tampered with**: Because of how we read and write files in the local data bases, if one is to modify the `.csv`, either accidentally or intentionally, most of the things *will break*. For example, 
 ```
     String[] line = scanner.nextLine().split(",");
