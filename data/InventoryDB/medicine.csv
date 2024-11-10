@@ -1,4 +1,4 @@
 name,unit,initialStock,currentStock,lowStockThreshold
 Paracetamol,TAB,100,80,20
 Ibuprofen,TAB,50,40,10
-Amoxicllin,CAP,100,80,10
+Amoxicllin,CAP,100,5,10

@@ -1013,7 +1013,7 @@ public class Menu {
         break;
 
         case 2: // update prescription status
-        
+         
         break;
 
         case 3: // view medical inventory
@@ -1079,8 +1079,10 @@ public class Menu {
         password_menu();
         System.out.println(menu);
         break;
+
         case 6:
         break;
+
         default:
         System.out.println("[-] Invalid Choice");
         break;
@@ -1100,6 +1102,7 @@ public class Menu {
     "6. Logout";
     Scanner sc = new Scanner(System.in);
     int choice = 7;
+    InventorySystem ins = new InventorySystem();
     System.out.println(menu);
     do {
       System.out.print("Enter option (1-6): ");
@@ -1139,7 +1142,6 @@ public class Menu {
 
         case 3: // view and manage medication inventory
           clearScreen();
-          InventorySystem ins = new InventorySystem();
           System.out.println("======[ View and Manage Medication Inventory ]======");
           System.out.println("[1] View medication inventory");
           System.out.println("[2] Add stock");
@@ -1285,6 +1287,36 @@ public class Menu {
           break;
 
         case 4: // approve replenishment requests
+          //name,unit,requestQty,pharmaID,pharmaName
+          clearScreen();
+          System.out.println("====[ Approve Replenishment Request ]=====");
+          System.out.println("[!] The following is all the request");
+          System.out.println("[!] Columns: Medication Name, Unit, Request Amount, Pharmacist ID, Pharmacist Name");
+          List<String> allReq = ins.getReplenRequest();
+          int ii = 1;
+
+          for (String i : allReq) {
+            System.out.println("[ " + ii + " ] " + i);
+            ii++;
+          }
+
+          System.out.println(); 
+          
+          int enter = -1;
+          do {
+            System.out.print("Enter request to approve by index: "); 
+            enter = Sanitise.readInt(1, allReq.size(), -1);
+            if (enter == -1)
+              System.out.println("[-] Invalid option. Try again.");
+          } while (enter == -1);
+
+          if (!ins.approveRequest(allReq.get(enter-1)))
+            System.out.println("[-] Failed to approve request");
+          else
+            System.out.println("[+] Request approved");
+          
+          confirm();
+          clearScreen();
           break;
 
         case 5:

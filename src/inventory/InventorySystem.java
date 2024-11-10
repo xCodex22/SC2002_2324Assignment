@@ -142,6 +142,62 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert{
     return ans;
   }
 
+  public List<String> getReplenRequest() {
+    try {
+      List<String> ans = new ArrayList<>();
+      String path = "../data/InventoryDB/request.csv";  
+      File file = new File(path);
+      Scanner sc = new Scanner(file);
+      sc.nextLine();
+      while (sc.hasNextLine()) {
+        String line = sc.nextLine();
+        ans.add(line); 
+      }
+     return ans; 
+    } catch (FileNotFoundException e){
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public boolean approveRequest(String entry) {
+    //name,unit,requestQty,pharmaID,pharmaName
+    try {
+      String[] line = entry.split(",");
+      Medicine med = new Medicine(line[0]);
+      if(!addStock(med, line[2])) return false;
+      if(!deleteRequest(entry)) return false;
+      return true;
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return false;
+    }
+  }
+
+  public boolean deleteRequest(String entry) {
+    try {
+      String path = "../data/InventoryDB/request.csv";
+      String tmp = path + "~";
+      // want to delete line that maches with String entry to the file
+    List<String> content = new ArrayList<>(Files.readAllLines(Paths.get(path), StandardCharsets.UTF_8));
+        List<String> newContent = new ArrayList<>();
+				for (int i = 0; i < content.size(); i++) {
+					if(content.get(i).equals(entry)) {
+						continue;
+					}  
+          newContent.add(content.get(i));
+				}
+				Files.write(Paths.get(tmp), newContent, StandardCharsets.UTF_8);
+				Files.copy(Paths.get(tmp), Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
+				Files.delete(Paths.get(tmp));
+      return true;
+    } catch (IOException e) {
+      System.out.println("[-] Failed to update request database");
+      e.printStackTrace();
+      return false;
+    }
+  }
+
   private List<Medicine> medList;
   private List<String> summaryList;
 }
