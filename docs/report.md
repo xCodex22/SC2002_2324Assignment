@@ -4,7 +4,7 @@ As one can tell from the repository, the code base is quite significant. We will
 
 ## UML Class Diagram
 
-Refer to [`UML.png`](docs/UML.png)
+Refer to [`UML.png`](UML.png)
 
 ## Object Oriented Concepts
 
