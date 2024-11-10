@@ -13,7 +13,7 @@ OpenJDK 64-Bit Server VM (build 23, mixed mode, sharing)
 If you are unsure, download the latest version using your preferred package manager. For example, for Windows users
 
 ```console
-winget search openjdk
+$ winget search openjdk
 ```
 
 Select the correct version of `openjdk` and install it
