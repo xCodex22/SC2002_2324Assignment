@@ -219,15 +219,16 @@ public class Menu {
                        "5. Reschedule an Appointment\n" +
                        "6. Cancel an Appointment\n" +
                        "7. View Scheduled Appointments\n" +
-                       "8. Change password\n" +
-                       "9. Logout";
+                       "8. View Past Appointment Outcome Records\n" +
+                       "9. Change password\n" +
+                       "10. Logout";
     Scanner sc = new Scanner(System.in);
     System.out.println(menu);
 
     int choice = 9;
     do {
-      System.out.print("Enter option (1-9): ");
-      choice = Sanitise.readInt(1, 9, 10);
+      System.out.print("Enter option (1-10): ");
+      choice = Sanitise.readInt(1, 10, 11);
       switch (choice) {
         case 1:
           clearScreen();
@@ -474,17 +475,24 @@ public class Menu {
           confirm();
           clearScreen();
           break;
-        case 8:
-          password_menu();
+        case 8: // view past outcome
+          clearScreen();
+          System.out.println("====[ Past Appointment Outcome Records ]=====");
+          AppointmentSystem.printPatientOutcome(user.getBasicInfo().getID());
+          confirm();
+          clearScreen();
           break;
         case 9:
+          password_menu();
+          break;
+        case 10:
           break;
         default:
           System.out.println("[-] Invalid Option");
           break;
       }
       System.out.println(menu);
-    } while(choice != 9);
+    } while(choice != 10);
     clearScreen();	
   }
 

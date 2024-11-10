@@ -336,6 +336,22 @@ public class AppointmentSystem {
     }
   }
 
+  public static void printPatientOutcome(String id) {
+    System.out.println("\n[!] Colums: Patient ID, Date, Service, Doctor ID, Diagnosis, Medication, Qty, Status, Treatment, Memo\n");
+    try {
+      String path = "../data/AppointmentDB/" + id + "outcome.csv";
+      File file = new File(path);
+      Scanner sc = new Scanner(file);
+      sc.nextLine();
+      while (sc.hasNextLine()) {
+        String line = sc.nextLine();
+        System.out.println(line);
+      }
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+
   private static HashMap<String, boolean[]> docAvailForTheDay;
   private static String REQUEST_HEADER = "status,patientID,appointmentDate,timeSlot,drID,drName";
   private static String OUTCOME_HEADER = "patientID,serviceDate,serviceName,drID,diagnosis,medicationPrescribed,medicationAmount,medicationStatus,treatmentPlan,remarks";
