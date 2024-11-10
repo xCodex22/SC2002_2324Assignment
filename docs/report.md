@@ -1,5 +1,10 @@
 # The Report 
+
 As one can tell from the repository, the code base is quite significant. We will only go through some of the key considerations. We recommend to look through the actual code base and *run* the program on your own
+
+## UML Class Diagram
+
+Refer to [`UML.png`](docs/UML.png)
 
 ## Object Oriented Concepts
 
