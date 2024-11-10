@@ -995,6 +995,7 @@ public class Menu {
                        "5. Change Password\n" +
                        "6. Logout";
 
+    InventorySystem ins = new InventorySystem();
     System.out.println(menu);
     Scanner sc = new Scanner(System.in);
     int choice = 6;
@@ -1010,16 +1011,28 @@ public class Menu {
         clearScreen();
         System.out.println(menu);
         break;
+
         case 2: // update prescription status
+        
         break;
+
         case 3: // view medical inventory
+        clearScreen();
+        System.out.println("======[ View Medical Inventory ]========");
+        ins.printAllDetail(); 
+        confirm();
+        clearScreen();
+        System.out.println(menu);
         break;
 
         case 4: // submit replenishment reques
         clearScreen();
         System.out.println("===========[ Submit Replenishment Request ]=========");
+        System.out.println("[!] The following medication have low stock count: ");
+        for (String i : ins.getLowStockList())
+          System.out.println(i);
+        System.out.println();
         System.out.println("[!] Choose the medication based on index\n");
-        InventorySystem ins = new InventorySystem();
         List<String> meds = ins.getListMedName();  
         int j = 1; int len = meds.size();
         for (String i : meds) {

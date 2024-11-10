@@ -45,6 +45,7 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert{
   }
 
   public List<Medicine> getListMed() { return medList; }
+
   public List<String> getListMedName() {
     List<String> ans = new ArrayList<>();
     for (Medicine i : medList) 
@@ -130,6 +131,16 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert{
     }
   }
 
+  public List<String> getLowStockList() {
+    List<Medicine> med = getListMed();  
+    List<String> ans = new ArrayList<>();
+    for (Medicine i : med) {
+      if (Integer.valueOf(i.currentStock) <= Integer.valueOf(i.lowStockThreshold)) {
+        ans.add(i.name);
+      }
+    }
+    return ans;
+  }
 
   private List<Medicine> medList;
   private List<String> summaryList;
