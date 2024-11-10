@@ -854,6 +854,118 @@ public class Menu {
           break;
 
         case 7: // record appointnment outcome
+        // patientID,serviceDate,timeSlot,serviceName,drID,diagnosis,medicationPrescribed,medicationAmount,medicationStatus,treatmentPlan,remarks
+          clearScreen();
+          String[] line = new String[11];
+        
+          String docID = user.getBasicInfo().getID();
+          date = null;
+          String patID = null;
+          System.out.println("=====[ Record Appointment Outcome ]=====");
+          do {
+            try {
+              System.out.print("Enter patient ID: ");
+             patID = Sanitise.readID(); 
+             break;
+            } catch (Exception e) {
+              System.out.println("[-] Invalid format. Try again");
+            }
+          } while (true);
+
+
+          do {
+            try {
+              System.out.print("Enter date of appointment: ");
+              date = Sanitise.readDate() + "-2024";
+              break;
+            } catch (Exception e) {
+              System.out.println(e.getMessage()); 
+            }
+          } while (true);
+           
+        int in = 8;
+
+        do {
+          System.out.println("Select a time slot: ");
+          System.out.println("[1] 0900-1000");
+          System.out.println("[2] 1000-1100");
+          System.out.println("[3] 1100-1200");
+          System.out.println("[4] 1300-1400");
+          System.out.println("[5] 1400-1500");
+          System.out.println("[6] 1500-1600");
+          System.out.println("[7] 1600-1700");
+          System.out.print("Enter option (1-7): ");
+          in = Sanitise.readInt(1,7,8);
+          slot = ScheduleInfo.getSlotFromIndex(in-1); 
+        } while(in == 8);
+
+
+          System.out.print("Enter name of service provided: ");
+          String serviceName = sc.nextLine();
+          
+          System.out.print("Enter diagnosis: ");
+          String diagnosis = sc.nextLine();
+
+          InventorySystem ins = new InventorySystem(); 
+          List<String> medName = ins.getListMedName();  
+         
+          int ii = 1;
+          System.out.println("\n Choose from the following medication to prescribe: ");
+          for (String i : medName) {
+            System.out.println("[ " + ii + " ] " + i);
+          }
+
+          ii = -1;
+          do {
+            System.out.print("Enter index of the medication: ");
+            ii = Sanitise.readInt(1, medName.size(), -1);
+            if (ii == -1) 
+              System.out.println("[-] Invalid option. Try again");
+          } while (ii == -1);
+
+          String med = medName.get(ii-1);
+
+          String qty = null;
+          do {
+            try {
+              System.out.print("Enter quantity to prescibe: ");
+              qty = Sanitise.readID();
+              break;
+            } catch (Exception e) {
+              System.out.println("[-] Please enter valid amount. Try again.");
+            }
+          } while(true);
+
+          System.out.print("Enter treatment plan: ");
+          String plan = sc.nextLine();
+
+          System.out.print("Enter consultation notes: ");
+          String memo = sc.nextLine();
+
+          line[0] = patID;
+          line[1] = date;
+          line[2] = slot;
+          line[3] = serviceName;
+          line[4] = docID;
+          line[5] = diagnosis;
+          line[6] = med;
+          line[7] = qty;
+          line[8] = "pending";
+          line[9] = plan;
+          line[10] = memo;
+          
+          String entry = String.join(",", line);
+          System.out.println("patientID,serviceDate,serviceName,drID,diagnosis,medicationPrescribed,medicationAmount,medicationStatus,treatmentPlan,remarks");
+          System.out.println(entry);
+
+           if(!AppointmentSystem.recordOutcome(docID, patID, date, slot, entry))
+            System.out.println("[-] Failed to record outcome. One or more fields is invalid");
+          else
+            System.out.println("[+] Successfully recorded outcome");
+          
+          confirm();
+          clearScreen();
+          System.out.println(menu);
           break;
 
         case 8:

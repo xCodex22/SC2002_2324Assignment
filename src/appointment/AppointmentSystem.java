@@ -311,7 +311,7 @@ public class AppointmentSystem {
 
 
   public static void printAllOutcome() {
-    System.out.println("\n[!] Colums: Patient ID, Date, Service, Doctor ID, Diagnosis, Medication, Qty, Status, Treatment, Memo\n");
+    System.out.println("\n[!] Colums: Patient ID, Date, Slot, Service, Doctor ID, Diagnosis, Medication, Qty, Status, Treatment, Memo\n");
     Pattern pattern = Pattern.compile("^\\d+outcome\\.csv$");     
     String dir = "../data/AppointmentDB/";
     // see Files.walk documentation
@@ -337,7 +337,7 @@ public class AppointmentSystem {
   }
 
   public static void printPatientOutcome(String id) {
-    System.out.println("\n[!] Colums: Patient ID, Date, Service, Doctor ID, Diagnosis, Medication, Qty, Status, Treatment, Memo\n");
+    System.out.println("\n[!] Colums: Patient ID, Date, Slot, Service, Doctor ID, Diagnosis, Medication, Qty, Status, Treatment, Memo\n");
     try {
       String path = "../data/AppointmentDB/" + id + "outcome.csv";
       File file = new File(path);
