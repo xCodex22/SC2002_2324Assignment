@@ -913,6 +913,7 @@ public class Menu {
           System.out.println("\n Choose from the following medication to prescribe: ");
           for (String i : medName) {
             System.out.println("[ " + ii + " ] " + i);
+            ii++;
           }
 
           ii = -1;
