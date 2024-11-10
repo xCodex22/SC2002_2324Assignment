@@ -10,7 +10,7 @@ import java.util.*;
 import users.*;
 
 
-public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert{
+public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, IDispense{
   public InventorySystem() {
     List<Medicine> ans = new ArrayList<>();
     List<String> sum = new ArrayList<>();
