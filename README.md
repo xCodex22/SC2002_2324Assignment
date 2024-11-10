@@ -1,5 +1,5 @@
 # Environment Specifications
-
+et
 Ensure that you have the following or equivalent `JDK` version. 
 
 ```console
@@ -20,7 +20,7 @@ Select the correct version of `openjdk` and install it
 
 # Caution !!
 
-This project requires the use of primitive local data bases, if a user exits unexpectedly, i.e. sending a `termination singal` during the CLI process without letting our `Exception` handler handles the event, the CLI may exhibit unexpected behaviours due to corruption of data bases. In the event this happens, run
+This project requires the use of primitive local data bases, if a user exits unexpectedly, i.e. sending a `termination singal` during the CLI process without letting our `Exception` handler handle the event, the CLI may exhibit unexpected behaviours due to corruption of data bases. In the event this happens, run
 
 ```
 $ git restore *
