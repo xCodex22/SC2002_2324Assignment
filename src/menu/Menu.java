@@ -1013,7 +1013,42 @@ public class Menu {
         break;
 
         case 2: // update prescription status
-         
+        clearScreen();
+        System.out.println("=========[ Update Prescription Status ]==========");
+        List<String> all = AppointmentSystem.getAllPendingMed();
+        int ii = 1;
+        for (String i : all) {
+          System.out.println("[ " + ii + " ] " + i);
+          ii++;
+        }
+
+        int choi = -1;
+
+        do {
+          System.out.print("[!] Enter request to dispense based on index: ");
+          choi = Sanitise.readInt(1, all.size(), -1);
+          if (choi == -1)
+            System.out.println("[-] Invalid option try again");
+        } while (choi == -1);
+
+// patientID,serviceDate,timeSlot,serviceName,drID,diagnosis,medicationPrescribed,medicationAmount,medicationStatus,treatmentPlan,remarks
+        
+        String[] entry = all.get(choi-1).split(",");
+        String medName = entry[6];
+        String offset = entry[7];
+        try {
+          Medicine med = new Medicine(medName);
+          if (!ins.dispense(med, offset, all.get(choi-1)))
+            System.out.println("[-] Failed to dispense medicine");
+          else
+            System.out.println("[+] Medicine dispensed");
+        } catch (Exception e) {
+          System.out.println(e.getMessage());
+          System.out.println("[-] failed to dispense medicine");
+        }
+        confirm();
+        clearScreen();
+        System.out.println(menu);
         break;
 
         case 3: // view medical inventory
@@ -1040,7 +1075,7 @@ public class Menu {
           j++;
         }
 
-        int choi = len + 1; 
+        choi = len + 1; 
         do {
           System.out.print("[!] Enter index: ");
           choi = Sanitise.readInt(1,len,len+1);
@@ -1317,6 +1352,7 @@ public class Menu {
           
           confirm();
           clearScreen();
+          System.out.println(menu);
           break;
 
         case 5:

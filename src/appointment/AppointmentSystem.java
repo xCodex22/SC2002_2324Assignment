@@ -336,6 +336,38 @@ public class AppointmentSystem {
     }
   }
 
+  public static List<String> getAllPendingMed() {
+    List<String> ans = new ArrayList<>();
+    Pattern pattern = Pattern.compile("^\\d+outcome\\.csv$");     
+    String dir = "../data/AppointmentDB/";
+    // see Files.walk documentation
+    try (Stream<Path> filePathStream = Files.walk(Paths.get(dir))) {
+      filePathStream
+        .filter(Files::isRegularFile) 
+        .map(Path::getFileName) 
+        .map(Path::toString) 
+        .filter(fileName -> pattern.matcher(fileName).matches()) 
+        .forEach(fileName -> {
+          try {
+            List<String> allRows = Files.readAllLines(Paths.get(dir, fileName));
+            for (int i = 1; i < allRows.size(); i++) {
+              String line = allRows.get(i);
+              String[] fields = line.split(",");
+              if (fields.length > 8 && !fields[8].equalsIgnoreCase("dispensed")) {
+                ans.add(line);  
+              }
+            }          
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }); 
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    return ans;
+  }
+
   public static void printPatientOutcome(String id) {
     System.out.println("\n[!] Colums: Patient ID, Date, Slot, Service, Doctor ID, Diagnosis, Medication, Qty, Status, Treatment, Memo\n");
     try {

@@ -142,6 +142,38 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert{
     return ans;
   }
 
+
+  public boolean dispense(Medicine med, String offset, String entry) {
+    try {
+      String id = entry.split(",")[0];
+      String path = "../data/AppointmentDB/" + id + "outcome.csv"; 
+      String tmp = path + "~";
+
+      if (!removeStock(med, offset)) return false;
+
+      List<String> content = new ArrayList<>(Files.readAllLines(Paths.get(path), StandardCharsets.UTF_8));
+				for (int i = 0; i < content.size(); i++) {
+					if(content.get(i).equals(entry)) {
+            // conte.get(i) is line, want to change content.get(i)[8] to string "dispensed"
+            String[] field = content.get(i).split(",");
+            field[8] = "dispensed";
+            String newEntry = String.join(",", field);
+            content.set(i, newEntry);
+						break;
+					}
+				}
+
+				Files.write(Paths.get(tmp), content, StandardCharsets.UTF_8);
+				Files.copy(Paths.get(tmp), Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
+				Files.delete(Paths.get(tmp));
+
+      return true;
+    } catch (IOException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
   public List<String> getReplenRequest() {
     try {
       List<String> ans = new ArrayList<>();
