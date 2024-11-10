@@ -1,5 +1,10 @@
 # The Report 
+
 As one can tell from the repository, the code base is quite significant. We will only go through some of the key considerations. We recommend to look through the actual code base and *run* the program on your own
+
+## UML Class Diagram
+
+Refer to [`UML.png`](UML.png)
 
 ## Object Oriented Concepts
 
@@ -278,15 +283,101 @@ Enter here: 01-01
 
 Test Case 4:
 ```
+======[ Schedule Appoinment ]=====
+
+Enter date in DD-MM format: 
+Enter here: 01-01
+Select a time slot: 
+[1] 0900-1000
+[2] 1000-1100
+[3] 1100-1200
+[4] 1300-1400
+[5] 1400-1500
+[6] 1500-1600
+[7] 1600-1700
+Enter option (1-7): 6
+Enter ID of doctor to schedule with: 12346
+[+] Successfully scheduled appointment
+
+[!] Enter "1" to continue:
 ```
 
 Test Case 5:
+
 ```
+=====[ Reschedule an appointment ]=====
+First, enter the original schedule date
+
+[!] Enter "1" to continue: 1
+
+Enter date in DD-MM format: 
+Enter here: 01-01
+Select a time slot: 
+[1] 0900-1000
+[2] 1000-1100
+[3] 1100-1200
+[4] 1300-1400
+[5] 1400-1500
+[6] 1500-1600
+[7] 1600-1700
+Enter option (1-7): 7
+Enter the ID of the doctor that you have scheduled with: 12346
+
+Next, enter new date to reschedule
+
+Enter date in DD-MM format: 
+Enter here: 02-01
+Select a time slot: 
+[1] 0900-1000
+[2] 1000-1100
+[3] 1100-1200
+[4] 1300-1400
+[5] 1400-1500
+[6] 1500-1600
+[7] 1600-1700
+Enter option (1-7): 1
+Enter the ID of the doctor that you want to schedule with: 12357
+[+] Successfully rescheduled
+
+[!] Enter "1" to continue: 1
+
+======[ All Scheduled Appointments ]=======
+
+[1] Scheduled Date [2] Scheduled Slot [3] Appointment Status [4] Doctor Name [5] Doctor ID
+01-01-2024 1500-1600 cancelled Stephen Strange 12346 
+01-01-2024 1300-1400 confirmed Stephen Strange 12346 
+01-01-2024 0900-1000 cancelled Stephen Strange 12346 
+02-01-2024 0900-1000 pending Shane Dawson 12357 
+01-01-2024 1600-1700 cancelled Stephen Strange 12346 
+
+[!] Enter "1" to continue:
+
 ```
+
 Test Case 6:
+
 ```
+====[ Cancel an appointment ]====
+
+Enter date in DD-MM format: 
+Enter here: 01-01
+Select a time slot: 
+[1] 0900-1000
+[2] 1000-1100
+[3] 1100-1200
+[4] 1300-1400
+[5] 1400-1500
+[6] 1500-1600
+[7] 1600-1700
+Enter option (1-7): 6
+Enter the ID of the doctor that you have scheduled with: 12346
+[+] Successfully cancelled appointment
+
+[!] Enter "1" to continue: 
+
 ```
 Test Case 7:
+
 ```
 ======[ All Scheduled Appointments ]=======
 
@@ -300,6 +391,18 @@ Test Case 7:
 ```
 
 Test Case 8:
+
+```
+====[ Past Appointment Outcome Records ]=====
+
+[!] Colums: Patient ID, Date, Slot, Service, Doctor ID, Diagnosis, Medication, Qty, Status, Treatment, Memo
+
+12345,12-12-2023,0900-1000,Physical Examination,12346,headache,Paracetamol,10,dispensed,NIL,Patient is stressed
+12345,01-01-2024,0900-1000,System Test,12346,NIL,Paracetamol,10,pending,NIL,System Test
+
+[!] Enter "1" to continue: 
+
+```
 
 Test Case 9:
 ```
@@ -431,6 +534,25 @@ Enter option (1-7): 1
 
 Test Case 13:
 
+```
+=====[ Record Appointment Outcome ]=====
+Enter patient ID: 12345
+=======[ Accept or Decline Appointment Request ]=======
+[1] Date [2] Time Slot [3] Patient ID
+[ 1 ] 01-01-2024 1600-1700 12345
+[ 2 ] 03-01-2024 1400-1500 12349
+
+Enter the index of the scheduled appoitnment to accept or decline: 1
+[!] Selected Request: 01-01-2024 1600-1700 12345
+
+[1] Accept appointment request
+[2] Decline appointment request
+[!] Enter option (1-2): 2
+[+] Appointment is declined.
+
+[!] Enter "1" to continue: 
+```
+
 Test Case 14:
 
 ```
@@ -445,14 +567,87 @@ Test Case 14:
 ```
 
 Test Case 15:
+```
+=====[ Record Appointment Outcome ]=====
+Enter patient ID: 12345
+Enter date of appointment: 
+Enter date in DD-MM format: 
+Enter here: 01-01
+Select a time slot: 
+[1] 0900-1000
+[2] 1000-1100
+[3] 1100-1200
+[4] 1300-1400
+[5] 1400-1500
+[6] 1500-1600
+[7] 1600-1700
+Enter option (1-7): 2
+Enter name of service provided: test
+Enter diagnosis: test
+
+ Choose from the following medication to prescribe: 
+[ 1 ] Paracetamol
+[ 2 ] Ibuprofen
+[ 3 ] Amoxicllin
+Enter index of the medication: 2
+Enter quantity to prescibe: 10
+Enter treatment plan: test
+Enter consultation notes: test
+
+[!] Enter "1" to continue: 
+```
 
 Test Case 16:
+```
+=========[ View Appointment Outcomes ]===========
+
+[!] Colums: Patient ID, Date, Slot, Service, Doctor ID, Diagnosis, Medication, Qty, Status, Treatment, Memo
+
+[1] 12345,12-12-2023,0900-1000,Physical Examination,12346,headache,Paracetamol,10,dispensed,NIL,Patient is stressed
+[2] 12345,01-01-2024,0900-1000,System Test,12346,NIL,Paracetamol,10,pending,NIL,System Test
+
+[!] Enter "1" to continue: 
+```
 
 Test Case 17:
+```
+=========[ Update Prescription Status ]==========
+[ 1 ] 12345,01-01-2024,0900-1000,System Test,12346,NIL,Paracetamol,10,pending,NIL,System Test
+[!] Enter request to dispense based on index: 1
+[+] Update Success
+[!] Enter "1" to continue:
+```
 
 Test Case 18:
+```
+======[ View Medical Inventory ]========
+
+Columns: Medicine Name, Unit, Max Stock, Current Stock, Low Stock Benchmark
+Paracetamol TAB 100 70 20 
+Ibuprofen TAB 50 40 10 
+Amoxicllin CAP 100 5 10 
+
+[!] Enter "1" to continue: 
+```
 
 Test Case 19:
+
+```
+===========[ Submit Replenishment Request ]=========
+[!] The following medication have low stock count: 
+Amoxicllin
+
+[!] Choose the medication based on index
+
+[ 1 ] Paracetamol
+[ 2 ] Ibuprofen
+[ 3 ] Amoxicllin
+[!] Enter index: 3
+[!] Enter amount of quantity to top up: 10
+[+] Request sent
+
+[!] Enter "1" to continue:
+```
 
 Test Case 20:
 ```
@@ -573,7 +768,6 @@ The most important learning point is that, the team could have chose a **unit te
 
 **Theory v.s. Practice**
 
-A jarring issue that one can easily see if the `Menu` class, which is simply many class methods combined together. The *correct* way to implement such classes would be to first define `interface`. In fact, an argument can be made using OOP concepts that *all classes* should implement some base `interface`. The issue is that we often have many unique classes that does a very specific thing, meaning that there are many instances where **only one class** implements the `interface`. Additionally, it also introduces some unnecessary complexity for simple classes. In keeping `interface` generic, it also means that it does less and less things, and sometimes may not even be necessary anymore.
+A jarring issue that one can easily see if the `Menu` class, which is simply many class methods combined together. The *correct* way to implement such classes would be to first define `interface`. In fact, an argument can be made using OOP concepts that *all classes* should implement some base `interface`. The issue is that we often have many unique classes that does a very specific thing, meaning that there are many instances where **only one class** implements the `interface`. Additionally, it also introduces some unnecessary complexity for simple classes. In keeping `interface` generic, it also means that it does less and less things, and sometimes may not even be necessary anymore. However, this does not mean that `interface` is not used. See our implementation of `InventorySystem`.
 
-This project highlights the importance and relevance of UML diagrams, because by doing the diagrams first, we would have an easier time deciding the dependencies
 
