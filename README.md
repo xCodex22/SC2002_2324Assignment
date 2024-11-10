@@ -18,6 +18,14 @@ $ winget search openjdk
 
 Select the correct version of `openjdk` and install it
 
+# Caution !!
+
+This project requires the use of primitive local data bases, if a user exits unexpectedly, i.e. sending a `termination singal` during the CLI process without letting our `Exception` handler handles the event, the CLI may exhibit unexpected behaviours due to corruption of data bases. In the event this happens, run
+
+```
+$ git restore *
+```
+
 # Initial User Accounts
 
 You can test the CLI using the following accounts
