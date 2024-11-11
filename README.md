@@ -50,6 +50,22 @@ Role: admin
 
 Alternatively, you can add your own user fields through the CLI.
 
+# javadoc
+
+To view the documentation generated from `javadoc`, get the path of `javadoc/index.html` and open it in your browser
+
+**On Windows**
+```console
+$ cd javadoc/
+$ start index.html
+```
+
+**On Unix**
+```console
+$ cd javadoc/
+$ xdg-open index.html
+```
+
 # Installation 
 
 ## For Windows Users

@@ -7,16 +7,16 @@ import java.nio.file.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-/*
+/**
  * Class for managing basic personal information of users
  */
 public class BasicInfo {
-  /*
+  /**
    * Default constructor for creating an empty BasicInfo object.
    */
   public BasicInfo(){}
   
-  /*
+  /**
    * Constructs a BasicInfo object for a user with the specified hospital ID and role.
    * 
    * @param hospitalID The ID of the hospital account.
@@ -63,7 +63,7 @@ public class BasicInfo {
     }
   }
 
-  /*
+  /**
    * Make a copy of the current user by duplicating the member fields
    * @return a copy of the BasicInfo
    */
@@ -80,8 +80,8 @@ public class BasicInfo {
     return copy;
   }
 
-  /*
-   * Displays the personal information of the user.
+  /**
+   * Displays the personal information of the user
    */
   public void displayInfo() {
     System.out.println("===========[ Personal Information ]============");
@@ -95,7 +95,7 @@ public class BasicInfo {
     System.out.println("[6] Email Address: " + summary[6]);
   }
 
-   /*
+   /**
     * Updates the personal information of the user.
     * @return true if the update is successful, false otherwise.
     */
@@ -141,7 +141,7 @@ public class BasicInfo {
     return true;
   }
 
-  /*
+  /**
    * Deletes the user's personal information from the system.
    * 
    * @return true if the deletion is successful, false otherwise.
@@ -187,24 +187,126 @@ public class BasicInfo {
     return true;
   }
 
-
+  /**
+   * sets the first name of user
+   *
+   * @param firstName new first name
+   */
   public void setFirstName(String firstName) { this.firstName = firstName; summary[1] = firstName;}
+
+  /**
+   * sets the last name of user
+   *
+   * @param lastName new last name
+   */
   public void setLastName(String lastName) { this.lastName = lastName; summary[2] = lastName; }
+
+  /**
+   * sets the gender of user
+   *
+   * @param gender new gender of user
+   */
   public void setGender(String gender) { this.gender = gender; summary[3] = gender; }
+
+  /**
+   * sets the date of birth of user
+   *
+   * @param dob the new date of birth
+   */
   public void setDOB(String dob) { dateOfBirth = dob; summary[4] = dob; }
+
+  /**
+   * sets the phone number of user
+   *
+   * @param phoneNumber the new phone number of user
+   */
   public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; summary[5] = phoneNumber; }
+
+  /**
+   * sets the email address of user
+   *
+   * @param emailAddress the new email address
+   */
   public void setEmailAddress(String emailAddress) { this.emailAddress = emailAddress; summary[6] = emailAddress; }
+
+  /**
+   * sets the id of user
+   *
+   * @param hospitalID of the user
+   */
   private void setID(String hospitalID) { this.hospitalID = hospitalID; summary[0] = hospitalID; }
+
+  /**
+   * sets the role of user
+   *
+   * @param role the new role of user
+   */
   private void setRole(String role) { this.role = role; }
-  
+ 
+  /**
+   * gets the basic information as a list of summary
+   *
+   * @return the summary
+   */
   public String[] getSummary() { return summary; }
+
+  /**
+   * gets the id of user
+   *
+   * @return the id
+   */
   public String getID() { return hospitalID; }
+
+  /**
+   * gets the gender of user
+   *
+   * @return the gender
+   */
   public String getGender() { return gender; }
+
+  /**
+   * gets the role of user
+   *
+   * @return the role of user
+   */
   public String getRole() { return role; }
+
+  /**
+   * gets the first name of user
+   *
+   * @return the first name of user
+   */
   public String getFirstName() { return firstName; }
+ 
+  /**
+   * gets the last name of user
+   *
+   * @return the last name of user
+   */
   public String getLastName() { return lastName; }
+
+
+  /**
+   * gets the date of birth of user
+   *
+   * @return the date of birth of user
+   */
   public String getDOB() { return dateOfBirth; }
+
+
+  /**
+   * gets the phone number of user
+   *
+   * @return the phone number
+   */
   public String getPhoneNumber() { return phoneNumber; }
+
+
+  /**
+   * gets the email address of user
+   *
+   * @return the email address
+   */
   public String getEmailAddress() { return emailAddress; }
 
   private String[] summary = new String[7];

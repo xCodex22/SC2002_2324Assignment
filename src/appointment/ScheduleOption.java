@@ -1,5 +1,22 @@
 package appointment;
 
+/**
+ * option for scheduling of appointment
+*/
+
 public enum ScheduleOption {
-  NEW, CANCEL, REPLACE 
+  /**
+   * booking of new appointment
+   */
+  NEW, 
+
+  /**
+   * cancel existing appointment
+   */
+  CANCEL, 
+
+ /**
+  * reschedule current appointment to another one
+  */
+  REPLACE,
 }

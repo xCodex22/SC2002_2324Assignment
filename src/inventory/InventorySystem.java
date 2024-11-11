@@ -10,7 +10,13 @@ import java.util.*;
 import users.*;
 
 
+/**
+ * class for managing the medicine inventory
+ */
 public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, IDispense{
+  /**
+   * constructor to read all the medicine in the current database
+   */
   public InventorySystem() {
     List<Medicine> ans = new ArrayList<>();
     List<String> sum = new ArrayList<>();
@@ -34,18 +40,33 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, I
     }
   }
 
+  /**
+   * print all medicine name
+   */
   public void printAllMedName() {
     for (Medicine i : medList) {
       System.out.println(i.name);
     }
   }
 
-  public List<String> getSummary() {
-    return summaryList;
-  }
+  /**
+   * get the summary of the current inventory
+   * @return the summary list 
+   */
+  public List<String> getSummary() { return summaryList; }
 
+  /**
+   * get the list of medicine in the current inventory
+   * @return the list of medicine
+   */
   public List<Medicine> getListMed() { return medList; }
 
+
+  /**
+   * gets the list of names of medicine
+   *
+   * @return the list of the names of medicine in the inventory
+   */
   public List<String> getListMedName() {
     List<String> ans = new ArrayList<>();
     for (Medicine i : medList) 
@@ -53,6 +74,11 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, I
     return ans;
   }
 
+
+  /**
+   * prints all detailed information about the inventory
+   *
+   */
   public void printAllDetail() {
     try {
       System.out.println("\nColumns: Medicine Name, Unit, Max Stock, Current Stock, Low Stock Benchmark");
@@ -73,6 +99,14 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, I
 
   }
 
+
+  /**
+   * adds stock to medicine
+   *
+   * @param med the medicine to be updated
+   * @param offset the amount of stock to be added
+   * @return whether the operation is successful
+   */
   public boolean addStock(Medicine med, String offset) {
     if (Integer.valueOf(offset) + Integer.valueOf(med.currentStock) > Integer.valueOf(med.initialStock)) {
       med.initialStock = String.valueOf(Integer.valueOf(offset) + Integer.valueOf(med.currentStock));
@@ -86,6 +120,14 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, I
     return true;
   }
 
+
+  /**
+   * removes tock from medicine
+   *
+   * @param med the medicine to be updated
+   * @param offset the quantity to be removed
+   * @return whether the operation is successful
+   */
   public boolean removeStock(Medicine med, String offset) {
     if (Integer.valueOf(med.currentStock) < Integer.valueOf(offset)) {
       System.out.println("[-] Failed to remove stock from medicine. Not enough stock"); 
@@ -99,6 +141,13 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, I
     return true;
   }
 
+  /**
+   * sets new threshold for low alert
+   *
+   * @param med the medicine to be updated
+   * @param newLevel the new threshold
+   * @return whether the operation is successful
+   */
   public boolean updateAlert(Medicine med, String newLevel) {
     try {
       med.lowStockThreshold = newLevel; 
@@ -111,6 +160,15 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, I
     }
   }
 
+
+  /**
+   * request replenishment on medicine
+   *
+   * @param med the medicine to be replenished
+   * @param requestQty the amount of quantity to be added
+   * @param pharma the user information of the pharmacist
+   * @return whether the operation is successful
+   */
   public boolean requestReplenishment(Medicine med, String requestQty, User pharma) {
    List<String> ans = new ArrayList<>();
     ans.add(med.name);
@@ -131,6 +189,11 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, I
     }
   }
 
+  /**
+   * gets the current list of stocks that are low level
+   *
+   * @return list of information of the stocks that are at low level
+   */
   public List<String> getLowStockList() {
     List<Medicine> med = getListMed();  
     List<String> ans = new ArrayList<>();
@@ -143,6 +206,14 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, I
   }
 
 
+  /**
+   * dispense medicine from request
+   *
+   * @param med the information of the medicine
+   * @param offset the quantity to be dispensed
+   * @param entry the line entry of the request
+   * @return whether the operation is successful
+   */
   public boolean dispense(Medicine med, String offset, String entry) {
     try {
       String id = entry.split(",")[0];
@@ -174,6 +245,11 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, I
     }
   }
 
+  /**
+   * gets all request for replenishment
+   *
+   * @return the list of reqeust
+   */
   public List<String> getReplenRequest() {
     try {
       List<String> ans = new ArrayList<>();
@@ -192,6 +268,11 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, I
     }
   }
 
+  /**
+   * approves the replenishment request, when approved update the stock level and remove request from database
+   * @param the entry to be edited
+   * @return whether the operation is successful
+   */
   public boolean approveRequest(String entry) {
     //name,unit,requestQty,pharmaID,pharmaName
     try {
@@ -206,6 +287,12 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, I
     }
   }
 
+  /**
+   * deletes the replenishment request from the data base
+   *
+   * @param the line entyr
+   * @param whether the operation is successful
+   */
   public boolean deleteRequest(String entry) {
     try {
       String path = "../data/InventoryDB/request.csv";

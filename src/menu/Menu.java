@@ -13,9 +13,15 @@ import java.nio.file.*;
 import java.nio.charset.StandardCharsets;
 import java.io.IOException;
 
+/**
+ * The class for initialising the menu, which the user interface for the CLI
+ */
 public class Menu {
   public Menu() { acc = new AccountSystem(); }
 
+  /**
+   * starts the menu by displaying and handling the welcome page
+   */
   public void start() {
     int choice = 3;
     clearScreen();	
@@ -54,6 +60,11 @@ public class Menu {
     } while(choice != 3);
   }
 
+  /**
+   * select the menu based on user's role
+   *
+   * @param role the role of the user
+   */
   public void select_menu(String role) {
     switch (role) {
       case "PATIENT":
@@ -73,6 +84,9 @@ public class Menu {
     }
   }
 
+  /**
+   * the IO handler of login page
+   */
   public void login_menu() {
     Console cnsl = null;
     try {	
@@ -103,6 +117,11 @@ public class Menu {
     } catch(Exception e) { e.printStackTrace(); }
   }
 
+  /**
+   * The IO handler of the registeration menu
+   *
+   * @param inputRole the role of the user to be registered into the data base
+   */
   public void register_menu(String inputRole) {
     clearScreen();
     final String menu = "=======[ Registration Menu ]=========\n" +
@@ -194,6 +213,9 @@ public class Menu {
     } while(choice != 2);
   }
 
+  /**
+   * IO handler for patient's menu
+   */
   public void patient_menu(){
     clearScreen();	
     user = new Patient(acc.getID());
@@ -425,7 +447,7 @@ public class Menu {
           System.out.println("====[ Cancel an appointment ]====");
           do {
             try {
-              d2 = Sanitise.readDate()+"-2024"; //TODO: IMPORTANT 
+              d2 = Sanitise.readDate()+"-2024";  
               break;
             } catch (Exception e) {
               System.out.println(e.getMessage());
@@ -496,6 +518,9 @@ public class Menu {
     clearScreen();	
   }
 
+  /**
+   * IO handler for doctor's menu
+   */
   public void doctor_menu(){
     clearScreen();	
     user = new Doctor(acc.getID());
@@ -985,6 +1010,9 @@ public class Menu {
     clearScreen();	
   }
 
+  /**
+   * IO handler for pharmacist's menu
+   */
   public void pharma_menu(){
     clearScreen();	
     this.user = new Pharmacist(acc.getID());
@@ -1127,6 +1155,9 @@ public class Menu {
     clearScreen();	
   }
 
+  /**
+   * IO handler for administrator's menu
+   */
   public void admin_menu(){ 
     clearScreen();	
     final String menu = "====[ Administrator Menu ]=====\n" + 
@@ -1371,6 +1402,9 @@ public class Menu {
     clearScreen();	
   }
 
+  /**
+   * IO handler for the change of password menu
+   */
   public void password_menu() {
     clearScreen();			
     String oldpass, newpass1, newpass2;
@@ -1406,6 +1440,9 @@ public class Menu {
     clearScreen();	
   }
 
+  /**
+   * IO handler for the updating of personal information
+   */
   public void updatePersonalInfo_menu(User inputUser) {
     clearScreen();
     inputUser.getBasicInfo().displayInfo();
@@ -1576,6 +1613,9 @@ public class Menu {
     } while(choice != 9);
   }
 
+  /**
+   * IO handler for staff management menu
+   */
   public void staffManagement_menu() {
     clearScreen();
     int choice = 5;
@@ -1753,11 +1793,17 @@ public class Menu {
     clearScreen();
   }
 
+  /**
+   * clears the screen and flush IO
+   */
   public void clearScreen() {
     System.out.print("\033[H\033[2J");
     System.out.flush();
   }
 
+  /**
+   * loop instance for confirmation before session is exited
+   */
   public void confirm() {
     System.out.print("\n[!] Enter \"1\" to continue: ");
     int ans = 2;

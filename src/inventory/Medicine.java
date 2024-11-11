@@ -8,8 +8,17 @@ import java.nio.file.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-	
+
+/**
+ * the class representing the medicine fields
+ */
 public class Medicine {
+  /**
+   * constructor for medicine
+   *
+   * @param name the name of the medicine to be constructed 
+   * @throws Exception if the name of the medicine is not found in the data base
+   */
   public Medicine(String name) throws Exception {
     boolean found = false;
     try {
@@ -34,6 +43,11 @@ public class Medicine {
     } 
   }  
 
+  /**
+   * updates the medicine information in the database
+   *
+   * @return whether the operation is successful
+   */
   public boolean update() {
     String newEntry = getLineEntry();
     try {
@@ -56,6 +70,12 @@ public class Medicine {
     }
   }
 
+  
+  /**
+   * get the line entry to be written into the data base
+   *
+   * @return the line entry
+   */
   private String getLineEntry() {
     List<String> ans = new ArrayList<>();
     ans.add(name);
