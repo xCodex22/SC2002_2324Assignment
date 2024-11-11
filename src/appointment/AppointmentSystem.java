@@ -14,9 +14,17 @@ import account.ScheduleInfo;
 import account.AvailStatus;
 import java.util.regex.Pattern;
 
+/**
+ * Singleton for appointment system
+ */
 public class AppointmentSystem {
   private AppointmentSystem(){};
-   
+  
+  /**
+   * prints the available slots for a particular day
+   *
+   * @param date the date where we check and display the available slots
+   */
   public static void printAvailSlot(String date) {
     loadAvailSlot(date);
     // doctorID --> [availability for the day]  
@@ -34,6 +42,11 @@ public class AppointmentSystem {
 
   }
 
+  /**
+   * loads all available slot for a particular day
+   *
+   * @param date the date that we are interested 
+   */
   private static void loadAvailSlot(String date) {
     HashMap<String, boolean[]> map = new HashMap<String,boolean[]>();
 
@@ -72,6 +85,14 @@ public class AppointmentSystem {
   }
 
 
+  /**
+   * updates appointment status for patient's side
+   *
+   * @param patID patient's id
+   * @param scheduledApt the map hashing the key value pair of date, slot to status and doctor id
+   *
+   * @return whether the operation is successful
+   */
   private static boolean updatePatientAppointment(String patID, HashMap<List<String>, List<String>> scheduledApt) {
     try {
       String path = "../data/AppointmentDB/" + patID + "request.csv";
@@ -88,6 +109,14 @@ public class AppointmentSystem {
     }
   }
 
+  /**
+   * converts hash map of schedule into entry to be written into file
+   *
+   * @param patID id of the patient
+   * @param map the hash map of schedule
+   *
+   * @return the line entry to be written into the file 
+   */
   private static List<String> scheduleMapToFileContent(String patID, HashMap<List<String>, List<String>> map) {
     // key: [Date, TimeSlot] value: [status, drName, drID]
     List<String> ans = new ArrayList<>();
@@ -111,6 +140,17 @@ public class AppointmentSystem {
     return ans;
   }
 
+  /**
+   * Schedules an appointment
+   *
+   * @param date the date of appointment
+   * @param slot the time slot 
+   * @param docID id of the doctor
+   * @param patID id of the patient
+   * @param opt the schedule option 
+   * 
+   * @return whether operation is successful 
+   */
   public static boolean scheduleAppointment(String date, String slot, String docID, String patID, ScheduleOption opt) {
         // need to first check if there is even any avail schedule slot
     loadAvailSlot(date); 
@@ -188,6 +228,14 @@ public class AppointmentSystem {
     return true;     
   }
 
+  /**
+   * allows doctor to accept appointment request
+   *
+   * @param date of appointment
+   * @param slot of the day
+   * @param docID id of the doctor
+   * @param patID id of the patient
+   */
   public static void acceptAppointment(String date, String slot, String docID, String patID) {
     // error handling will be done by other classes
     // all this does is add to the appointment database
@@ -199,9 +247,16 @@ public class AppointmentSystem {
     patSchedule.put(key, val); 
     // need to update appointment
     updatePatientAppointment(patID, patSchedule);
-    // private static boolean updatePatientAppointment(String patID, HashMap<List<String>, List<String>> scheduledApt) 
   }
 
+  /**
+   * lets doctor decline appointment request
+   * 
+   * @param date of appointment
+   * @param slot of the day
+   * @param docID id of doctor
+   * @param patID id of patient
+   */
   public static void declineAppointment(String date, String slot, String docID, String patID) {
     // error handling will be done by other classes
      HashMap<List<String>, List<String>> patSchedule = getScheduledAppointment(patID); // pat schedule
@@ -215,7 +270,10 @@ public class AppointmentSystem {
    
   }
 
-  /* @param patient's ID
+  /**
+   * gets the appointment status of a patient
+   *
+   * @param patient's ID
    * @return the hash map for current appointment of patient, key: [Date, TimeSlot] value: [status, drName, drID]
    */
   private static HashMap<List<String>, List<String>> getScheduledAppointment(String patID) {
@@ -282,6 +340,9 @@ public class AppointmentSystem {
   }
 
 
+  /**
+   * prints all appointment requests
+   */
   public static void printAllAppointment() {
     // read all request files
     Pattern pattern = Pattern.compile("^\\d+request\\.csv$");     
@@ -310,6 +371,9 @@ public class AppointmentSystem {
   }
 
 
+  /**
+   * prints all appointment outcome records
+   */
   public static void printAllOutcome() {
     System.out.println("\n[!] Colums: Patient ID, Date, Slot, Service, Doctor ID, Diagnosis, Medication, Qty, Status, Treatment, Memo\n");
     Pattern pattern = Pattern.compile("^\\d+outcome\\.csv$");     
@@ -336,6 +400,11 @@ public class AppointmentSystem {
     }
   }
 
+  /**
+   * gets all pending medication
+   *
+   * @return list of medications
+   */
   public static List<String> getAllPendingMed() {
     List<String> ans = new ArrayList<>();
     Pattern pattern = Pattern.compile("^\\d+outcome\\.csv$");     
@@ -368,6 +437,11 @@ public class AppointmentSystem {
     return ans;
   }
 
+  /**
+   * prints appointment outcome record for a specific patient
+   *
+   * @param id of patient
+   */
   public static void printPatientOutcome(String id) {
     System.out.println("\n[!] Colums: Patient ID, Date, Slot, Service, Doctor ID, Diagnosis, Medication, Qty, Status, Treatment, Memo\n");
     try {

@@ -9,7 +9,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import users.*;
 
+/**
+ * class representing the medical information of the patient
+ */
 public class MedicalInfo {
+
+  /**
+   * constructs the medical info for a patient
+   *
+   * @param hospitalID of the patient
+   * @throws Exception if the user is not found
+   */
   public MedicalInfo(String hospitalID) throws Exception {
     File file = null;
     String[] line = null;
@@ -37,6 +47,12 @@ public class MedicalInfo {
     }
   }
 
+  /**
+   * updates the medical information of the patient
+   *
+   * @param doctor only user doctor can update
+   * @param newEntry the patient's new medical information
+   */
   public void updateInfo(User doctor, String newEntry) {
     if (doctor instanceof Doctor) {
        try {
@@ -52,6 +68,11 @@ public class MedicalInfo {
     }
   }
 
+  /**
+   * displays the medical record of user
+   *
+   * @param user of interest
+   */
   public void displayInfo(User user) {
     System.out.println("===========[ Medical Information ]============");
     System.out.println("[-] Blood Type: " + this.bloodType);
@@ -83,7 +104,16 @@ public class MedicalInfo {
     }
   }
 
+  /**
+   * gets the blood type of patient
+   * @return the blood type of user
+   */
   public String getBloodType() { return bloodType; }
+
+  /**
+   * gets list of medical record of patient
+   * @return the list of records
+   */
   public List<String[]> getMedicalRecords() { return medicalRecords; }
 
   private String bloodType = null;

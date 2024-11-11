@@ -10,12 +10,25 @@ import java.io.Console;
 import java.util.*;
 import users.*;
 
+/**
+ * class representing the schedule information of a doctor
+ */
 public class ScheduleInfo{
+  /**
+   * constructor that initialises the schedule info of a doctor
+   *
+   * @param hospitalID the id number of the doctor
+   */
   public ScheduleInfo(String hospitalID) {
     this.id = hospitalID;
     load(hospitalID);    
   }
 
+  /**
+   * loads the information based on the ID
+   *
+   * @param hospitalID the id number of the doctor
+   */
   private void load(String hospitalID) {
     String[][][] res = new String[13][32][7];
     // String[month][date][timeslots]
@@ -64,6 +77,13 @@ public class ScheduleInfo{
   }
 
 
+  /**
+   * gets the first day of the month, for the year 2024
+   *
+   * @param month the month we are interested in
+   * @param year the year, but we only support 2024
+   * @return the first day of the month as an offset of the days in the week
+   */
   private int getFirstDayOfMonth(String month, String year) {
     // we assume that there is only one year for simplicity of implementation
     // direct look up method
@@ -73,6 +93,13 @@ public class ScheduleInfo{
     return res[Integer.valueOf(month)];
   }
 
+  /**
+   * gets the number of the days in the month for the year 2024
+   *
+   * @param month the month of interest
+   * @param year the year of interest, however we only support 2024
+   * @return the number of days in the month
+   */
   private int getNumberOfDaysOfMonth(String month, String year) {
     int count = 0;
     for (int i = 1; i <= 31; i++) {
@@ -83,6 +110,15 @@ public class ScheduleInfo{
     return count;
   }
 
+  /**
+   * gets the schedule status of the day
+   *
+   * @param month month of interest
+   * @param date date of month
+   * @param year we only support 2024
+   *
+   * @return X for unavailable, O for available ! for pending
+   */
   private String getStatusOfDay(String month, String date, String year) {
     String[] slots = scheduleArray[Integer.valueOf(month)][Integer.valueOf(date)];
     boolean hasPending = false;
@@ -100,6 +136,11 @@ public class ScheduleInfo{
     return "XX"; 
   }
 
+  /**
+   * prints the schedule information as a ASCII calendar for the month
+   *
+   * @param month the month of the schedule
+   */
   public void printSchedule(String month) {
     // should look something like the following
     // ====[ Name of the month ]====
@@ -220,6 +261,11 @@ public class ScheduleInfo{
 
   }
 
+  /**
+   * displays the availability of slots for a particular day 
+   *
+   * @param date of the schedule
+   */
   public void displayDay(String date) {
     try {
       List<String> status = getSlotStatus(date);
@@ -236,6 +282,13 @@ public class ScheduleInfo{
     }
   }
 
+  /**
+   * gets the status of the slot
+   *
+   * @param date of interest
+   * @return list of status
+   * @throws Exception if the slot is invalid
+   */
   private List<String> getSlotStatus(String date) throws Exception {
     String day = date.substring(0, 2);
     String month = date.substring(3, 5);
@@ -338,6 +391,11 @@ public class ScheduleInfo{
     return true;
   }
 
+  /**
+   * converts intger month into string
+   * @param i the integer value of month
+   * @return 0 appended if month is 1 digit
+   */
   private String getMonthFromIndex(int i) {
     String ans;
     if (i < 10) 
@@ -347,6 +405,11 @@ public class ScheduleInfo{
     return ans;
   }
 
+  /**
+   * converts the integer date into string
+   * @param i the integer value of month
+   * @return 0 appended if date is 1 digit
+   */
   private String getDateFromIndex(int i) {
     String ans;
     if (i < 10)
@@ -356,6 +419,13 @@ public class ScheduleInfo{
     return ans;
   }
 
+  /**
+   * converts the index of the time slot array into the time slot
+   *
+   * @param i the index of the array
+   *
+   * @return the string value of the time slot
+   */
   public static String getSlotFromIndex(int i) {
     String ans = null;
     switch(i) {
@@ -384,6 +454,13 @@ public class ScheduleInfo{
     return ans;
   }
 
+  /**
+   * converts the string time slot into the index of the time slot array
+   *
+   * @param slot the string value of the slot
+   * @return the int value of the index of the slot in the array
+   * @throws Exception if the String value of slot is invalid, i.e. not in slot array
+   */
   public static int getIndexFromSlot(String slot) throws Exception {
     int index;
      
@@ -416,32 +493,10 @@ public class ScheduleInfo{
     return index;
   }
 
-  /* public List<String> getDoctorDayTimeSlot(String date, String docID) throws Exception {
-    String day = date.substring(0, 2);
-    String month = date.substring(3, 5);
-    Doctor doc = new Doctor(docID);
-    try {
-      String path = "../data/ScheduleDB/" + docID + "/2024/" + month + "/" + day + ".csv";
-      List<String> content = new ArrayList<>(Files.readAllLines(Paths.get(path), StandardCharsets.UTF_8));
-      String[] line = content.get(1).split(",");
-      List<String> ans = new ArrayList<>();
-      for (String i : line) {
-        if (i.equals("X"))
-          ans.add("Unavailable");
-        else if (i.equals("O"))
-          ans.add("Dr. " + doc.getBasicInfo().getFirstName() + " " + doc.getBasicInfo().getLastName());
-        else 
-          ans.add("Unavailable");
-      }
-      return ans;
-    } catch (Exception e) {
-      throw new Exception("[-] date does not exist"); 
-    }
-    aint need all these
-  } */
-
-
+  
   /**
+   * gets the upcoming appointment for the doctor
+   * 
    * @return array of String with the upcoming appointment 
    */
   public List<String> getUpcomingAppointment() {
@@ -476,6 +531,11 @@ public class ScheduleInfo{
     return ans;
   }
 
+/**
+ * gets pending appointment
+ *
+ * @return list of pending appointment
+ */
 public List<String> getPendingAppointment() {
     // iterate through scheduleArray[month][date][timeslot]
     // P12345 (pending)

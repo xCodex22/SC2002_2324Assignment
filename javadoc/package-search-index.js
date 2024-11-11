@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"account"},{"l":"All Packages","u":"allpackages-index.html"},{"l":"appointment"},{"l":"inventory"},{"l":"main"},{"l":"menu"},{"l":"staffmanagement"},{"l":"users"}];updateSearchResults();

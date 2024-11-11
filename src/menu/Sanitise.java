@@ -57,9 +57,9 @@ public class Sanitise {
 
   /**
    * Sanitise date of birth to check if it satisfies the form of DD-MM-YYYY; does not check leap year nor age
+   *
    * @return the santisied date of birth
    */
-
   public static String readDOB() throws Exception {
     String dob = null;
 
@@ -80,6 +80,11 @@ public class Sanitise {
     return dob;
   }
 
+  /**
+   * Sanitise reader input of date, same as DOB except without year, this is because the assumption is only for current year
+   *
+   * @return the sanitised date
+   */
   public static String readDate() throws Exception {
     String ans = null;
     System.out.println("\nEnter date in DD-MM format: "); 

@@ -9,7 +9,14 @@ import account.AccountSystem;
 import account.BasicInfo;
 import menu.Sanitise;
 
+/**
+ * class for staff management
+ */
 public class StaffManagementSystem {
+
+  /**
+   * Constructor that initialises all pharmacists and doctors into array lists
+   */
   public StaffManagementSystem() {
     List<User> d = new ArrayList<User>();
     List<User> p = new ArrayList<User>();
@@ -39,6 +46,12 @@ public class StaffManagementSystem {
     pharmacistArray = p;
   }
 
+  /**
+   * Display the list of staffs based on filter options
+   *
+   * @param option the filter option 
+   *
+   */
   public void display(FilterOption option) {
     switch(option) {
       case ALL:
@@ -112,6 +125,13 @@ public class StaffManagementSystem {
     }
   }
 
+  /**
+   * Finding of staff
+   *
+   * @param hospitalID the integer value of hospital ID
+   * 
+   * @return the staff user class
+   */
   public User findStaff(int hospitalID) {
         User res = null;
         res = binSearch(doctorArray, hospitalID); 
@@ -119,6 +139,15 @@ public class StaffManagementSystem {
         else return binSearch(pharmacistArray, hospitalID);
   }
 
+  /**
+   * Binary search of staff 
+   *
+   * @param A the array A for list of users
+   * @param target the target hospital ID
+   *
+   * @return the staff user object 
+   *
+   */
   private User binSearch(List<User> A, int target) {
     int hi = A.size() - 1; int lo = 0; int mi = 0;
     while (lo <= hi) {
@@ -133,6 +162,13 @@ public class StaffManagementSystem {
     return null;
   }
 
+  /**
+   * removes staff from the data base via their hospital ID
+   *
+   * @param hospitalID the id of staff
+   *
+   * @return whether the operation is successful
+   */
   public boolean removeStaff(String hospitalID) {
     String role = null;
     for (User i : doctorArray) {

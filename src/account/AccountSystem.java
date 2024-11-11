@@ -9,16 +9,12 @@ import java.nio.charset.StandardCharsets;
 import java.io.Console;
 import java.util.*;
 
-/* 
- * Manages account-related operations such as login, registration, password changes,
- * and user role management in the hospital system.
- * 
- * @author [Your Name]
- * @version 1.0
+/**
+ * class for managaing accounts in the data base
  */
 
 public class AccountSystem { 
-	 /* 
+	 /**
     * Logs in a user with a given hospital ID and password.
     * 
     * @param hospitalID The ID of the hospital account.
@@ -58,8 +54,8 @@ public class AccountSystem {
 		}	
 	} 
 
-  /* 
-   * Changes the password of the user, ensuring it meets the requirements. 
+  /**
+   * Changes the password of the user, ensure 1) user knows the old password 2) new password is different from old password 3) new password needs to be confirmed again
    * @param oldPass The current password.
    * @param newPass1 The new password.
    * @param newPass2 The new password for confirmation.
@@ -103,12 +99,11 @@ public class AccountSystem {
 		return true;
 	}
   
-  /*
+  /**
    * Registers a new user with the provided information and role.
    * @param info An array of user details.
    * @param role The role of the user (e.g., patient, doctor, pharmacist).
    * @return true if registration is successful, false otherwise.
-   * @throws Exception if registration fails due to an error.
    */
 
 	public boolean register(String[] info, String role) {
@@ -175,13 +170,12 @@ public class AccountSystem {
     }
   }
 
-  /* 
+  /**
    * Deletes an account associated with the given hospital ID.
    * 
    * @param id The ID of the account to delete.
    * @return true if the account is deleted successfully, false otherwise.
    */
-
   public boolean deleteAccount(String id) {
     try {
 				List<String> content = new ArrayList<>(Files.readAllLines(Paths.get("../data/AccountDB/accounts.csv"), StandardCharsets.UTF_8));
@@ -202,6 +196,13 @@ public class AccountSystem {
 		return true;
   }
 
+  /**
+   * copys the directory, needed for initalisation of doctors 
+   *
+   * @param src the source directory
+   * @param dest the destination directory
+   * @param overwrite whether we are going to overwrite files into the desintation directory
+   */
   protected void copyDir(String src, String dest, boolean overwrite) {
     if (!Files.exists(Paths.get(dest))) {
       try {
@@ -227,7 +228,19 @@ public class AccountSystem {
     }
 
   }
+
+  /**
+   * gets the role of the account
+   *
+   * @return the role of the account
+   */
   public String getRole() { return role; }
+
+  /**
+   * gets the id of the account
+   *
+   * @return the id of the account
+   */
   public String getID() { return hospitalID; }
 		
 	private String hospitalID;
