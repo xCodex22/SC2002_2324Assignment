@@ -1,11 +1,9 @@
 package account;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.*;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import users.*;
 
@@ -27,7 +25,7 @@ public class MedicalInfo {
     String path = null;
 
     try {
-      path = "../data/MedicalRecordsDB/" + hospitalID + ".csv";
+      path = "../../data/MedicalRecordsDB/" + hospitalID + ".csv";
       file = new File(path);
       Scanner read = new Scanner(file);
       read.nextLine();

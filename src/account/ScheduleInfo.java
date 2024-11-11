@@ -1,14 +1,10 @@
 package account;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.*;
 import java.nio.charset.StandardCharsets;
-import java.io.Console;
+import java.nio.file.*;
 import java.util.*;
-import users.*;
 
 /**
  * class representing the schedule information of a doctor
@@ -43,7 +39,7 @@ public class ScheduleInfo{
     for (int i = 0; i < 13; i++) res[i][0] = null; 
 
     String id = hospitalID;
-    String path1 = "../data/ScheduleDB/";
+    String path1 = "../../data/ScheduleDB/";
     String path2 = "/2024/";
     Scanner sc;
     File file;
@@ -293,7 +289,7 @@ public class ScheduleInfo{
     String day = date.substring(0, 2);
     String month = date.substring(3, 5);
     try {
-      String path = "../data/ScheduleDB/" + id + "/2024/" + month + "/" + day + ".csv";
+      String path = "../../data/ScheduleDB/" + id + "/2024/" + month + "/" + day + ".csv";
       List<String> content = new ArrayList<>(Files.readAllLines(Paths.get(path), StandardCharsets.UTF_8));
       String[] line = content.get(1).split(",");
       List<String> ans = new ArrayList<>();
@@ -317,7 +313,7 @@ public class ScheduleInfo{
     String month = date.substring(3, 5);
     try {
       int index = getIndexFromSlot(slot);
-      String path = "../data/ScheduleDB/" + id + "/2024/" + month + "/" + day + ".csv";
+      String path = "../../data/ScheduleDB/" + id + "/2024/" + month + "/" + day + ".csv";
       List<String> content = new ArrayList<>(Files.readAllLines(Paths.get(path), StandardCharsets.UTF_8));
       List<String> newContent = new ArrayList<>();
       newContent.add(content.get(0));

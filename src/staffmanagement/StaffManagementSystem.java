@@ -22,7 +22,7 @@ public class StaffManagementSystem {
     List<User> p = new ArrayList<User>();
 
     try { 
-      File doctorData = new File("../data/BasicInfoDB/doctor.csv");
+      File doctorData = new File("../../data/BasicInfoDB/doctor.csv");
       Scanner read = new Scanner(doctorData);
       read.nextLine();
       while(read.hasNextLine()) {
@@ -30,7 +30,7 @@ public class StaffManagementSystem {
         d.add(new Doctor(line[0])); 
       }
       read.close();
-      File pharmacistData = new File("../data/BasicInfoDB/pharmacist.csv");
+      File pharmacistData = new File("../../data/BasicInfoDB/pharmacist.csv");
       read = new Scanner(pharmacistData);
       read.nextLine();
       while(read.hasNextLine()) {
@@ -112,7 +112,7 @@ public class StaffManagementSystem {
           id = Sanitise.readID(); 
           User ans = findStaff(Integer.valueOf(id));
           if (ans == null)
-            System.out.println("[-] Staff is not found in the data base.");
+            System.out.println("[-] Staff is not found in the ../data base.");
           else
             ans.getBasicInfo().displayInfo();
         } catch(Exception e) {
@@ -163,7 +163,7 @@ public class StaffManagementSystem {
   }
 
   /**
-   * removes staff from the data base via their hospital ID
+   * removes staff from the ../data base via their hospital ID
    *
    * @param hospitalID the id of staff
    *

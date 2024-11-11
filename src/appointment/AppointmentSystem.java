@@ -53,8 +53,8 @@ public class AppointmentSystem {
     try {
       String day = date.substring(0,2);
       String month = date.substring(3,5);
-      File dir = new File("../data/ScheduleDB/");
-      File init = new File("../data/ScheduleDB/init");
+      File dir = new File("../../data/ScheduleDB/");
+      File init = new File("../../data/ScheduleDB/init");
       File[] dirList = dir.listFiles();
       if (dirList != null) {
         for (File child : dirList) {
@@ -95,8 +95,8 @@ public class AppointmentSystem {
    */
   private static boolean updatePatientAppointment(String patID, HashMap<List<String>, List<String>> scheduledApt) {
     try {
-      String path = "../data/AppointmentDB/" + patID + "request.csv";
-      String tmp = "../data/AppointmentDB/" + patID + "request.csv~";
+      String path = "../../data/AppointmentDB/" + patID + "request.csv";
+      String tmp = "../../data/AppointmentDB/" + patID + "request.csv~";
       List<String> content = scheduleMapToFileContent(patID, scheduledApt);
       Files.write(Paths.get(tmp), content, StandardCharsets.UTF_8);
       Files.copy(Paths.get(tmp), Paths.get(path), StandardCopyOption.REPLACE_EXISTING);
@@ -280,7 +280,7 @@ public class AppointmentSystem {
     // pending, completed, confirmed, cancelled
     try {
       HashMap<List<String>, List<String>> ans = new HashMap<List<String>, List<String>>();
-      String pathName = "../data/AppointmentDB/" + patID + "request.csv";
+      String pathName = "../../data/AppointmentDB/" + patID + "request.csv";
       File file = new File(pathName);
       Scanner sc = new Scanner(file);
       sc.nextLine();
@@ -328,7 +328,7 @@ public class AppointmentSystem {
     patSchedule.remove(key);
     updatePatientAppointment(patID, patSchedule);
     try {
-      String path = "../data/AppointmentDB/" + patID + "outcome.csv";
+      String path = "../../data/AppointmentDB/" + patID + "outcome.csv";
       FileWriter writer = new FileWriter(path, true);
       writer.write(entry + "\n");
       writer.close();
@@ -346,7 +346,7 @@ public class AppointmentSystem {
   public static void printAllAppointment() {
     // read all request files
     Pattern pattern = Pattern.compile("^\\d+request\\.csv$");     
-    String dir = "../data/AppointmentDB/";
+    String dir = "../../data/AppointmentDB/";
     // see Files.walk documentation
     System.out.println("\n[!] Colums: Status, Patient ID, Appointment Date, Time Slot, Doctor ID, Doctor Name\n");
     try (Stream<Path> filePathStream = Files.walk(Paths.get(dir))) {
@@ -377,7 +377,7 @@ public class AppointmentSystem {
   public static void printAllOutcome() {
     System.out.println("\n[!] Colums: Patient ID, Date, Slot, Service, Doctor ID, Diagnosis, Medication, Qty, Status, Treatment, Memo\n");
     Pattern pattern = Pattern.compile("^\\d+outcome\\.csv$");     
-    String dir = "../data/AppointmentDB/";
+    String dir = "../../data/AppointmentDB/";
     // see Files.walk documentation
     try (Stream<Path> filePathStream = Files.walk(Paths.get(dir))) {
       filePathStream
@@ -408,7 +408,7 @@ public class AppointmentSystem {
   public static List<String> getAllPendingMed() {
     List<String> ans = new ArrayList<>();
     Pattern pattern = Pattern.compile("^\\d+outcome\\.csv$");     
-    String dir = "../data/AppointmentDB/";
+    String dir = "../../data/AppointmentDB/";
     // see Files.walk documentation
     try (Stream<Path> filePathStream = Files.walk(Paths.get(dir))) {
       filePathStream
@@ -445,7 +445,7 @@ public class AppointmentSystem {
   public static void printPatientOutcome(String id) {
     System.out.println("\n[!] Colums: Patient ID, Date, Slot, Service, Doctor ID, Diagnosis, Medication, Qty, Status, Treatment, Memo\n");
     try {
-      String path = "../data/AppointmentDB/" + id + "outcome.csv";
+      String path = "../../data/AppointmentDB/" + id + "outcome.csv";
       File file = new File(path);
       Scanner sc = new Scanner(file);
       sc.nextLine();

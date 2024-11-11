@@ -1,11 +1,11 @@
 package inventory;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
 import java.util.*;
 import users.*;
 
@@ -21,7 +21,7 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, I
     List<Medicine> ans = new ArrayList<>();
     List<String> sum = new ArrayList<>();
     try {
-      String path = "../data/InventoryDB/medicine.csv";
+      String path = "../../data/InventoryDB/medicine.csv";
       File file = new File(path);
       Scanner sc = new Scanner(file);
       sc.nextLine();
@@ -82,7 +82,7 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, I
   public void printAllDetail() {
     try {
       System.out.println("\nColumns: Medicine Name, Unit, Max Stock, Current Stock, Low Stock Benchmark");
-      String path = "../data/InventoryDB/medicine.csv";
+      String path = "../../data/InventoryDB/medicine.csv";
       File file = new File(path);
       Scanner sc = new Scanner(file);
       sc.nextLine();
@@ -178,7 +178,7 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, I
     ans.add(pharma.getBasicInfo().getFirstName() + " " + pharma.getBasicInfo().getLastName());
     String entry = String.join(",", ans);
     try {
-     String path = "../data/InventoryDB/request.csv"; 
+     String path = "../../data/InventoryDB/request.csv"; 
       FileWriter writer = new FileWriter(path, true);
       writer.write(entry + "\n");
       writer.close();
@@ -217,7 +217,7 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, I
   public boolean dispense(Medicine med, String offset, String entry) {
     try {
       String id = entry.split(",")[0];
-      String path = "../data/AppointmentDB/" + id + "outcome.csv"; 
+      String path = "../../data/AppointmentDB/" + id + "outcome.csv"; 
       String tmp = path + "~";
 
       if (!removeStock(med, offset)) return false;
@@ -253,7 +253,7 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, I
   public List<String> getReplenRequest() {
     try {
       List<String> ans = new ArrayList<>();
-      String path = "../data/InventoryDB/request.csv";  
+      String path = "../../data/InventoryDB/request.csv";  
       File file = new File(path);
       Scanner sc = new Scanner(file);
       sc.nextLine();
@@ -295,7 +295,7 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, I
    */
   public boolean deleteRequest(String entry) {
     try {
-      String path = "../data/InventoryDB/request.csv";
+      String path = "../../data/InventoryDB/request.csv";
       String tmp = path + "~";
       // want to delete line that maches with String entry to the file
     List<String> content = new ArrayList<>(Files.readAllLines(Paths.get(path), StandardCharsets.UTF_8));

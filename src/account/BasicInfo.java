@@ -3,8 +3,8 @@ package account;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
 import java.util.*;
 
 /**
@@ -32,13 +32,13 @@ public class BasicInfo {
       try {
         switch(role) {
           case "PATIENT":
-            file = new File("../data/BasicInfoDB/patient.csv");
+            file = new File("../../data/BasicInfoDB/patient.csv");
             break;
           case "DOCTOR":
-            file = new File("../data/BasicInfoDB/doctor.csv");
+            file = new File("../../data/BasicInfoDB/doctor.csv");
             break;
           case "PHARMACIST":
-            file = new File("../data/BasicInfoDB/pharmacist.csv");
+            file = new File("../../data/BasicInfoDB/pharmacist.csv");
             break;
           default:
             break;
@@ -101,7 +101,7 @@ public class BasicInfo {
     */
   public boolean update() {
     String newInfo = String.join(",", summary);
-    String dir = "../data/BasicInfoDB/";
+    String dir = "../../data/BasicInfoDB/";
     String loc = null;
     String tmp_loc = null;
     try {
@@ -147,7 +147,7 @@ public class BasicInfo {
    * @return true if the deletion is successful, false otherwise.
    */
   public boolean delete() {
-    String dir = "../data/BasicInfoDB/";
+    String dir = "../../data/BasicInfoDB/";
     String loc = null;
     String tmp_loc = null;
     try {

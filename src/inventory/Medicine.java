@@ -1,11 +1,10 @@
 package inventory;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
 import java.util.*;
 
 
@@ -22,7 +21,7 @@ public class Medicine {
   public Medicine(String name) throws Exception {
     boolean found = false;
     try {
-      String path = "../data/InventoryDB/medicine.csv";
+      String path = "../../data/InventoryDB/medicine.csv";
       File file = new File(path);
       Scanner sc = new Scanner(file);
       while (sc.hasNextLine()) {
@@ -51,7 +50,7 @@ public class Medicine {
   public boolean update() {
     String newEntry = getLineEntry();
     try {
-      String path =  "../data/InventoryDB/medicine.csv";
+      String path =  "../../data/InventoryDB/medicine.csv";
       String tmp = path + "~";
       List<String> content = new ArrayList<>(Files.readAllLines(Paths.get(path), StandardCharsets.UTF_8));
       for (int i = 0; i < content.size(); i++) {

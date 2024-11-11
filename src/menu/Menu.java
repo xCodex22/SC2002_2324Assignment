@@ -1,17 +1,14 @@
 package menu;
 import account.*;
-import users.*;
 import appointment.*;
-import staffmanagement.*;
 import inventory.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.*;
 import java.io.Console;
-import java.util.InputMismatchException;
-import java.nio.file.*;
-import java.nio.charset.StandardCharsets;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+import java.util.*;
+import staffmanagement.*;
+import users.*;
 
 /**
  * The class for initialising the menu, which the user interface for the CLI
@@ -28,7 +25,7 @@ public class Menu {
     Scanner sc = new Scanner(System.in);
     String bannerArt = null;
     try {
-      bannerArt = Files.readString(Paths.get("menu/main_banner.txt"), StandardCharsets.UTF_8);
+      bannerArt = Files.readString(Paths.get("../menu/main_banner.txt"), StandardCharsets.UTF_8);
     } catch(IOException e) {
       e.printStackTrace();
     }
