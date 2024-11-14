@@ -198,6 +198,10 @@ public class Menu {
           "[3] Please change your password after logging in\n\n" +
           "You may exit this page and log in now.";
           System.out.println(message);
+          confirm();
+          clearScreen();
+          choice = 2;
+          break;
         }
         else {
           System.out.println("\n[-] Failed to Create Account. Try again.");
@@ -211,6 +215,7 @@ public class Menu {
         break;
       }
     } while(choice != 2);
+    // HERE
   }
 
   /**
