@@ -26,6 +26,8 @@ This project requires the use of primitive local data bases, if a user exits une
 $ git restore *
 ```
 
+Refrain from using **IDE's** terminal, and use a proper terminal emulator. Terminals in IDE may exhibit weird behaviour. Examples of terminal emulators are `Poweshell`, `Git Bash` and `iTerm`
+
 # Initial User Accounts
 
 You can test the CLI using the following accounts
