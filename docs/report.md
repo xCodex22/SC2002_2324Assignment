@@ -724,6 +724,63 @@ Choose option (1-3): 2
 [!] Enter "1" to continue: 
 
 ```
+Test Case 21:
+
+```
+========[ View All Appointment Details ]=========
+[!] Choose what to view 
+[1] Scheduled Appointments
+[2] Appointment Outcomes
+Enter option (1-2): 1
+
+[!] Colums: Status, Patient ID, Appointment Date, Time Slot, Doctor ID, Doctor Name
+
+[1] cancelled,12345,01-01-2024,1500-1600,12346,Stephen Strange
+[2] confirmed,12345,01-01-2024,1300-1400,12346,Stephen Strange
+[3] cancelled,12345,01-01-2024,0900-1000,12346,Stephen Strange
+[4] pending,12345,01-01-2024,1600-1700,12346,Stephen Strange
+[1] pending,12349,03-01-2024,1400-1500,12346,Stephen Strange
+
+[!] Enter "1" to continue: 
+```
+
+Test Case 22:
+```
+======[ View and Manage Medication Inventory ]======
+[1] View medication inventory
+[2] Add stock
+[3] Remove stock
+[4] Update stock low alert threshold
+[5] Exit
+Enter option (1-4): 2
+
+[!] Choose from the the following list of inventory
+
+Columns: Medicine Name, Unit, Max Stock, Current Stock, Low Stock Benchmark
+[ 1 ] Paracetamol,TAB,100,70,20
+[ 2 ] Ibuprofen,TAB,50,40,10
+[ 3 ] Amoxicllin,CAP,100,5,10
+Enter index: 1
+Enter amount of stock to add: 5
+[+] Stock added successfully
+
+[!] Enter "1" to continue: 
+```
+
+TestCase 23:
+```
+====[ Approve Replenishment Request ]=====
+[!] The following is all the request
+[!] Columns: Medication Name, Unit, Request Amount, Pharmacist ID, Pharmacist Name
+[ 1 ] Ibuprofen,TAB,5,12347,Pharma Big
+[ 2 ] Ibuprofen,TAB,7,12347,Pharma Big
+
+Enter request to approve by index: 1
+[+] Request approved
+
+[!] Enter "1" to continue: 
+
+```
 
 Test Case 25: 
 ```
