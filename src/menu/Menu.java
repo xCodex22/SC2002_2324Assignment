@@ -198,6 +198,10 @@ public class Menu {
           "[3] Please change your password after logging in\n\n" +
           "You may exit this page and log in now.";
           System.out.println(message);
+          confirm();
+          clearScreen();
+          choice = 2;
+          break;
         }
         else {
           System.out.println("\n[-] Failed to Create Account. Try again.");
@@ -211,6 +215,7 @@ public class Menu {
         break;
       }
     } while(choice != 2);
+    // HERE
   }
 
   /**
@@ -1467,10 +1472,10 @@ public class Menu {
               inputUser.getBasicInfo().setFirstName(newFirstName);
               System.out.println("[+] Changed first name to: " + inputUser.getBasicInfo().getFirstName());
               changed = true;
+              break;
             } catch(Exception e) {
               System.out.println(e.getMessage());
             }
-            break;
           } while(true);
           break;
 
@@ -1482,10 +1487,10 @@ public class Menu {
               inputUser.getBasicInfo().setLastName(newLastName);
               System.out.println("[+] Changed last name to: " + inputUser.getBasicInfo().getLastName());
               changed = true;
+              break;
             } catch(Exception e) {
               System.out.println(e.getMessage());
             }
-            break;
           } while(true);
           break;
 
@@ -1507,10 +1512,10 @@ public class Menu {
               inputUser.getBasicInfo().setDOB(newDOB);
               System.out.println("[+] Changed date of birth to: " + inputUser.getBasicInfo().getDOB());
               changed = true;
+              break;
             } catch(Exception e) {
               System.out.println(e.getMessage());  
             } 
-            break;
           } while(true);
           break;
         case 5:
@@ -1522,10 +1527,10 @@ public class Menu {
               inputUser.getBasicInfo().setPhoneNumber(newPhoneNumber);
               System.out.print("[+] Changed phone number to: " + inputUser.getBasicInfo().getPhoneNumber());
               changed = true;
+              break;
             } catch (Exception e) {
               System.out.println(e.getMessage());
             }
-            break;
           } while (true);
           break;
         case 6:
@@ -1537,10 +1542,10 @@ public class Menu {
               inputUser.getBasicInfo().setEmailAddress(newEmail);
               System.out.println("[+] Changed email address to: " + inputUser.getBasicInfo().getEmailAddress());
               changed = true;
+              break;
             } catch (Exception e) {
               System.out.println(e.getMessage());
             }
-            break;
           } while (true);
           break;
         
