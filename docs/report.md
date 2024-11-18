@@ -56,6 +56,11 @@ Extending from the previous example, these classes have no dependency between ea
 
 ## Object Oriented Principle
 
+The HMS was designed with Object-Oriented Programming principles to promote
+reusability. This approach enhances code maintainability, making it well-suited for future
+expansion and updates. We implemented this by applying SOLID design principles, as
+covered in the module
+
 ### S - Single-responsibility Principle
 
 *"A module should be responsible and to one, and only one actor"*. 
@@ -74,11 +79,24 @@ The base classes `User` can be easily replaced with derived classes `Doctor`, `P
 
 ### I - Interface Segregation Principle
 
-The classes are not forced to depend on `interface` or `abstract` classes even if they are not required to use. This is done by making `interface` more specific. For example, `InventorySystem` implements `IDispense`, `IAddStock` and `IRemoveStock` etc at the same time, only because it needs it. This segregation allows future `System` classes to pick only the functionality they desire.
+The classes are not forced to depend on `interface` or `abstract` classes even if they are not required to use. 
+
+By avoiding pointless methods on implementations of
+classes, this approach seeks to improve maintainability, flexibility, and organisation of the
+code. 
+
+This is done by making `interface` more specific. For example, `InventorySystem` implements `IDispense`, `IAddStock` and `IRemoveStock` etc at the same time, only because it needs it. This segregation allows future `System` classes to pick only the functionality they desire.
 
 ### D - Dependency Inversion Principle
 
-High level classes depends on `abstract`, instead of lower classes. This is shown in the `User` class.
+his principle illustrates that high-level modules should depend on abstractions rather than on
+concrete implementations. In the context of the `User` class, this principle has been applied
+by ensuring that the class interacts with abstractions (interfaces or abstract classes) instead of
+relying directly on specific implementations of its dependencies. This approach decouples the
+`User` class from lower-level modules, making it more flexible and easier to extend or
+modify. By depending on abstractions, the `User` class can incorporate new functionalities
+without requiring changes to its core structure, thus enhancing the maintainability and
+scalability of the codebase.
 
 ## Problem-specific Design Choices
 
@@ -765,8 +783,12 @@ Enter option (1-3):
 
 The most important learning point is that, the team could have chose a **unit testing framework**, such as the`JUnit`. This would have saved a lot of time by automating `assetions` and test cases. Because not all members are familiar with unit testing, we have to manually re-compile and test individual edge cases, which costed us a lot of time. In fact, industrial practices dictate the use of unit test because merging untested or under-tested branches into production branches could lead to catastrophic result. In our case, it is many wasted time, but for a company, the entire service may have to be suspended temporarily for a emergency patch to be applied.
 
-**Theory v.s. Practice**
+**Conclusion**
 
-A jarring issue that one can easily see if the `Menu` class, which is simply many class methods combined together. The *correct* way to implement such classes would be to first define `interface`. In fact, an argument can be made using OOP concepts that *all classes* should implement some base `interface`. The issue is that we often have many unique classes that does a very specific thing, meaning that there are many instances where **only one class** implements the `interface`. Additionally, it also introduces some unnecessary complexity for simple classes. In keeping `interface` generic, it also means that it does less and less things, and sometimes may not even be necessary anymore. However, this does not mean that `interface` is not used. See our implementation of `InventorySystem`.
-
-
+Reflecting on our project, integrating S.O.L.I.D. concepts not only solidified its technical
+foundation but also improved teamwork efficiency. By establishing a modular and organized
+codebase, we enabled smoother development cycles and minimized potential conflicts during
+simultaneous work. Additionally, by implementing customized access to functionalities, we
+achieved a clear division of user responsibilities and permissions, enhancing user experience
+while ensuring data security and integrity. In summary, the thoughtful application of design
+principles allowed us to achieve the project’s objectives effectively and efficiently.
