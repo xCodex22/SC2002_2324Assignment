@@ -1221,11 +1221,11 @@ public class Menu {
           int in3 = 6;
 
         do {
-          System.out.print("Enter option (1-4): "); 
+          System.out.print("Enter option (1-5): "); 
           in3 = Sanitise.readInt(1,5,6);
-          if (in3 == 5)
+          if (in3 == 6)
           System.out.println("[-] Invalid option");
-        } while(in3 == 5);
+        } while(in3 == 6);
 
         switch (in3) {
           case 1:

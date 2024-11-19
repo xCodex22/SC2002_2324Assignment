@@ -321,7 +321,7 @@ public class AppointmentSystem {
     // doctor schedule info set to X
     
     Doctor doc = new Doctor(docID);
-    doc.getScheduleInfo().setAvailability(date, slot, patID, AvailStatus.COMPLETE);
+    if(!doc.getScheduleInfo().setAvailability(date, slot, patID, AvailStatus.COMPLETE)) return false;
     HashMap<List<String>, List<String>> patSchedule = getScheduledAppointment(patID);
     List<String> key = new ArrayList<>();
     key.add(date); key.add(slot);
