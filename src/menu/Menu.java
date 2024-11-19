@@ -902,7 +902,6 @@ public class Menu {
             }
           } while (true);
 
-
           do {
             try {
               System.out.print("Enter date of appointment: ");
@@ -986,8 +985,8 @@ public class Menu {
           line[10] = memo;
           
           String entry = String.join(",", line);
-          System.out.println("patientID,serviceDate,serviceName,drID,diagnosis,medicationPrescribed,medicationAmount,medicationStatus,treatmentPlan,remarks");
-          System.out.println(entry);
+          // System.out.println("patientID,serviceDate,serviceName,drID,diagnosis,medicationPrescribed,medicationAmount,medicationStatus,treatmentPlan,remarks");
+          // System.out.println(entry);
 
            if(!AppointmentSystem.recordOutcome(docID, patID, date, slot, entry))
             System.out.println("[-] Failed to record outcome. One or more fields is invalid");
