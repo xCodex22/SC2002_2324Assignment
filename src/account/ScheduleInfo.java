@@ -64,6 +64,7 @@ public class ScheduleInfo{
           sc.nextLine();
           String[] line = sc.nextLine().split(",");
           res[i][j] = line;
+          sc.close(); 
         } catch(FileNotFoundException e) {
           while(j <= 31) {
             res[i][j] = null;
