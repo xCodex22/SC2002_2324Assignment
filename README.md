@@ -1,11 +1,11 @@
 # Environment Specifications
-et
+
 Ensure that you have the following or equivalent `JDK` version. 
 
 ```console
 $ java -version
 
-openjdk version "23" 2024-09-1https://github.com/xCodex22/SC2002_2324Assignment7
+openjdk version "23" 2024-09-17
 OpenJDK Runtime Environment (build 23)
 OpenJDK 64-Bit Server VM (build 23, mixed mode, sharing)
 ```
