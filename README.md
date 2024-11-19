@@ -1,5 +1,5 @@
 # Environment Specifications
-et
+
 Ensure that you have the following or equivalent `JDK` version. 
 
 ```console
@@ -23,7 +23,7 @@ Select the correct version of `openjdk` and install it
 This project requires the use of primitive local data bases, if a user exits unexpectedly, i.e. sending a `termination singal` during the CLI process without letting our `Exception` handler handle the event, the CLI may exhibit unexpected behaviours due to corruption of data bases. In the event this happens, run
 
 ```
-$ git restore *
+$ git restore ../data/*
 ```
 
 Refrain from using **IDE's** terminal, and use a proper terminal emulator. Terminals in IDE may exhibit weird behaviour. Examples of terminal emulators are `Poweshell`, `Git Bash` and `iTerm`
@@ -72,7 +72,8 @@ $ xdg-open index.html
 
 ## For Windows Users
 
-While the Java compiler should handle the pathing related compatibility depending on your OS, if any issues arise, consider using `Powershell` or `Git Bash`. 
+While the Java compiler should handle the pathing related compatibility depending on your OS, if any issues arise, consider using `Powershell` or `Git Bash`. Note that because of security issue / cpu issue, Window users may experience
+weird error such as `Other process is also reading the file`. Because the project is coded in a Unix Environment, we were not able to test everything on the Windows System. Should such an issue occur, consider using a virtual machine.
 
 ## Install
 
