@@ -93,6 +93,7 @@ public class InventorySystem implements IAddStock, IRemoveStock, IUpdateAlert, I
         }
         System.out.println();
       } 
+      sc.close();
     }catch(Exception e) {
       System.out.println(e.getMessage());
     }

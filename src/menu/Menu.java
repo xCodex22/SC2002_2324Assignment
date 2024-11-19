@@ -854,9 +854,8 @@ public class Menu {
             case 1:
               // first set doctor side (schedule)
               // then set appoitnment side  
-              // doc.getScheduleInfo().setAvailability(d, s, patid, AvailStatus.CONFIRM);
+              doc.getScheduleInfo().setAvailability(d, s, patid, AvailStatus.CONFIRM);
               AppointmentSystem.acceptAppointment(d, s, doc.getBasicInfo().getID(), patid);
-               
               System.out.println("[+] Appointment is confirmed");
               break;
             case 2:
